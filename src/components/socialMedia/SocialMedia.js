@@ -2,7 +2,8 @@ import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
 export default async function SocialMedia({ socialMedia }) {
   return (
-    <div className="w-full text-center">
+    <div className="w-full text-center flex flex-col">
+      <div className="h-24"></div>
       <section
         className="flex flex-col w-full h-[500px] bg-cover bg-fixed bg-center justify-center items-center"
         style={{

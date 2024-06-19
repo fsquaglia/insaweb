@@ -1,16 +1,20 @@
 import CardTips from "./CardTips";
 import { getTipsLandingFirestore } from "../../utils/firebase/fetchFirebase";
-import Header from "../../ui/HeaderTitle";
+import HeaderTitle from "../../ui/HeaderTitle";
 
 export default async function Tips() {
   const dataTips = await getTipsLandingFirestore();
 
   return (
-    <div className="container  text-center">
-      <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-2 sm:py-6">
+    <div className="flex flex-col text-center justify-center bg-gray-50">
+      <div className="h-24"></div>
+      <div className="my-6">
+        <HeaderTitle titleText={"Ya viste nuestros tips?"} />
+      </div>
+
+      <div className="container relative flex flex-col justify-center overflow-hidden py-2 sm:py-6">
         <div className="m-10 flex flex-col items-center justify-center mx-auto max-w-screen-lg">
-          <Header titleText={"Ya viste nuestros tips?"} />
-          <div className="grid w-full gap-10 grid-cols-3">
+          <div className="grid w-full gap-10 grid-cols-1 sm:grid-cols-3">
             {dataTips && dataTips.length > 0 ? (
               dataTips.map((tip) => (
                 <CardTips

@@ -6,14 +6,14 @@ import { getFirestore, connectFirestoreEmulator } from "firebase/firestore"; //f
 
 // Your web app's Firebase configuration
 let firebaseConfig = {
-  apiKey: "AIzaSyDyyCgv2HGJ61K4b_VjInnwfiRsV6WFUpU",
-  authDomain: "iharalondon.firebaseapp.com",
-  databaseURL: "https://iharalondon-default-rtdb.firebaseio.com",
-  projectId: "iharalondon",
-  storageBucket: "iharalondon.appspot.com",
-  messagingSenderId: "38211738714",
-  appId: "1:38211738714:web:dd8a5d56730be71a594c63",
-  measurementId: "G-VZZ3H5NNFG",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 // Initialize Firebase with dynamic configuration
 let app;

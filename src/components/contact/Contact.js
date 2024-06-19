@@ -1,6 +1,7 @@
 export default function Contact({ medios, ubicacion }) {
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 flex flex-col">
+      <div className="h-24"></div>
       <section className="relative">
         {/* <div className="absolute inset-0 bg-gray-300">
           <iframe

@@ -18,22 +18,25 @@ export default async function Categories() {
   };
 
   return (
-    <div className="w-full sm:container sm:mx-auto flex flex-wrap justify-center items-center">
-      {dataCategories && dataCategories.length > 0 ? (
-        dataCategories.map((cat) => (
-          <CardCategory
-            key={cat.id}
-            title={cat.tituloCard}
-            text={cat.descripcion}
-            imageSrc={cat.imagen}
-            bgColorTailwind={colorCard(cat.id)}
-          />
-        ))
-      ) : (
-        <p className="text-gray-800 my-20">
-          Pronto mostraremos las categorias...
-        </p>
-      )}
+    <div>
+      <div className="h-24"></div>
+      <div className="w-full sm:container sm:mx-auto flex flex-wrap justify-center items-center">
+        {dataCategories && dataCategories.length > 0 ? (
+          dataCategories.map((cat) => (
+            <CardCategory
+              key={cat.id}
+              title={cat.tituloCard}
+              text={cat.descripcion}
+              imageSrc={cat.imagen}
+              bgColorTailwind={colorCard(cat.id)}
+            />
+          ))
+        ) : (
+          <p className="text-gray-800 my-20">
+            Pronto mostraremos las categorias...
+          </p>
+        )}
+      </div>
     </div>
   );
 }

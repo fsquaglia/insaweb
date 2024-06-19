@@ -3,8 +3,9 @@ import HeaderTitle from "../../ui/HeaderTitle.js";
 
 export default function Offers() {
   return (
-    <div className="container flex flex-col text-center justify-center bg-gray-100">
-      <div className="my-10">
+    <div className="flex flex-col text-center justify-center bg-gray-100">
+      <div className="h-24"></div>
+      <div className="my-6">
         <HeaderTitle titleText={"Nuestras mejores ofertas"} />
       </div>
 

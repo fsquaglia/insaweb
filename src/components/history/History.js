@@ -91,7 +91,7 @@ export default function History({ historia }) {
               <h2 className="text-2xl font-bold mb-4 text-center">
                 {selectedCircle.titulo}
               </h2>
-              <p className="text-lg text-center">
+              <p className="text-sm text-center">
                 {selectedCircle.descripcion}
               </p>
               <button
