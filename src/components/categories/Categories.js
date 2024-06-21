@@ -32,7 +32,7 @@ export default async function Categories() {
             />
           ))
         ) : (
-          <p className="text-gray-800 my-20">
+          <p className="text-gray-800 my-20 text-center">
             Pronto mostraremos las categorias...
           </p>
         )}

@@ -60,8 +60,9 @@ export default function History({ historia }) {
   };
 
   return (
-    <div className="relative container h-[500px] flex justify-center items-center">
-      <div className="absolute inset-0 flex flex-wrap justify-center items-center gap-10">
+    <div className="container mx-auto flex flex-col items-center justify-center gap-10 pb-20">
+      <div className="h-24"></div>
+      <div className="flex flex-wrap justify-center items-center gap-10">
         {combinedData.map((circle) => (
           <Circle
             key={circle.id}
@@ -75,7 +76,7 @@ export default function History({ historia }) {
       </div>
 
       {selectedCircle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div
             className="relative bg-white p-8 rounded-lg shadow-xl w-[30rem] max-w-full flex flex-col"
             style={{

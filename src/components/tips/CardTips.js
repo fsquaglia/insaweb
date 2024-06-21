@@ -21,7 +21,7 @@ export default function CardTips({ title, detail, date, img }) {
 
   return (
     <div>
-      <div className="bg-white w-full h-[450px] rounded-lg shadow-md flex flex-col transition-all overflow-hidden hover:shadow-2xl">
+      <div className="bg-white m-6 w-80 h-[450px] rounded-lg shadow-md flex flex-col transition-all overflow-hidden hover:shadow-2xl">
         <div className="  p-6">
           <div className="pb-3 mb-4 border-b border-stone-200 text-xs font-medium flex justify-between text-blue-900">
             <span className="flex items-center gap-1">

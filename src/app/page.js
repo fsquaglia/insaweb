@@ -29,12 +29,17 @@ export default async function Home() {
         {/*Categories toma los datos de la BD Firestore. SACAR LA PETICION FUERA DEL COMPONENTE */}
         <Categories />
       </section>
+
       <section id="offers" className="w-full">
+        {/*offers recibe datos de BD Firestore */}
         <Offers />
       </section>
+
       <section id="tips" className="w-full">
+        {/*tips recibe datos de BD Firestore */}
         <Tips />
       </section>
+
       <section id="history" className="w-full">
         {/*History recibe data de Realtime*/}
         <History historia={data ? data.historia : null} />

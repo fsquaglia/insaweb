@@ -12,24 +12,22 @@ export default async function Tips() {
         <HeaderTitle titleText={"Ya viste nuestros tips?"} />
       </div>
 
-      <div className="container relative flex flex-col justify-center overflow-hidden py-2 sm:py-6">
-        <div className="m-10 flex flex-col items-center justify-center mx-auto max-w-screen-lg">
-          <div className="grid w-full gap-10 grid-cols-1 sm:grid-cols-3">
-            {dataTips && dataTips.length > 0 ? (
-              dataTips.map((tip) => (
-                <CardTips
-                  key={tip.id}
-                  title={tip.titulo}
-                  detail={tip.detalle}
-                  date={tip.fecha}
-                  img={tip.imagen}
-                />
-              ))
-            ) : (
-              <p>No hay tips disponibles.</p>
-            )}
-          </div>
-        </div>
+      <div className="w-full sm:container sm:mx-auto flex flex-wrap justify-center items-center py-2 sm:py-6">
+        {dataTips && dataTips.length > 0 ? (
+          dataTips.map((tip) => (
+            <CardTips
+              key={tip.id}
+              title={tip.titulo}
+              detail={tip.detalle}
+              date={tip.fecha}
+              img={tip.imagen}
+            />
+          ))
+        ) : (
+          <p className="text-gray-800 my-20 text-center">
+            Estamos preparando los tips.
+          </p>
+        )}
       </div>
     </div>
   );

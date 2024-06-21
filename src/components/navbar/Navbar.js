@@ -1,6 +1,5 @@
 "use client";
 import { UserIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import SmoothScrollLink from "../../utils/SmoothScrollLink";
 
 export default function Navbar() {

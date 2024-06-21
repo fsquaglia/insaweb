@@ -19,6 +19,24 @@ import {
 } from "firebase/database";
 
 //!FIRESTORE
+export async function getOffersLandingFirestore() {
+  try {
+    const q = query(collection(firestoreDB, "ofertas"), limit(6));
+    const querySnapshot = await getDocs(q);
+
+    // Mapear los documentos del snapshot a un array de datos
+    const offers = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return offers;
+  } catch (error) {
+    console.error("Error obteniendo ofertas: ", error);
+    return [];
+  }
+}
+
 //obtener los tres Tips para la Landing
 export async function getTipsLandingFirestore() {
   try {
@@ -39,8 +57,7 @@ export async function getTipsLandingFirestore() {
     return tips;
   } catch (error) {
     console.error("Error fetching tips:", error);
-    const tips = [];
-    return tips;
+    return [];
   }
 }
 
@@ -256,6 +273,79 @@ export async function setTipsFirestore() {
     throw e;
   }
 }
+
+//?ESCRIBIR DATOS EN FIRESTORE
+//Agregar un nuevo CONTACTO/CLIENTE
+export async function addNewContactFirestore(dataObject) {
+  /*dataObject debe ser
+  {nombreContacto:"Nombre Apellido",
+  sobrenombre: "tucho",
+  direccion: "",
+  localidad:"",
+  provincia:"",
+  email:"",
+  celTE:"",
+  saldo: 0,
+  }
+  */
+  try {
+    // Agrega un nuevo doc a la colección "contactos"
+    const docRef = await addDoc(
+      collection(firestoreDB, "contactos"),
+      dataObject
+    );
+    console.log("Contacto agregado: ", docRef.id);
+  } catch (error) {
+    console.error("Error al agregar contacto: ", error);
+    throw error;
+  }
+}
+
+//Agregar nuevo PRODUCTO
+export async function addNewProductFirestore(
+  coleccion,
+  categoria = "",
+  subCategoria = "",
+  dataObject
+) {
+  /*dataObject debe ser
+  {
+  articulo:"",
+  color:["Negro", "Suela"],
+  data1:"Algún dato extra",
+  data2:"Algún dato extra 2",
+  fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
+  imagen: ["urls imagenes"],
+  marca: "Puerto Blue",
+  Modelo: "Milan",
+  nombre:"Zapato de vestir caballero Milan"
+  num_talle: ["42", "44"],
+  precioCompra: 100,
+  precioVenta: 200,
+  publicado: true,
+  stock: 1,
+  grupoValores: "Zapatos PB",
+  *idProducto: productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr SOLO PARA TABLA DE OFERTAS
+  }
+  */
+  let ruta = coleccion; // Colección siempre es obligatoria
+  if (categoria) {
+    ruta += `/${categoria}`;
+  }
+  if (subCategoria) {
+    ruta += `/${subCategoria}`;
+  }
+
+  try {
+    // Agrega un nuevo doc a la colección "coleccion"
+    const docRef = await addDoc(collection(firestoreDB, ruta), dataObject);
+    console.log("Producto agregado: ", docRef.id);
+  } catch (error) {
+    console.error("Error al agregar producto: ", error);
+    throw error;
+  }
+}
+
 //!REALTIME
 //almacenar datos en el nodo HISTORIA de Realtime. Serán los datos iniciales de la BD
 export async function setHistoryRealtime() {
@@ -508,6 +598,7 @@ export async function loadDataInitFirebase() {
       setFooterRealtime(),
       setTipsCategoryFirestore(),
       setTipsFirestore(),
+      setProductsCategoryFirestore(),
     ]);
     console.log("Funciones ejecutadas con éxito");
   } catch (e) {

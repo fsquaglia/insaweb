@@ -2,7 +2,7 @@ import Header from "../../ui/HeaderTitle";
 
 export default async function About({ about }) {
   return (
-    <div className="w-full py-40 bg-zinc-200">
+    <div className="w-full py-24 bg-zinc-200">
       <div className="container bg-white flex flex-col lg:flex-row lg:space-x-6 items-center">
         <div className="flex-1 flex items-center justify-center md:justify-start lg:text-left p-20">
           <div className="flex flex-col">
