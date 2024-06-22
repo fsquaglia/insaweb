@@ -11,7 +11,7 @@ export default async function SocialMedia({ socialMedia }) {
         }}
       >
         {/*div central */}
-        <div className="flex bg-slate-100 bg-opacity-90 w-3/12 h-[500px] items-center justify-center">
+        <div className="flex bg-slate-100 bg-opacity-90 w-1/2 md:w-5/12 lg:w-3/12 h-[500px] items-center justify-center">
           <div>
             <div className="w-20 h-1 bg-blue-400 mx-auto"></div>
             <p className="text-gray-80 text-3xl font-semibold my-4">

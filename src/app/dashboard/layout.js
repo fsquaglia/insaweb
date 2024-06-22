@@ -4,11 +4,13 @@ export default function Layout({ children }) {
   return (
     <div>
       <div className="border h-24"></div>
-      <div className="flex flex-col md:flex-row">
-        <div className="w-[300px] bg-sky-600">
+      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+        <div className="w-full flex-none md:w-64 bg-blue-300">
           <Sidenav />
         </div>
-        <div>{children}</div>
+        <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+          {children}
+        </div>
       </div>
     </div>
   );
