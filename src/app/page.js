@@ -13,8 +13,7 @@ import { getDataFromFirebaseWithCache } from "../utils/firebase/firebaseCache";
 
 export default async function Home() {
   const data = await getDataFromFirebaseWithCache();
-  //console.log("pasando");
-  //console.log(data);
+
   return (
     <main className="w-full flex flex-col items-center justify-center">
       <section id="main" className="w-full">
@@ -22,24 +21,21 @@ export default async function Home() {
         <Main main={data ? data.main : null} />
       </section>
       <section id="carousel" className="w-full">
-        {/*Carousel toma imgs de Storage, carpeta Carousel. SACAR LA PETICION FUERA DEL COMPONENTE*/}
+        {/*Carousel toma imgs de Storage, carpeta Carousel*/}
         <Carousel />
       </section>
       <section id="categories" className="w-full">
-        {/*Categories toma los datos de la BD Firestore. SACAR LA PETICION FUERA DEL COMPONENTE */}
+        {/*Categories recibe datos de BD Firestore*/}
         <Categories />
       </section>
-
       <section id="offers" className="w-full">
         {/*offers recibe datos de BD Firestore */}
         <Offers />
       </section>
-
       <section id="tips" className="w-full">
         {/*tips recibe datos de BD Firestore */}
         <Tips />
       </section>
-
       <section id="history" className="w-full">
         {/*History recibe data de Realtime*/}
         <History historia={data ? data.historia : null} />
@@ -52,15 +48,16 @@ export default async function Home() {
       <Team team={data ? data.team : null} />
       <section id="social-media" className="w-full">
         {/*SocialMedia recibe data de Realtime, dentro del nodo contacto*/}
-        <SocialMedia socialMedia={data ? data.contacto.socialMedia : null} />
+        <SocialMedia socialMedia={data?.contacto?.socialMedia ?? null} />
       </section>
       <section id="contact" className="w-full">
         {/*Contact recibe data de Realtime, dentro del nodo contacto*/}
         <Contact
-          medios={data ? data.contacto.medios : null}
-          ubicacion={data ? data.contacto.ubicacion : null}
+          medios={data ? data?.contacto?.medios : null}
+          ubicacion={data ? data?.contacto?.ubicacion : null}
         />
       </section>
+      {/*Slogan recibe data de Realtime*/}
       <Slogan slogan={data ? data.eslogan : null} />
     </main>
   );

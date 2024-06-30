@@ -1,11 +1,11 @@
-export default function CardTeam({ imageSCR, name, text, description }) {
+export default function CardTeam({ imageSRC, name, text, description }) {
   return (
     <div className="w-[250px] bg-slate-100 mx-10 p-8 flex flex-col items-center">
       <div className="mb-4">
-        {imageSCR && (
+        {imageSRC && (
           <img
             className="object-center object-cover rounded-full h-36 w-36"
-            src={imageSCR}
+            src={imageSRC}
             alt="photo"
           />
         )}

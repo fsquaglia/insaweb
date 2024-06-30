@@ -1,4 +1,17 @@
+import ContactUs from "./ContactUs";
+
 export default function Contact({ medios, ubicacion }) {
+  const {
+    TE = "",
+    cel = "54 3408 613004",
+    email = "ayecompagnon@gmail.com",
+  } = medios || {};
+  const {
+    direccion = "Ituzaingó 1393",
+    localidad = "San Cristóbal",
+    provincia = "Santa Fe...",
+  } = ubicacion || {};
+
   return (
     <div className="container mx-auto py-8 flex flex-col">
       <div className="h-24"></div>
@@ -24,48 +37,7 @@ export default function Contact({ medios, ubicacion }) {
         <div className="flex justify-end">
           <div className="md:w-2/3 lg:w-1/2 xl:w-2/5 flex flex-wrap p-4">
             {/*div del Formulario*/}
-            <div className="relative flex flex-col z-10 md:w-2/3 mx-auto p-8 md:ml-auto mt-10 md:mt-0 bg-white shadow-md">
-              <h2 className="text-gray-900 text-lg mb-1 font-medium title-font">
-                Escríbenos
-              </h2>
-              <p className="leading-relaxed mb-5 text-gray-600">
-                Déjanos tu email, envía tu consulta y te responderemos a la
-                brevedad.
-              </p>
-              <div className="relative mb-4">
-                <label
-                  htmlFor="email"
-                  className="leading-7 text-sm text-gray-600"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-              <div className="relative mb-4">
-                <label
-                  htmlFor="message"
-                  className="leading-7 text-sm text-gray-600"
-                >
-                  Mensaje
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                ></textarea>
-              </div>
-              <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                Enviar
-              </button>
-              <p className="text-xs text-gray-500 mt-3 mx-auto">
-                Aceptas compartir tu email con nosotros.
-              </p>
-            </div>
+            <ContactUs />
             {/*div de los datos de contacto*/}
             <div className="relative flex flex-col z-10 md:w-1/3 w-2/4 mx-auto justify-start overflow-hidden">
               <div className="grid grid-cols h-full">
@@ -76,19 +48,19 @@ export default function Contact({ medios, ubicacion }) {
                   <p className="font-bold text-blue-100 py-8 border-b border-blue-700">
                     Ubicación
                     <span className="font-normal text-xs text-blue-300 block">
-                      {`${ubicacion.direccion}, ${ubicacion.localidad} (${ubicacion.provincia})`}
+                      {`${direccion}, ${localidad} (${provincia})`}
                     </span>
                   </p>
                   <p className="font-bold text-blue-100 py-8 border-b border-blue-700">
                     Cel/TE
                     <span className="font-normal text-xs text-blue-300 block">
-                      {`${medios.cel} ${medios.TE}`}
+                      {`${cel} ${TE}`}
                     </span>
                   </p>
                   <p className="font-bold text-blue-100 py-8 border-b border-blue-700">
                     Email
                     <span className="font-normal text-xs text-blue-300 block">
-                      {`${medios.email}`}
+                      {`${email}`}
                     </span>
                   </p>
                   {/* <p className="font-bold text-blue-100 py-8 border-b border-blue-700">

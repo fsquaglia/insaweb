@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage"; //almacenamiento de imágenes
+import { getStorage, connectStorageEmulator } from "firebase/storage"; //almacenamiento de imágenes
 import { getDatabase, connectDatabaseEmulator } from "firebase/database"; //realtime database para los Servicios
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore"; //firestore como BD de colecciones y documentos
 
@@ -18,7 +18,7 @@ let firebaseConfig = {
 // Initialize Firebase with dynamic configuration
 let app;
 //if (typeof window !== 'undefined' && window.location.hostname === "localhost") {
-if (true) {
+if (process.env.NEXT_PUBLIC_FIREBASE_EMULATORS === "emulators") {
   // Use local emulator settings
   const localConfig = {
     ...firebaseConfig,
@@ -26,11 +26,12 @@ if (true) {
   };
   app = initializeApp(localConfig);
   connectFirestoreEmulator(getFirestore(app), "localhost", 8080);
+  //connectStorageEmulator(getStorage(app), "127.0.0.1", 9199);
   console.log("Conectado con emuladores");
 } else {
   // Use production settings
-  console.log("Conectado sin Emuladores");
   app = initializeApp(firebaseConfig);
+  console.log("Conectado sin Emuladores");
 }
 
 // Initialize Firebase

@@ -1,32 +1,27 @@
 import style from "./Carousel.module.css";
 import CardCarousel from "./CardCarousel";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
-import { imagesDB } from "../../utils/firebase/firebaseConfig";
+import { getFolderStorage } from "@/utils/firebase/fetchFirebase";
 
 export default async function Carousel() {
-  let downloadUrls;
-
+  let imageUrls = [];
   try {
-    const storageRef = ref(imagesDB, "carousel");
-    const { items } = await listAll(storageRef);
-    downloadUrls = await Promise.all(
-      items.map(async (item) => {
-        return await getDownloadURL(item);
-      })
-    );
+    imageUrls = await getFolderStorage("carousel");
   } catch (error) {
-    console.error("Cargando imgs Carousel. Error: ", error);
+    console.error("Error al obtener imágenes: ", error);
   }
-
-  const photos = [...downloadUrls, ...downloadUrls];
+  const photos = [...imageUrls, ...imageUrls];
 
   return (
     <div className="w-full sm:container sm:mx-auto my-10">
       <div className={`overflow-hidden w-full ${style["carousel-gradient"]}`}>
         <div className="flex whitespace.nowrap animate-scroll">
-          {photos.map((photo, index) => (
-            <CardCarousel photo={photo} key={index} />
-          ))}
+          {photos.length > 0 ? (
+            photos.map((photo, index) => (
+              <CardCarousel photo={photo} key={index} />
+            ))
+          ) : (
+            <p className="mx-auto text-center">Esperando el carrusel...</p>
+          )}
         </div>
       </div>
     </div>

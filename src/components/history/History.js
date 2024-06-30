@@ -34,7 +34,34 @@ const Circle = ({ id, text, bgColor, onClick, measure }) => (
   </div>
 );
 
-export default function History({ historia }) {
+export default function History({
+  historia = {
+    historia1: {
+      descripcion: "Nuestra tienda nació...",
+      imagen: "",
+      titulo: "Historia",
+      visible: true,
+    },
+    historia2: {
+      descripcion: "Nuestra misión es...",
+      imagen: "",
+      titulo: "Misión",
+      visible: true,
+    },
+    historia3: {
+      descripcion: "Nuestra visión es...",
+      imagen: "",
+      titulo: "Visión",
+      visible: true,
+    },
+    historia4: {
+      descripcion: "Nuestros valores se alinean...",
+      imagen: "",
+      titulo: "Valores",
+      visible: true,
+    },
+  },
+}) {
   const [selectedCircle, setSelectedCircle] = useState(null);
 
   // Combina historia con circlesData
@@ -80,14 +107,21 @@ export default function History({ historia }) {
           <div
             className="relative bg-white p-8 rounded-lg shadow-xl w-[30rem] max-w-full flex flex-col"
             style={{
-              backgroundImage: `url(${selectedCircle.imagen})`,
+              backgroundImage: selectedCircle.imagen
+                ? `url(${selectedCircle.imagen})`
+                : "none", // Opción para manejar la ausencia de imagen
               backgroundSize: "cover",
               backgroundPosition: "center",
               color: "white",
+              backgroundColor: selectedCircle.imagen ? "transparent" : "gray", // Color de respaldo si no hay imagen
             }}
           >
             {/* Overlay para asegurar la legibilidad del texto */}
-            <div className="absolute inset-0 bg-black bg-opacity-60 rounded-lg"></div>
+            <div
+              className={`absolute inset-0 ${
+                selectedCircle.imagen ? "bg-black bg-opacity-60" : ""
+              } rounded-lg`}
+            ></div>
             <div className="relative z-10 flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4 text-center">
                 {selectedCircle.titulo}

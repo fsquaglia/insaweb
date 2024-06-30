@@ -1,3 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
+import {
+  firestoreDB,
+  realtimeDB,
+  imagesDB,
+} from "../../utils/firebase/firebaseConfig";
 import {
   collection,
   getDocs,
@@ -10,13 +16,20 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
-import { firestoreDB, realtimeDB } from "../../utils/firebase/firebaseConfig";
+
 import {
   ref as realtimeRef,
   set,
   get as realtimeGet,
   child,
 } from "firebase/database";
+
+import {
+  ref as refStorage,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+} from "firebase/storage";
 
 //!FIRESTORE
 export async function getOffersLandingFirestore() {
@@ -479,19 +492,23 @@ export async function setAboutRealtime() {
 }
 
 //almacenar datos en el nodo MAIN de Realtime. Serán los datos iniciales de la BD
-export async function setMainRealtime() {
+export async function setMainRealtime(
+  primera = "La mejor colección",
+  segunda = "Invierno hot",
+  tercera = "Ofertas todas las semanas",
+  imagen = "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/main%2Fmain01.jpg?alt=media&token=a56599f6-cf71-4329-9e13-6422c7a0f28c"
+) {
   const main = {
-    texto1: "La mejor colección",
-    texto2: "Invierno hot",
-    texto3: "Ofertas todas las semanas",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/main%2Fmain01.jpg?alt=media&token=a56599f6-cf71-4329-9e13-6422c7a0f28c",
+    texto1: primera,
+    texto2: segunda,
+    texto3: tercera,
+    imagen: imagen,
   };
-
+  console.log(main);
   try {
     const refMain = realtimeRef(realtimeDB, "main");
     await set(refMain, main);
-
+    console.log(refMain);
     console.log("Main creado");
   } catch (e) {
     console.error("Error al crear Main: ", e);
@@ -603,5 +620,48 @@ export async function loadDataInitFirebase() {
     console.log("Funciones ejecutadas con éxito");
   } catch (e) {
     console.error("Error al ejecutar funciones: ", e);
+  }
+}
+
+//! STORAGE de imágenes
+//almacenar imágen en una carpeta en STORAGE. Devuelve la url remota de la imagen subida
+export async function setImageStorage(file, folder) {
+  if (!file) {
+    throw new Error("No se proporcionó ningún archivo");
+  }
+
+  // Genera un nombre de archivo único usando UUID
+  const uniqueFileName = `${folder}/${uuidv4()}_${file.name}`;
+
+  // Referencia a la ubicación del archivo en el almacenamiento
+  const fileRef = refStorage(imagesDB, uniqueFileName);
+
+  try {
+    // Cargar el archivo
+    await uploadBytes(fileRef, file);
+
+    // Obtener la URL de descarga
+    const downloadURL = await getDownloadURL(fileRef);
+
+    return downloadURL;
+  } catch (error) {
+    // Manejo de errores
+    console.error("Error durante la carga del archivo:", error);
+    throw error;
+  }
+}
+
+//obtener todas las imágenes de una carpeta específica. Devuelve un array de imgs
+export async function getFolderStorage(folder) {
+  try {
+    const folderRef = refStorage(imagesDB, folder);
+    const { items } = await listAll(folderRef);
+    const downloadUrls = await Promise.all(
+      items.map((item) => getDownloadURL(item))
+    );
+    return downloadUrls;
+  } catch (error) {
+    console.error(`Error descargando imágenes de ${folder}: `, error);
+    throw error;
   }
 }
