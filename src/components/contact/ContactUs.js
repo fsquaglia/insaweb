@@ -1,12 +1,9 @@
 "use client";
-import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 
 export default function ContactUs() {
-  const form = useRef();
-  //const [data, setData] = useState({});
   const {
     register,
     handleSubmit,
@@ -25,35 +22,31 @@ export default function ContactUs() {
       contact_number: generateContactNumber(), // Generar número si no está presente
     };
 
-    console.log(formFields);
-    return;
-    // const formData = new FormData(form.current);
-
-    // emailjs
-    //   .send(serviceID, templateID, formFields, {
-    //     publicKey: publicKey,
-    //   })
-    //   .then(
-    //     () => {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Mensaje enviado",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     },
-    //     (error) => {
-    //       console.log("Falló enviar mensaje: ", error.message);
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         title: "Algo falló...",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   );
+    emailjs
+      .send(serviceID, templateID, formFields, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Mensaje enviado",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        (error) => {
+          console.log("Falló enviar mensaje: ", error.message);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Algo falló...",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      );
   };
 
   // Función opcional para generar un número de contacto si es necesario
