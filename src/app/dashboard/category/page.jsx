@@ -1,6 +1,3 @@
-import HeaderCustomize from "@/ui/HeaderCustomize";
-import IntroCustomize from "@/ui/IntroCustomize";
-
 //Nombre del comercio
 const nameCommerce = "Ihara & London";
 //configuramos las medidas en px y tamaño en kB min y max aceptados para las imágenes
@@ -27,10 +24,7 @@ const description = [
 
 function PageCategory() {
   return (
-    <div className="container flex flex-col justify-center text-center">
-      <HeaderCustomize titulo={titulo} />
-      <IntroCustomize description={description} />
-    </div>
+    <div className="container flex flex-col justify-center text-center"></div>
   );
 }
 export default PageCategory;
