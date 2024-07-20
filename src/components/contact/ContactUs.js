@@ -4,15 +4,23 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 
 export default function ContactUs() {
+  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_KEY;
+  //configuramos longitudes de input máximas
+  const maxLengthName = 25;
+  const maxLengthEmail = 35;
+  const maxLengthMessage = 250;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
-  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-  const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_KEY;
+  // Escuchar cambios en el campo "message"
+  const messageWatch = watch("message", "");
 
   const sendEmail = (data) => {
     const formFields = {
@@ -71,7 +79,7 @@ export default function ContactUs() {
           type="text"
           id="user_name"
           name="user_name"
-          maxLength={25}
+          maxLength={maxLengthName}
           placeholder="Nombre"
           {...register("user_name", {
             required: "Campo requerido",
@@ -91,6 +99,7 @@ export default function ContactUs() {
           id="user_email"
           name="user_email"
           placeholder="Email"
+          maxLength={maxLengthEmail}
           {...register("user_email", {
             required: "Campo requerido",
             minLength: { value: 7, message: "Siete caracteres mínimos" },
@@ -107,7 +116,7 @@ export default function ContactUs() {
         <textarea
           id="message"
           name="message"
-          maxLength={250}
+          maxLength={maxLengthMessage}
           placeholder="Tu mensaje"
           {...register("message", {
             required: "Campo requerido",
@@ -115,6 +124,10 @@ export default function ContactUs() {
           })}
           className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 pt-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
         ></textarea>
+        {/* Contador de caracteres de message*/}
+        <span className="block text-xs text-gray-500 text-right">
+          {`${messageWatch.length} de ${maxLengthMessage} caracteres`}
+        </span>
         <span className="leading-7 text-xs text-red-800">
           {errors.message?.message}
         </span>

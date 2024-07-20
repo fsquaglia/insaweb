@@ -1,5 +1,3 @@
-import Header from "../../ui/HeaderTitle";
-
 export default async function About({ about }) {
   const descripcion = about?.descripcion || "En Ihara y London creemos que...";
   const imagen = about?.imagen || "";

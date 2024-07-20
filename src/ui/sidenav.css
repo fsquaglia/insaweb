@@ -1,0 +1,28 @@
+/* Archivo: styles.css */
+
+/* Por defecto: horizontal para pantallas pequeñas */
+.responsive-container {
+  display: flex;
+  flex-direction: row;
+  padding: 16px 12px; /* px-3 py-4 */
+  height: 100%;
+}
+
+.responsive-paragraph {
+  display: none;
+}
+
+/* Vertical en pantallas medianas y grandes */
+@media (min-width: 768px) {
+  .responsive-container {
+    flex-direction: column;
+    padding: 16px 8px; /* md:px-2 */
+  }
+  .responsive-paragraph {
+    display: block;
+  }
+}
+
+.important-class {
+  color: black !important;
+}

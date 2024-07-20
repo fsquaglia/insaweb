@@ -360,6 +360,24 @@ export async function addNewProductFirestore(
 }
 
 //!REALTIME
+//?Traer datos de un nodo de realtime
+export async function getNodoRealtime(nodo) {
+  try {
+    const snapShot = await realtimeGet(
+      child(realtimeRef(realtimeDB), `/${nodo}`)
+    );
+    if (snapShot.exists()) {
+      //console.log(snapShot.val());
+      return snapShot.val();
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 //almacenar datos en el nodo HISTORIA de Realtime. Serán los datos iniciales de la BD
 export async function setHistoryRealtime() {
   const historia = [
@@ -396,7 +414,7 @@ export async function setHistoryRealtime() {
     {
       historia4: {
         descripcion:
-          "Calidad: Comprometidos en ofrecer productos de la más alta calidad, seleccionando cuidadosamente materiales y proveedores para garantizar la durabilidad y el confort de nuestras prendas y calzado.Innovación: Nos mantenemos a la vanguardia de las tendencias de moda, incorporando diseños modernos y funcionales que satisfacen las necesidades cambiantes de nuestros clientes. Servicio al Cliente: Valoramos a nuestros clientes y nos dedicamos a proporcionar una experiencia de compra excepcional, desde la consulta inicial hasta el servicio postventa. Integridad: Actuamos con honestidad y transparencia en todas nuestras operaciones, asegurándonos de mantener la confianza de nuestros clientes, y proveedores.",
+          "Comprometidos con la más alta calidad, seleccionamos materiales y proveedores cuidadosamente para garantizar durabilidad y confort en nuestras prendas y calzado. Nos mantenemos a la vanguardia de las tendencias de moda, incorporando diseños modernos y funcionales para satisfacer las necesidades cambiantes de nuestros clientes. Valoramos a nuestros clientes y ofrecemos una experiencia de compra excepcional, desde la consulta inicial hasta el servicio postventa. Actuamos con honestidad y transparencia en todas nuestras operaciones para mantener la confianza de clientes y proveedores.",
         imagen:
           "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/history%2Fhistoria4.jpg?alt=media&token=70de7543-32cd-4440-971e-295cbb5d1ed7",
         titulo: "Valores",
@@ -491,7 +509,8 @@ export async function setAboutRealtime() {
   }
 }
 
-//almacenar datos en el nodo MAIN de Realtime. Serán los datos iniciales de la BD
+//MAIN
+//Guardar datos en el nodo main de Realtime.Si no se pasan valores, toma los que serán los datos iniciales de la BD
 export async function setMainRealtime(
   primera = "La mejor colección",
   segunda = "Invierno hot",
@@ -504,11 +523,10 @@ export async function setMainRealtime(
     texto3: tercera,
     imagen: imagen,
   };
-  console.log(main);
   try {
     const refMain = realtimeRef(realtimeDB, "main");
     await set(refMain, main);
-    console.log(refMain);
+
     console.log("Main creado");
   } catch (e) {
     console.error("Error al crear Main: ", e);
