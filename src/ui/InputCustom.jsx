@@ -18,7 +18,7 @@ export default function InputCustom({
       </label>
       {type === "input" ? (
         <input
-          className="rounded-md border font-sans font-normal text-blue-gray-700 outline outline-offset-2 p-1"
+          className="rounded-md border font-sans font-normal text-blue-gray-700 p-1"
           name={name}
           placeholder={placeHolder}
           value={inputValue}
@@ -28,7 +28,7 @@ export default function InputCustom({
         />
       ) : (
         <textarea
-          className="rounded-md border font-sans font-normal text-blue-gray-700 outline outline-offset-2 p-1 overflow-y-auto"
+          className="rounded-md border font-sans font-normal text-blue-gray-700 p-1 overflow-y-auto"
           name={name}
           placeholder={placeHolder}
           value={inputValue}

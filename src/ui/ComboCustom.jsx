@@ -1,36 +1,50 @@
 import React from "react";
-import ImgCustom from "./ImgCustom";
 import ButtonDashboard from "./ButtonDashboard";
 import InputCustom from "./InputCustom";
+import ImgCustom from "./ImgCustom";
+import { stringSizing } from "@/utils/SettingSizing";
 
-function ComboCustom({ title, description, img }) {
+export default function ComboCustom({
+  title,
+  description,
+  img,
+  section,
+  urlImgReturn,
+  handleChange,
+  onclick,
+}) {
+  //restricciones de img extraidas de SettingSizing
+  const { maxLengthTitle, maxLengthDescription } = stringSizing[section];
+
   return (
-    <div className="flex flex-row flex-wrap justify-center items-center gap-4  w-fit my-4 border rounded-xl p-6 bg-gray-100">
+    <div className="block flex flex-row flex-wrap justify-center my-4 bg-gray-100 p-6">
       {/*div de la imagen */}
-      <div className="w-96 h-96 bg-gray-200 rounded-lg shadow-lg">
-        <img src={img} alt="" className="w-96 h-96 " />
-      </div>
+
+      <ImgCustom img={img} section={section} urlImgReturn={urlImgReturn} />
+
       {/*div de los input */}
-      <div className="w-96 h-96 flex flex-col justify-center border rounded-lg p-4 shadow-lg bg-gray-50">
-        <InputCustom
-          labelText="Título"
-          name="titulo"
-          inputValue={title}
-          // onChange={handleChange}
-          charLimit={maxLengthTitle}
-        />
-        <InputCustom
-          labelText="Descripción"
-          name="descripcion"
-          type="area"
-          inputValue={description}
-          // onChange={handleChange}
-          charLimit={maxLengthDescription}
-        />
-        <ButtonDashboard textButton={"Actualizar"} />
+      <div className="w-96 h-96 flex flex-col justify-center border p-4 shadow-lg bg-gray-50">
+        {title !== undefined && title !== null && (
+          <InputCustom
+            labelText="Título"
+            name="titulo"
+            inputValue={title}
+            onChange={handleChange}
+            charLimit={maxLengthTitle}
+          />
+        )}
+        {description !== undefined && description !== null && (
+          <InputCustom
+            labelText="Descripción"
+            name="descripcion"
+            type="area"
+            inputValue={description}
+            onChange={handleChange}
+            charLimit={maxLengthDescription}
+          />
+        )}
+        <ButtonDashboard textButton={"Actualizar"} onclick={onclick} />
       </div>
     </div>
   );
 }
-
-export default ComboCustom;

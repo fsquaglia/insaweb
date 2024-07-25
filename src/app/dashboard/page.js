@@ -7,7 +7,6 @@ import {
   setTipsFirestore,
   setHistoryRealtime,
   setTeamRealtime,
-  setAboutRealtime,
   setContactRealtime,
   setMainRealtime,
   setSloganRealtime,
@@ -15,7 +14,9 @@ import {
   loadDataInitFirebase,
   addNewContactFirestore,
   addNewProductFirestore,
+  setNodoRealtime,
 } from "../../utils/firebase/fetchFirebase";
+import { aboutInitialData } from "@/utils/SettingInitialData";
 
 const dataContactInitial = [
   {
@@ -163,7 +164,12 @@ export default function Page() {
         <ButtonGeneric textButton={"Team"} onClick={setTeamRealtime} />
       </div>
       <div>
-        <ButtonGeneric textButton={"About"} onClick={setAboutRealtime} />
+        <ButtonGeneric
+          textButton="About"
+          onClick={() => {
+            setNodoRealtime("about", aboutInitialData);
+          }}
+        />
       </div>
       <div>
         <ButtonGeneric textButton={"Contacto"} onClick={setContactRealtime} />

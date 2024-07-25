@@ -9,16 +9,17 @@ export default function Sidenav() {
     <div className="responsive-container">
       {/*Logo Comerncio con link a Home */}
       <Link
-        className="mb-2 flex h-20 items-end justify-center rounded-md p-4 md:h-40"
+        className="mb-2 flex items-end justify-center rounded-md p-4 "
         href="/"
       >
-        <div className="w-32 text-white md:w-40">
+        <div>
           {/* Icono a cambiar por el de Ihara y London */}
           <Image
             src="/images/logo_blanco01.png"
             alt="Logo Ihara & London"
             width={64}
             height={64}
+            style={{ width: "64px", height: "64px" }}
           />
         </div>
       </Link>
