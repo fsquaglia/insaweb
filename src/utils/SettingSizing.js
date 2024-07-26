@@ -6,6 +6,10 @@ export const stringSizing = {
     maxLengthDescription: 926,
   },
   slogan: { maxLengthText: 30 },
+  history: {
+    maxLengthTitle: 22,
+    maxLengthDescription: 600,
+  },
 };
 
 export const imgSizing = {
@@ -18,6 +22,14 @@ export const imgSizing = {
     maxSizeKBaccepted: 300,
   },
   slogan: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  history: {
     minWidthAccepted: 500,
     maxWidthAccepted: 800,
     minHeightAccepted: 500,

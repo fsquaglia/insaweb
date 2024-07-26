@@ -3,6 +3,7 @@ import ButtonDashboard from "./ButtonDashboard";
 import InputCustom from "./InputCustom";
 import ImgCustom from "./ImgCustom";
 import { stringSizing } from "@/utils/SettingSizing";
+import SwitchVisible from "./SwitchVisible";
 
 export default function ComboCustom({
   title,
@@ -12,6 +13,9 @@ export default function ComboCustom({
   urlImgReturn,
   handleChange,
   onclick,
+  switchLabel,
+  initialValue,
+  onToggle,
 }) {
   //restricciones de img extraidas de SettingSizing
   const { maxLengthTitle, maxLengthDescription } = stringSizing[section];
@@ -43,6 +47,12 @@ export default function ComboCustom({
             charLimit={maxLengthDescription}
           />
         )}
+        <SwitchVisible
+          switchLabel={switchLabel}
+          initialValue={initialValue}
+          onToggle={onToggle}
+        />
+
         <ButtonDashboard textButton={"Actualizar"} onclick={onclick} />
       </div>
     </div>

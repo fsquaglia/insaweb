@@ -31,6 +31,9 @@ import {
   listAll,
 } from "firebase/storage";
 
+//Datos iniciales de la BD
+import { aboutInitialData, historyInitialData } from "../SettingInitialData";
+
 //!FIRESTORE
 export async function getOffersLandingFirestore() {
   try {
@@ -610,14 +613,16 @@ export async function setFooterRealtime() {
   }
 }
 
-//? almacenar todos los datos iniciales par ala página
+//? almacenar todos los datos iniciales para la página
 export async function loadDataInitFirebase() {
   try {
     // Ejecutar funciones en paralelo
     await Promise.all([
-      setHistoryRealtime(),
+      // setHistoryRealtime(),
       setTeamRealtime(),
-      setAboutRealtime(),
+      //setAboutRealtime(),
+      setNodoRealtime("about", aboutInitialData),
+      setNodoRealtime("historia", historyInitialData),
       setMainRealtime(),
       setContactRealtime(),
       setSloganRealtime(),

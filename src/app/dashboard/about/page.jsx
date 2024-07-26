@@ -1,7 +1,6 @@
 "use client";
 import {
   getNodoRealtime,
-  setAboutRealtime,
   setNodoRealtime,
 } from "@/utils/firebase/fetchFirebase";
 import { useEffect, useState } from "react";
@@ -11,7 +10,7 @@ import Swal from "sweetalert2";
 
 function PageAbout() {
   const [values, setValues] = useState({});
-  const [loading, setLoading] = useState(true); // Inicialmente en true
+  const [loading, setLoading] = useState(true);
 
   //pedir datos al nodo about de realtime
   useEffect(() => {
@@ -31,7 +30,7 @@ function PageAbout() {
   }, []);
 
   const urlImgReturn = (data) => {
-    setValues({ ...values, imagen: data });
+    data ? setValues({ ...values, imagen: data }) : null;
   };
 
   const handleChange = (e) => {
@@ -39,6 +38,12 @@ function PageAbout() {
     setValues((prevValues) => ({
       ...prevValues,
       [name]: value,
+    }));
+  };
+  const onToggle = (value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      visible: value,
     }));
   };
 
@@ -80,6 +85,9 @@ function PageAbout() {
           section={"about"}
           urlImgReturn={urlImgReturn}
           onclick={onclick}
+          switchLabel={"Visible en Home:"}
+          initialValue={values?.visible}
+          onToggle={onToggle}
         />
       )}
     </div>
