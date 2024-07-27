@@ -32,7 +32,11 @@ import {
 } from "firebase/storage";
 
 //Datos iniciales de la BD
-import { aboutInitialData, historyInitialData } from "../SettingInitialData";
+import {
+  aboutInitialData,
+  historyInitialData,
+  sloganInitialData,
+} from "../SettingInitialData";
 
 //!FIRESTORE
 export async function getOffersLandingFirestore() {
@@ -625,7 +629,8 @@ export async function loadDataInitFirebase() {
       setNodoRealtime("historia", historyInitialData),
       setMainRealtime(),
       setContactRealtime(),
-      setSloganRealtime(),
+      // setSloganRealtime(),
+      setNodoRealtime("eslogan", sloganInitialData),
       setFooterRealtime(),
       setTipsCategoryFirestore(),
       setTipsFirestore(),

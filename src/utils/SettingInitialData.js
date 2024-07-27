@@ -12,7 +12,7 @@ export const aboutInitialData = {
 export const sloganInitialData = {
   imagen:
     "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/slogan%2FfondoSlogan.jpg?alt=media&token=f795872b-b144-4383-b44d-3eaa4c0de909",
-  texto: "Vive la vida",
+  titulo: "Vive la vida",
   visible: true,
 };
 

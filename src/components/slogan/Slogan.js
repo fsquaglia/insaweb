@@ -2,7 +2,7 @@ import { greatVibes } from "../../ui/fonts";
 
 export default function Slogan({ slogan }) {
   const imagen = slogan?.imagen || "";
-  const texto = slogan?.texto || "Vive la vida...";
+  const titulo = slogan?.titulo || "Vive la vida...";
 
   return (
     <div
@@ -20,7 +20,7 @@ export default function Slogan({ slogan }) {
             }),
       }}
     >
-      <p className="text-pink-500">{texto}</p>
+      <p className="text-pink-500">{titulo}</p>
     </div>
   );
 }

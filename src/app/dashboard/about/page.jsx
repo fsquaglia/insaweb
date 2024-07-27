@@ -49,9 +49,7 @@ function PageAbout() {
 
   //Button Actualizar
   const onclick = async () => {
-    //const { descripcion, imagen, titulo } = values;
     try {
-      //await setAboutRealtime(values);
       await setNodoRealtime("about", values);
       Swal.fire({
         position: "top-end",

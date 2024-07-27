@@ -5,7 +5,7 @@ export const stringSizing = {
     maxLengthTitle: 22,
     maxLengthDescription: 926,
   },
-  slogan: { maxLengthText: 30 },
+  slogan: { maxLengthTitle: 30 },
   history: {
     maxLengthTitle: 22,
     maxLengthDescription: 600,

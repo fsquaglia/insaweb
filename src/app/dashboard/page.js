@@ -19,6 +19,7 @@ import {
 import {
   aboutInitialData,
   historyInitialData,
+  sloganInitialData,
 } from "@/utils/SettingInitialData";
 
 const dataContactInitial = [
@@ -186,7 +187,12 @@ export default function Page() {
         <ButtonGeneric textButton={"Main"} onClick={setMainRealtime} />
       </div>
       <div>
-        <ButtonGeneric textButton={"Eslogan"} onClick={setSloganRealtime} />
+        <ButtonGeneric
+          textButton={"Eslogan"}
+          onClick={() => {
+            setNodoRealtime("eslogan", sloganInitialData);
+          }}
+        />
       </div>
       <div>
         <ButtonGeneric textButton={"Footer"} onClick={setFooterRealtime} />
