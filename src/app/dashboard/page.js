@@ -5,11 +5,9 @@ import {
   setProductsCategoryFirestore,
   setTipsCategoryFirestore,
   setTipsFirestore,
-  setHistoryRealtime,
   setTeamRealtime,
   setContactRealtime,
   setMainRealtime,
-  setSloganRealtime,
   setFooterRealtime,
   loadDataInitFirebase,
   addNewContactFirestore,
@@ -20,6 +18,7 @@ import {
   aboutInitialData,
   historyInitialData,
   sloganInitialData,
+  mainInitialData,
 } from "@/utils/SettingInitialData";
 
 const dataContactInitial = [
@@ -184,7 +183,12 @@ export default function Page() {
         <ButtonGeneric textButton={"Contacto"} onClick={setContactRealtime} />
       </div>
       <div>
-        <ButtonGeneric textButton={"Main"} onClick={setMainRealtime} />
+        <ButtonGeneric
+          textButton={"Main"}
+          onClick={() => {
+            setNodoRealtime("main", mainInitialData);
+          }}
+        />
       </div>
       <div>
         <ButtonGeneric

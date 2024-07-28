@@ -1,6 +1,11 @@
 //?Para las imágenes peso en kBytes y las medidas en px.
 
 export const stringSizing = {
+  main: {
+    maxLengthText1: 25,
+    maxLengthText2: 25,
+    maxLengthText3: 40,
+  },
   about: {
     maxLengthTitle: 22,
     maxLengthDescription: 926,
@@ -13,6 +18,14 @@ export const stringSizing = {
 };
 
 export const imgSizing = {
+  main: {
+    minWidthAccepted: 1900,
+    maxWidthAccepted: 1950,
+    minHeightAccepted: 1000,
+    maxHeigthAccepted: 1100,
+    minSizeKBaccepted: 150,
+    maxSizeKBaccepted: 500,
+  },
   about: {
     minWidthAccepted: 500,
     maxWidthAccepted: 800,

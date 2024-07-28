@@ -84,7 +84,7 @@ function PageAbout() {
           urlImgReturn={urlImgReturn}
           onclick={onclick}
           switchLabel={"Visible en Home:"}
-          initialValue={values?.visible}
+          initialValue={values?.visible || false}
           onToggle={onToggle}
         />
       )}
