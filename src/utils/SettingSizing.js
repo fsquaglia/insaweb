@@ -15,6 +15,26 @@ export const stringSizing = {
     maxLengthTitle: 22,
     maxLengthDescription: 600,
   },
+  team: {
+    maxLengthTitle: 22,
+    maxLengthDescription: 180,
+    maxLengthName: 22,
+  },
+  contact: {
+    maxLengthFantasy: 25,
+    maxLengthRazon: 35,
+    maxLengthPhone: 14,
+    maxLengthCelPhone: 14,
+    maxLengthEmail: 40,
+    maxLengthFace1: 50,
+    maxLengthFace2: 50,
+    maxLengthInsta1: 50,
+    maxLengthInsta2: 50,
+    maxLengthTitleSocial: 30,
+    maxLengthAddress: 50,
+    maxLengthLocation: 50,
+    maxLengthProvince: 50,
+  },
 };
 
 export const imgSizing = {
@@ -43,6 +63,22 @@ export const imgSizing = {
     maxSizeKBaccepted: 300,
   },
   history: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  team: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  contact: {
     minWidthAccepted: 500,
     maxWidthAccepted: 800,
     minHeightAccepted: 500,

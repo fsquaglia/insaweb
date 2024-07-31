@@ -7,6 +7,7 @@ import SwitchVisible from "./SwitchVisible";
 
 export default function ComboCustom({
   title,
+  name,
   description,
   img,
   section,
@@ -25,11 +26,15 @@ export default function ComboCustom({
     maxLengthDescription,
     maxLengthText1,
     maxLengthText2,
-    maxLengthText3;
+    maxLengthText3,
+    maxLengthName;
 
   // Asigna valores a las variables dentro de los bloques condicionales
   if (section === "main") {
     ({ maxLengthText1, maxLengthText2, maxLengthText3 } =
+      stringSizing[section]);
+  } else if (section === "team") {
+    ({ maxLengthTitle, maxLengthDescription, maxLengthName } =
       stringSizing[section]);
   } else {
     ({ maxLengthTitle, maxLengthDescription } = stringSizing[section]);
@@ -50,6 +55,15 @@ export default function ComboCustom({
             inputValue={title}
             onChange={handleChange}
             charLimit={maxLengthTitle}
+          />
+        )}
+        {name !== undefined && name !== null && (
+          <InputCustom
+            labelText="Nombre"
+            name="nombre"
+            inputValue={name}
+            onChange={handleChange}
+            charLimit={maxLengthName}
           />
         )}
         {description !== undefined && description !== null && (

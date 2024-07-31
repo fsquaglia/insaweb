@@ -13,7 +13,10 @@ export default function InputCustom({
 }) {
   return (
     <>
-      <label className="text-sm text-left ml-2 mb-1 text-gray-600">
+      <label
+        className="text-sm text-left ml-2 mb-1 text-gray-600"
+        htmlFor={`id${name}`}
+      >
         {labelText}
       </label>
       {type === "input" ? (

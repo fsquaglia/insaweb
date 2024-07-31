@@ -5,9 +5,7 @@ import {
   setProductsCategoryFirestore,
   setTipsCategoryFirestore,
   setTipsFirestore,
-  setTeamRealtime,
   setContactRealtime,
-  setMainRealtime,
   setFooterRealtime,
   loadDataInitFirebase,
   addNewContactFirestore,
@@ -19,6 +17,7 @@ import {
   historyInitialData,
   sloganInitialData,
   mainInitialData,
+  teamInitialData,
 } from "@/utils/SettingInitialData";
 
 const dataContactInitial = [
@@ -169,7 +168,12 @@ export default function Page() {
         />
       </div>
       <div>
-        <ButtonGeneric textButton={"Team"} onClick={setTeamRealtime} />
+        <ButtonGeneric
+          textButton={"Team"}
+          onClick={() => {
+            setNodoRealtime("team", teamInitialData);
+          }}
+        />
       </div>
       <div>
         <ButtonGeneric
