@@ -35,6 +35,11 @@ export const stringSizing = {
     maxLengthLocation: 50,
     maxLengthProvince: 50,
   },
+  categoryProducts: {
+    maxLengthTitle: 20,
+    maxLengthDescription: 75,
+    maxLengthTitleCard: 20,
+  },
 };
 
 export const imgSizing = {
@@ -84,6 +89,22 @@ export const imgSizing = {
     minHeightAccepted: 500,
     maxHeigthAccepted: 800,
     minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  contactLogo: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 500,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 500,
+    minSizeKBaccepted: 50,
+    maxSizeKBaccepted: 200,
+  },
+  categoryProducts: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 50,
     maxSizeKBaccepted: 300,
   },
 };

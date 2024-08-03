@@ -8,7 +8,28 @@ import { setImageStorage } from "@/utils/firebase/fetchFirebase";
 //Nombre del comercio
 const nameCommerce = process.env.NEXT_PUBLIC_NAME_COMMERCE;
 
-export default function ImgCustom({ img, section, urlImgReturn }) {
+export default function ImgCustom({
+  img,
+  section,
+  urlImgReturn,
+  folderStorage,
+  imageFormat = "cuadrado", //cuadrado, apaisado, vertical
+}) {
+  let imageStyle;
+  switch (imageFormat) {
+    case "apaisado":
+      imageStyle = { width: 600, height: 384 };
+      break;
+    case "vertical":
+      imageStyle = { width: 384, height: 538 };
+      break;
+    default:
+      imageStyle = { width: 384, height: 384 };
+      break;
+  }
+
+  //Si recibe folderStorage guarda la imagen en esa carpeta, si no guarda la imagen en la carpeta section
+
   const fileInputRef = useRef(null);
   //restricciones de img extraidas de SettingSizing
   const {
@@ -62,7 +83,8 @@ export default function ImgCustom({ img, section, urlImgReturn }) {
       );
 
       // subir la imagen al Storage de Firebase
-      const downloadURL = await setImageStorage(file, section);
+      const folder = folderStorage ? folderStorage : section;
+      const downloadURL = await setImageStorage(file, folder);
       urlImgReturn(downloadURL);
     } catch (error) {
       console.error("Error al subir archivo: ", error);
@@ -78,17 +100,17 @@ export default function ImgCustom({ img, section, urlImgReturn }) {
 
   return (
     <div
-      className="w-96 h-96 bg-gray-200 shadow-lg flex justify-center items-center cursor-pointer"
+      className="relative bg-gray-200 shadow-lg flex justify-center items-center cursor-pointer"
+      style={imageStyle}
       onClick={handleImageClick}
     >
       {img && (
         <Image
           src={img}
           alt={`${nameCommerce} ${section}`}
-          width={384}
-          height={384}
-          className="object-cover"
-          // priority={ true}
+          layout="fill"
+          objectFit="cover"
+          className="absolute inset-0 z-0"
         />
       )}
       <input

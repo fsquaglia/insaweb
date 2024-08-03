@@ -3,6 +3,7 @@ import { getNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import { useEffect, useState } from "react";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboInputs from "@/ui/ComboInputs";
+import SocialMediaImgs from "./SocialMediaImgs";
 
 function PageSocialMedia() {
   const [values, setValues] = useState({});
@@ -27,17 +28,22 @@ function PageSocialMedia() {
   return (
     <div className="container flex flex-row flex-wrap gap-2 justify-center">
       {loading ? (
-        <SkeletonLoader />
+        <>
+          <SkeletonLoader />
+        </>
       ) : (
-        Object.keys(values).map((key) => (
-          <ComboInputs
-            key={key}
-            section={"contact"}
-            sectionFirebase={"contacto"}
-            subSection={key}
-            subObject={values[key]}
-          />
-        ))
+        <>
+          {Object.keys(values).map((key) => (
+            <ComboInputs
+              key={key}
+              section={"contact"}
+              sectionFirebase={"contacto"}
+              subSection={key}
+              subObject={values[key]}
+            />
+          ))}
+          <SocialMediaImgs valuesData={values} />
+        </>
       )}
     </div>
   );

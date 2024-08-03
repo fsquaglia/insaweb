@@ -100,10 +100,6 @@ export default function ComboInputs({
     }));
   };
 
-  const urlImgReturn = (data) => {
-    data ? setValues({ ...values, imagen: data }) : null;
-  };
-
   //Button Actualizar
   const onclick = async () => {
     try {

@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/**", // Permite cualquier imagen desde Firebase Storage
       },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+        port: "",
+        pathname: "/**", // Permite cualquier imagen desde via.placeholder.com
+      },
     ],
   },
 };

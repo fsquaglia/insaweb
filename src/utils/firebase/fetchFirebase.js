@@ -44,6 +44,27 @@ import {
 } from "../SettingInitialData";
 
 //!FIRESTORE
+//obtener todos los documentos de una colección
+export async function getAllDocsColection(nameCollection) {
+  const querySnapshot = await getDocs(collection(firestoreDB, nameCollection));
+  let arrayData = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    arrayData.push({ docID: doc.id, docData: doc.data() });
+  });
+  return arrayData;
+}
+//agregar un documento a una coleccion (ej. una categoría a colección productos, productos/categorias, colección/documento)
+export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
+  try {
+    await setDoc(doc(firestoreDB, nameCollection, nameDoc), dataDoc);
+    console.log("Documento guardado correctamente.");
+  } catch (error) {
+    console.error("Error al guardar el documento: ", error);
+    throw error;
+  }
+}
+
 export async function getOffersLandingFirestore() {
   try {
     const q = query(collection(firestoreDB, "ofertas"), limit(6));
@@ -197,21 +218,22 @@ export async function addNewProductFirestore(
 ) {
   /*dataObject debe ser
   {
-  articulo:"",
-  color:["Negro", "Suela"],
-  data1:"Algún dato extra",
-  data2:"Algún dato extra 2",
-  fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-  imagen: ["urls imagenes"],
-  marca: "Puerto Blue",
+  Artículo_Nro:"",
+  Color:["Negro", "Suela"],
+  Extra_1:"Algún dato extra",
+  Estra_2:"Algún dato extra 2",
+  FechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
+  Imagen: ["urls imagenes"],
+  Marca: "Puerto Blue",
   Modelo: "Milan",
-  nombre:"Zapato de vestir caballero Milan"
-  num_talle: ["42", "44"],
-  precioCompra: 100,
-  precioVenta: 200,
-  publicado: true,
-  stock: 1,
-  grupoValores: "Zapatos PB",
+  Nombre:"Zapato de vestir caballero Milan"
+  Numero: ["42", "44"],
+  Talle: ["42", "44"],
+  PrecioCompra: 100,
+  PrecioVenta: 200,
+  Publicado: true,
+  Stock: 1,
+  GrupoValores: "Zapatos PB",
   *idProducto: productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr SOLO PARA TABLA DE OFERTAS
   }
   */
