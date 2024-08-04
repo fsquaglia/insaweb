@@ -30,7 +30,6 @@ function CategoryLoader({ data }) {
   const onclickCard = (id) => {
     const elem = values.find((e) => e.docID === id);
     setValuesEdit(elem);
-    console.log(valuesEdit);
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,12 +79,26 @@ function CategoryLoader({ data }) {
       });
       return;
     }
-    //si es nueva categoría colocar docID igual que Nombre
-    valuesEdit.docID === "newCategory"
-      ? (valuesEdit.docID = valuesEdit.docData.id)
-      : null;
+    //verificar si
+    const isRepeat = values.some((e) => e.docID === valuesEdit.docData.id);
 
-    console.log(valuesEdit);
+    //si es nueva categoría colocar docID igual que Nombre
+    //y verificar que no sea duplicado el nombre
+    if (valuesEdit.docID === "newCategory") {
+      const isRepeat = values.some((e) => e.docID === valuesEdit.docData.id);
+
+      if (isRepeat) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: `${valuesEdit.docData.id} no puede utilizarse como Nombre`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        return;
+      }
+      valuesEdit.docID = valuesEdit.docData.id;
+    }
 
     try {
       await setDocInCollection(
