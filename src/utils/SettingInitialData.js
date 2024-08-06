@@ -59,6 +59,7 @@ export const mainInitialData = {
   texto3: "Ofertas todas las semanas",
   imagen:
     "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/main%2Fmain01.jpg?alt=media&token=a56599f6-cf71-4329-9e13-6422c7a0f28c",
+  visible: true,
 };
 
 export const teamInitialData = {

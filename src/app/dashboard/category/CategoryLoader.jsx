@@ -1,7 +1,7 @@
 "use client";
 
 import CardComponent from "@/ui/CardComponent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCategory from "@/ui/ComboCategory";
 import Swal from "sweetalert2";
@@ -79,8 +79,6 @@ function CategoryLoader({ data }) {
       });
       return;
     }
-    //verificar si
-    const isRepeat = values.some((e) => e.docID === valuesEdit.docData.id);
 
     //si es nueva categoría colocar docID igual que Nombre
     //y verificar que no sea duplicado el nombre
@@ -92,7 +90,7 @@ function CategoryLoader({ data }) {
           position: "center",
           icon: "error",
           title: `${valuesEdit.docData.id} no puede utilizarse como Nombre`,
-          showConfirmButton: false,
+          showConfirmButton: true,
           timer: 3000,
         });
         return;
@@ -128,23 +126,32 @@ function CategoryLoader({ data }) {
       });
     }
   };
+
   return (
-    <div className="container flex flex-col">
+    <div className="container flex flex-col justify-center">
       {/*Cards que muestran todas las categorias*/}
-      <div className="container flex flex-row flex-wrap gap-2 justify-center text-center my-2">
-        {values && values.length > 0 ? (
-          values.map((value, index) => (
-            <CardComponent
-              key={index}
-              id={value.docID}
-              name={value.docData.id}
-              img={value.docData.imagen}
-              onclickCard={onclickCard}
-            />
-          ))
-        ) : (
-          <SkeletonLoader />
-        )}
+      <div
+        className="flex justify-start overflow-x-auto mx-2"
+        style={{
+          overscrollBehaviorX: "contain",
+          scrollSnapType: "x proximity",
+        }}
+      >
+        <div className="flex flex-row gap-2 justify-center items-center text-center my-4">
+          {values && values.length > 0 ? (
+            values.map((value, index) => (
+              <CardComponent
+                key={index}
+                id={value.docID}
+                name={value.docData.id}
+                img={value.docData.imagen}
+                onclickCard={onclickCard}
+              />
+            ))
+          ) : (
+            <SkeletonLoader />
+          )}
+        </div>
       </div>
       <div className="my-2 flex flex-row flex-wrap justify-center">
         <ComboCategory

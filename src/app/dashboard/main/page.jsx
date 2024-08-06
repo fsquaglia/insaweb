@@ -19,7 +19,7 @@ export default function Page() {
         const data = await getNodoRealtime("main");
         if (data) {
           setValues(data);
-          console.log(data);
+          // console.log(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

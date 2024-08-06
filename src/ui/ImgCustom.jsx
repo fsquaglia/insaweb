@@ -13,7 +13,7 @@ export default function ImgCustom({
   section,
   urlImgReturn,
   folderStorage,
-  imageFormat = "cuadrado", //cuadrado, apaisado, vertical
+  imageFormat = "cuadrado", // cuadrado, apaisado, vertical
 }) {
   let imageStyle;
   switch (imageFormat) {
@@ -28,10 +28,10 @@ export default function ImgCustom({
       break;
   }
 
-  //Si recibe folderStorage guarda la imagen en esa carpeta, si no guarda la imagen en la carpeta section
+  // Si recibe folderStorage guarda la imagen en esa carpeta, si no guarda la imagen en la carpeta section
 
   const fileInputRef = useRef(null);
-  //restricciones de img extraidas de SettingSizing
+  // restricciones de img extraídas de SettingSizing
   const {
     minWidthAccepted,
     maxWidthAccepted,
@@ -64,14 +64,13 @@ export default function ImgCustom({
           icon: "error",
           title: "Oops...",
           text: "Extensión de archivo no válida o tipo de archivo incorrecto. Solo se permiten imágenes jpg, jpeg, webp y png.",
-          //footer: '<a href="#">Why do I have this issue?</a>',
         });
         urlImgReturn(null);
         return;
       }
 
       // Llama a la función de validación antes de subir la imagen
-      //validamos ancho, alto y tamaño de la imagen. Si todo está bien continua la ejecución. Si no, va al bloque catch.
+      // validamos ancho, alto y tamaño de la imagen. Si todo está bien, continua la ejecución. Si no, va al bloque catch.
       await validateImage(
         file,
         minWidthAccepted,
@@ -83,7 +82,8 @@ export default function ImgCustom({
       );
 
       // subir la imagen al Storage de Firebase
-      const folder = folderStorage ? folderStorage : section;
+      const folder = folderStorage ?? section;
+
       const downloadURL = await setImageStorage(file, folder);
       urlImgReturn(downloadURL);
     } catch (error) {
@@ -92,25 +92,23 @@ export default function ImgCustom({
         icon: "error",
         title: "Oops...",
         text: "Error al subir la imagen, intenta de nuevo.",
-        //footer: '<a href="#">Why do I have this issue?</a>',
       });
-      urlImgReturn(null);
     }
   };
 
   return (
     <div
       className="relative bg-gray-200 shadow-lg flex justify-center items-center cursor-pointer"
-      style={imageStyle}
+      style={{ ...imageStyle, overflow: "hidden", position: "relative" }}
       onClick={handleImageClick}
     >
       {img && (
         <Image
           src={img}
           alt={`${nameCommerce} ${section}`}
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 z-0"
+          fill
+          sizes={`${imageStyle.width}px`}
+          className="absolute inset-0 z-0 object-contain"
         />
       )}
       <input
