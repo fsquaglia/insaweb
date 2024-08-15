@@ -8,6 +8,7 @@ export default function InputCustom({
   inputValue = "",
   onChange,
   charLimit = 10,
+  showCharLimits = true,
   type = "input",
   placeHolder = "",
 }) {
@@ -42,10 +43,11 @@ export default function InputCustom({
           cols="30"
         />
       )}
-
-      <span className="block text-right text-xs text-blue-gray-600 mt-1">
-        {inputValue.length} de {charLimit}
-      </span>
+      {showCharLimits ? (
+        <span className="block text-right text-xs text-blue-gray-600 mt-1">
+          {inputValue.length} de {charLimit}
+        </span>
+      ) : null}
     </>
   );
 }

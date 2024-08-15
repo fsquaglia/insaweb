@@ -43,6 +43,8 @@ import {
   categoriesProductsInitialData,
 } from "../SettingInitialData";
 
+import { productBase } from "../SettingInitialData";
+
 //!FIRESTORE
 //obtener todos los documentos de una colección
 export async function getAllDocsColection(nameCollection) {
@@ -61,6 +63,40 @@ export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
     console.log("Documento guardado correctamente.");
   } catch (error) {
     console.error("Error al guardar el documento: ", error);
+    throw error;
+  }
+}
+
+//agregar una SUBCATEGORIA (se agregará un documento genérico en la subcategoría y debemos agregar el nombre de la subcategoría, al array que lleva el índice en el documento padre (es decir en la categoría)
+export async function createSubcollection(
+  categoryID,
+  nameSubCat,
+  arrayIndexSubCat
+) {
+  try {
+    if (!categoryID || !nameSubCat || !arrayIndexSubCat) {
+      throw new Error(
+        "Todos los argumentos (categoryID, nameSubCat, arrayIndexSubCat) son requeridos"
+      );
+    }
+    // agregar el array índice al documento padre de Categoría
+    const docCategoryRef = doc(firestoreDB, "productos", categoryID);
+    await setDoc(
+      docCategoryRef,
+      { subcategorias: arrayIndexSubCat },
+      { merge: true }
+    );
+    //agregar un producto base genérico y crear automáticamente la subcategoría
+    const docSubCategoryRef = doc(
+      firestoreDB,
+      "productos",
+      categoryID,
+      nameSubCat,
+      "docBase"
+    );
+    await setDoc(docSubCategoryRef, { id: "docBase" });
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 }
@@ -218,17 +254,17 @@ export async function addNewProductFirestore(
 ) {
   /*dataObject debe ser
   {
-  Artículo_Nro:"",
+  Codigo_Nro:"",
+  Nombre:"Zapato de vestir caballero Milan"
+  Marca: "Puerto Blue",
+  Modelo: "Milan",
+  Imagen: ["urls imagenes"],
   Color:["Negro", "Suela"],
+  Numero: ["42", "44"],
+  Talle: ["42", "44"],
   Extra_1:"Algún dato extra",
   Estra_2:"Algún dato extra 2",
   FechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-  Imagen: ["urls imagenes"],
-  Marca: "Puerto Blue",
-  Modelo: "Milan",
-  Nombre:"Zapato de vestir caballero Milan"
-  Numero: ["42", "44"],
-  Talle: ["42", "44"],
   PrecioCompra: 100,
   PrecioVenta: 200,
   Publicado: true,

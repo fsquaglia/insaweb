@@ -9,6 +9,9 @@ import {
   getAllDocsColection,
   setDocInCollection,
 } from "@/utils/firebase/fetchFirebase";
+import { productBase } from "@/utils/SettingInitialData";
+import SubCategory from "./SubCategory";
+import SwitchText from "@/ui/SwitchText";
 
 const nameCommerce = "Ihara+y+London";
 const urlGenerica = `https://via.placeholder.com/600?text=${nameCommerce}`;
@@ -24,8 +27,29 @@ const newCategory = {
 };
 
 function CategoryLoader({ data }) {
+  // console.log(data);
+
   const [values, setValues] = useState([...data, newCategory]); //es un array de objetos, todas las categorías
   const [valuesEdit, setValuesEdit] = useState(values[values.length - 1]); //es un objeto, lo que se estará editando o creando
+  const [changeView, setChangeView] = useState(true);
+
+  const reloadData = async () => {
+    try {
+      // Obtener categorías de productos
+      const categoriesProducts = await getAllDocsColection("productos");
+      setValues([...categoriesProducts, newCategory]);
+    } catch (error) {
+      console.error("Error! ", error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Algo está mal...",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setValues([newCategory]);
+    }
+  };
 
   const onclickCard = (id) => {
     const elem = values.find((e) => e.docID === id);
@@ -127,6 +151,20 @@ function CategoryLoader({ data }) {
     }
   };
 
+  //!pruebas
+  const onClickAddSubcategory = async () => {
+    await setDocInCollection(
+      "productos/Caballeros/Pantalon caballeros",
+      "productBase",
+      productBase
+    );
+    console.log("ok");
+  };
+
+  const onClickSwitch = () => {
+    setChangeView(!changeView);
+  };
+
   return (
     <div className="container flex flex-col justify-center">
       {/*Cards que muestran todas las categorias*/}
@@ -153,22 +191,38 @@ function CategoryLoader({ data }) {
           )}
         </div>
       </div>
-      <div className="my-2 flex flex-row flex-wrap justify-center">
-        <ComboCategory
-          docID={valuesEdit.docID}
-          titleID={valuesEdit.docData.id}
-          description={valuesEdit.docData.descripcion}
-          titleCard={valuesEdit.docData.tituloCard}
-          handleChange={handleChange}
-          switchLabel={"Mostrar en Home"}
-          initialValue={valuesEdit.docData.showLanding}
-          onToggle={onToggle}
-          section={"categoryProducts"}
-          folderStorage={"image"}
-          img={valuesEdit.docData.imagen}
-          urlImgReturn={urlImgReturn}
-          onclick={onclick}
+      <div className="mx-2">
+        <SwitchText
+          text1={"Categorías"}
+          text2={"Subcategorías"}
+          onClick={onClickSwitch}
         />
+      </div>
+      <div className="my-2 flex justify-center">
+        {changeView ? (
+          <>
+            <ComboCategory
+              docID={valuesEdit.docID}
+              titleID={valuesEdit.docData.id}
+              description={valuesEdit.docData.descripcion}
+              titleCard={valuesEdit.docData.tituloCard}
+              handleChange={handleChange}
+              switchLabel={"Mostrar en Home"}
+              initialValue={valuesEdit.docData.showLanding}
+              onToggle={onToggle}
+              section={"categoryProducts"}
+              folderStorage={"image"}
+              img={valuesEdit.docData.imagen}
+              urlImgReturn={urlImgReturn}
+              onclick={onclick}
+            />
+            <button className="border" onClick={onClickAddSubcategory}>
+              Add
+            </button>
+          </>
+        ) : (
+          <SubCategory categoryObject={valuesEdit} reloadData={reloadData} />
+        )}
       </div>
     </div>
   );

@@ -253,3 +253,25 @@ export const categoriesProductsInitialData = [
     tituloCard: "Unisex",
   },
 ];
+
+// PRODUCTOS
+export const productBase = {
+  Codigo_Nro: "CodidoIharaLondon",
+  Nombre: "Zapato de vestir caballero Milan",
+  Detalle: "Este es un detalle largo del producto",
+  Marca: "Puerto Blue",
+  Modelo: "Milan",
+  Imagen: ["urls imagenes"],
+  Color: ["Negro", "Suela"],
+  Numero: ["42", "44"],
+  Talle: ["S", "M"],
+  Extra_1: "Algún dato extra",
+  Estra_2: "Algún dato extra 2",
+  FechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
+  PrecioCompra: 100,
+  PrecioVenta: 200,
+  Publicado: true,
+  Stock: 1,
+  GrupoValores: "Zapatos PB",
+};
+//*idProducto: productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr SOLO PARA TABLA DE OFERTAS
