@@ -5,6 +5,7 @@ import { RiTeamFill } from "react-icons/ri"; //team
 import { TbSocial } from "react-icons/tb"; //social media y contacto
 import { GiFireflake } from "react-icons/gi"; //Slogan o Eslogan
 import { MdCategory } from "react-icons/md"; //Categorías de productos
+import { AiFillProduct } from "react-icons/ai"; //Productos
 
 export const links = [
   {
@@ -80,9 +81,19 @@ export const links = [
     href: "/dashboard/category",
     icon: MdCategory,
     head: {
-      title: "Sección Categorías de productos",
+      title: "Sección Categorías y subcategorías",
       description:
         "Podrás crear y administrar categorías de productos. Trata de no hacer cambios radicales cuando modificas categorías ya creadas.",
+    },
+  },
+  {
+    name: "Productos",
+    href: "/dashboard/products",
+    icon: AiFillProduct,
+    head: {
+      title: "Sección productos",
+      description:
+        "Aquí vas a crear y editar tus productos. No hagas grandes cambios cuando edites un producto que creaste hace tiempo, ya que pueden haberse creado referencias a éste, y un cambio drástico puede llevar a confusiones.",
     },
   },
 ];

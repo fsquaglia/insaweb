@@ -256,22 +256,44 @@ export const categoriesProductsInitialData = [
 
 // PRODUCTOS
 export const productBase = {
-  Codigo_Nro: "CodidoIharaLondon",
-  Nombre: "Zapato de vestir caballero Milan",
-  Detalle: "Este es un detalle largo del producto",
-  Marca: "Puerto Blue",
-  Modelo: "Milan",
-  Imagen: ["urls imagenes"],
-  Color: ["Negro", "Suela"],
-  Numero: ["42", "44"],
-  Talle: ["S", "M"],
-  Extra_1: "Algún dato extra",
-  Estra_2: "Algún dato extra 2",
-  FechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-  PrecioCompra: 100,
-  PrecioVenta: 200,
-  Publicado: true,
-  Stock: 1,
-  GrupoValores: "Zapatos PB",
+  codigoNro: "RemX-Negro", // Código único basado en el modelo y color
+  nombre: "Remera modelo X",
+  detalle: "Este es un detalle largo del producto",
+  marca: "Idrogeno",
+  modelo: "Aspen",
+  color: "Negro",
+  imagen: ["urlImagen1", "urImagen2"],
+  magnitudDisponible: [
+    {
+      magnitud: "M",
+      stock: 5,
+    },
+    {
+      magnitud: "L",
+      stock: 3,
+    },
+    {
+      magnitud: "XL",
+      stock: 2,
+    },
+  ],
+  stockTotal: 10,
+  extra1: "Algún dato extra",
+  extra2: "Algún dato extra 2",
+  fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
+  precioCompra: 50,
+  precioVenta: 100,
+  publicado: true,
+  grupoValores: "Remeras Idrogeno", // Categoría o grupo al que pertenece
+  productosRelacionados: [
+    "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
+    "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHoww",
+  ],
+  enOferta: true,
+  porcentajeDescuentoOferta: 50,
+  etiquetas: ["Ofertas", "Remeras"],
+  valoraciones: [
+    { puntaje: 5, usuario: "Fer", avatar: "url" },
+    { puntaje: 4, usuario: "Aye", avatar: "url" },
+  ],
 };
-//*idProducto: productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr SOLO PARA TABLA DE OFERTAS
