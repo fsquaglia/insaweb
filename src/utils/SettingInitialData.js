@@ -115,6 +115,19 @@ export const contactInitialData = {
   },
 };
 
+export const footerInitialData = {
+  condicionesSitio:
+    "Al navagar este sitio usdted acepta nuestras condiciones de privacidad",
+  privacidad:
+    "Los datos de terceros que recopilamos son exclusivamente para mejorar la navegación del sitio. En caso de solicitarle información será sólo para enviarle novedades.",
+  avisoPrecios:
+    "No se realizan ventas en el sitio. El mismo es de carácter informativo y los precios pueden variar sin previo aviso. Las imágenes de productos son de carácter informativo. Las ofertas aplican sólo a pagos en efectivo en el local.",
+  servicioCliente:
+    "Para más información comuníquese con nosotros vía email o Whatsapp a los datos informados en la sección Contacto.",
+  imagenLogo:
+    "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/logosIharaLondon%2Flogo_blanco01.png?alt=media&token=92d797fd-31b6-42de-85d4-f93b662ab7c4",
+};
+
 export const tipsInitialData = [
   {
     categoria: "Guías de compra",
@@ -208,6 +221,50 @@ export const tipsCategoriesInitialData = [
   },
 ];
 
+//datos de algunos contactos iniciales
+export const dataContactInitial = [
+  {
+    nombreContacto: "Fernando Squaglia",
+    sobrenombre: "tucho",
+    direccion: "Calle 1234",
+    localidad: "San Cristóbal",
+    provincia: "Santa Fe",
+    email: "fernandosquaglia@gmail.com",
+    celTE: "543408670000",
+    saldo: 0,
+  },
+  {
+    nombreContacto: "Nombre1 Apellido1",
+    sobrenombre: "loco 1",
+    direccion: "Calle 321",
+    localidad: "San Cristóbal",
+    provincia: "Santa Fe",
+    email: "email@email.com",
+    celTE: "543408671111",
+    saldo: 0,
+  },
+  {
+    nombreContacto: "Nombre2 Apellido2",
+    sobrenombre: "loco 2",
+    direccion: "Calle 555",
+    localidad: "San Cristóbal",
+    provincia: "Santa Fe",
+    email: "email3@email.com  ",
+    celTE: "543408675555",
+    saldo: 0,
+  },
+  {
+    nombreContacto: "Nombre4 Apellido4",
+    sobrenombre: "loco 4",
+    direccion: "Calle 999",
+    localidad: "San Cristóba",
+    provincia: "Santa Fe",
+    email: "email999@com.com",
+    celTE: "543408678877",
+    saldo: 0,
+  },
+];
+
 // Categorias de productos Iniciales
 export const categoriesProductsInitialData = [
   {
@@ -254,7 +311,7 @@ export const categoriesProductsInitialData = [
   },
 ];
 
-// PRODUCTOS
+//? PRODUCTO BASE
 export const productBase = {
   codigoNro: "RemX-Negro", // Código único basado en el modelo y color
   nombre: "Remera modelo X",
@@ -291,9 +348,144 @@ export const productBase = {
   ],
   enOferta: true,
   porcentajeDescuentoOferta: 50,
-  etiquetas: ["Ofertas", "Remeras"],
+  hashtags: ["#Ofertas", "#Remeras"],
   valoraciones: [
     { puntaje: 5, usuario: "Fer", avatar: "url" },
     { puntaje: 4, usuario: "Aye", avatar: "url" },
   ],
 };
+
+//variaciones, como colores, talles, marcas, gruposValores, etc
+export const variationsInitialData1 = {
+  color: {
+    tituloVariacion: "Colores",
+    textoVariacion: "Variación correspondiente a distintos colores",
+    urlImagen: "",
+    esObjetoMultipleProp: false,
+    data: [
+      { color: "Blanco" },
+      { color: "Negro" },
+      { color: "Rojo" },
+      { color: "Azul" },
+      { color: "Verde" },
+      { color: "Naranja" },
+    ],
+  },
+  talle: {
+    tituloVariacion: "Talles",
+    textoVariacion: "Variación correspondiente a distintos talles",
+    urlImagen: "",
+    esObjetoMultipleProp: false,
+    data: [
+      { talle: "XS" },
+      { talle: "S" },
+      { talle: "M" },
+      { talle: "L" },
+      { talle: "XL" },
+      { talle: "2XL" },
+      { talle: "3XL" },
+      { talle: "4XL" },
+      { talle: "5XL" },
+    ],
+  },
+  marca: {
+    tituloVariacion: "Marcas",
+    textoVariacion: "Variación correspondiente a distintas marcas",
+    urlImagen: "",
+    esObjetoMultipleProp: false,
+    data: [
+      { marca: "Idrogeno" },
+      { marca: "Batuk" },
+      { marca: "Soya" },
+      { marca: "Meet Me" },
+      { marca: "Las Locas" },
+    ],
+  },
+  grupoDeValores: {
+    tituloVariacion: "Grupo de Valores",
+    textoVariacion: "Variación correspondiente a distintos grupos de valores",
+    urlImagen: "",
+    esObjetoMultipleProp: true,
+    data: [
+      {
+        IDgrupoDeValores: 1,
+        grupoDeValores: "Remera M.C. caballero clase A",
+        precioLista: 20000,
+        descEfectPorc: 10,
+      },
+      {
+        IDgrupoDeValores: 2,
+        grupoDeValores: "Remera M.C. caballero clase B",
+        precioLista: 20000,
+        descEfectPorc: 20,
+      },
+      {
+        IDgrupoDeValores: 3,
+        grupoDeValores: "Perfume caballero clase A",
+        precioLista: 20000,
+        descEfectPorc: 20,
+      },
+      {
+        IDgrupoDeValores: 4,
+        grupoDeValores: "Perfume caballero clase B",
+        precioLista: 20000,
+        descEfectPorc: 20,
+      },
+    ],
+  },
+  hashtag: {
+    tituloVariacion: "Hashtags",
+    textoVariacion: "Variación correspondiente a hashtags",
+    urlImagen: "",
+    esObjetoMultipleProp: false,
+    data: [
+      { hashtag: "#Ofertas" },
+      { hashtag: "#Remeras" },
+      { hashtag: "#Liquidación" },
+    ],
+  },
+};
+
+//! modificar de acuerdo a PRODUCTO BASE
+export const dataProductInitial = [
+  {
+    articulo: "14545",
+    color: ["Negro", "Suela"],
+    data1: "Algún dato extra",
+    data2: "Algún dato extra 2",
+    fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
+    imagen: [
+      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2FKids%2F20220331_120224.jpg?alt=media&token=11f991c4-1c4d-4bb2-9cd2-7c1da3d20bcc",
+    ],
+    marca: "Puerto Blue",
+    Modelo: "Milan",
+    nombre: "Zapato de vestir caballero Milan",
+    num_talle: ["42", "44"],
+    precioCompra: 100,
+    precioVenta: 200,
+    publicado: true,
+    stock: 1,
+    grupoValores: "Zapatos PB",
+    idProducto: "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
+  },
+  {
+    articulo: "A1245",
+    color: ["Negro"],
+    data1: "Algún dato extraaaaa",
+    data2: "Algún dato extraaaaa 2",
+    fechaCompra: Timestamp.fromDate(new Date("2024-06-15")),
+    imagen: [
+      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2FKids%2F20220331_120224.jpg?alt=media&token=11f991c4-1c4d-4bb2-9cd2-7c1da3d20bcc",
+    ],
+    marca: "Meet Me",
+    Modelo: "Milan",
+    nombre: "Zapato de vestir caballero Milan",
+    num_talle: ["42", "44"],
+    precioCompra: 100,
+    precioVenta: 200,
+    publicado: false,
+    stock: 1,
+    grupoValores: "",
+    idProducto: "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
+  },
+];

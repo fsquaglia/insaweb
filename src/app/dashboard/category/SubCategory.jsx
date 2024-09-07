@@ -7,8 +7,6 @@ import { createSubcollection } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
 
 function SubCategory({ categoryObject, reloadData }) {
-  console.log(categoryObject);
-
   const [newSubCat, setNewSubCat] = useState("");
   const [subCatArray, setSubCatArray] = useState(
     categoryObject.docData.subcategorias

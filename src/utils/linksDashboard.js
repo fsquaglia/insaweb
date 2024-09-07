@@ -6,6 +6,7 @@ import { TbSocial } from "react-icons/tb"; //social media y contacto
 import { GiFireflake } from "react-icons/gi"; //Slogan o Eslogan
 import { MdCategory } from "react-icons/md"; //Categorías de productos
 import { AiFillProduct } from "react-icons/ai"; //Productos
+import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
 
 export const links = [
   {
@@ -94,6 +95,16 @@ export const links = [
       title: "Sección productos",
       description:
         "Aquí vas a crear y editar tus productos. No hagas grandes cambios cuando edites un producto que creaste hace tiempo, ya que pueden haberse creado referencias a éste, y un cambio drástico puede llevar a confusiones.",
+    },
+  },
+  {
+    name: "Variaciones",
+    href: "/dashboard/variations",
+    icon: IoColorPaletteSharp,
+    head: {
+      title: "Sección variaciones",
+      description:
+        "Las variaciones son atributos o propiedades de los productos y permiten caracterizarlos. Podemos tener colores, talles, y los tipos que se te ocurran.",
     },
   },
 ];

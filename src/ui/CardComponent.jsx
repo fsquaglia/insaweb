@@ -1,10 +1,14 @@
 import React from "react";
 import Image from "next/image";
 
-function CardComponent({ id, name, img, onclickCard }) {
+function CardComponent({ id, name, img, onclickCard, idSelected }) {
+  // console.log(idSelected);
+
   return (
     <div
-      className="relative bg-gray-100 w-28 h-40 shadow hover:scale-105 transition-transform transform cursor-pointer flex flex-col overflow-hidden"
+      className={`relative bg-gray-100 w-28 h-40 shadow hover:border-4 hover:border-blue-800 cursor-pointer flex flex-col overflow-hidden  ${
+        idSelected === id ? "border border-2 border-blue-600" : null
+      }`}
       onClick={() => onclickCard(id)}
     >
       {img ? (

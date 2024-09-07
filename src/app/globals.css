@@ -45,3 +45,15 @@ body {
     transform: translateX(calc(-200px * 7 - 0.5rem * 14));
   }
 }
+
+/* Estilos personalizados para input type number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  @apply appearance-none;
+  margin: 0;
+}
+
+input[type="number"] {
+  @apply appearance-none;
+  -moz-appearance: textfield;
+}

@@ -1,5 +1,6 @@
 import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
 // import CategoryLoader from "./CategoryLoader";
+import CategorySelect from "./CategorySelect";
 
 async function PageProducts() {
   try {
@@ -8,7 +9,7 @@ async function PageProducts() {
 
     return (
       <div className="container flex flex-col justify-center text-center">
-        {/* <CategoryLoader data={categoriesProducts} /> */}
+        <CategorySelect data={categoriesProducts} />
       </div>
     );
   } catch (error) {

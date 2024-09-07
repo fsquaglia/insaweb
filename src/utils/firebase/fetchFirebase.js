@@ -1,3 +1,5 @@
+// "use server";
+
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 import {
@@ -41,9 +43,10 @@ import {
   tipsInitialData,
   tipsCategoriesInitialData,
   categoriesProductsInitialData,
+  footerInitialData,
+  productBase,
+  contactInitialData,
 } from "../SettingInitialData";
-
-import { productBase } from "../SettingInitialData";
 
 //!FIRESTORE
 //obtener todos los documentos de una colección
@@ -322,72 +325,6 @@ export async function setNodoRealtime(nodo, dataNodo) {
   }
 }
 
-//almacenar datos en el nodo CONTACT de Realtime. Serán los datos iniciales de la BD
-export async function setContactRealtime() {
-  const contacto = {
-    ubicacion: {
-      direccion: "Ituzaingó 1393",
-      localidad: "San Cristobal",
-      provincia: "Santa Fe",
-    },
-    legal: {
-      fantasia: "Ihara & London",
-      razonSocial: "Compagnon, M. Ayelén",
-      logoURL: "",
-    },
-    medios: {
-      cel: "54 3492 613004",
-      TE: "",
-      email: "ayecompagnon@gmail.com",
-    },
-    socialMedia: {
-      imagenFondoSocialMedia:
-        "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/socialmedia%2Fsocial01.jpg?alt=media&token=811605db-4bff-417e-a0ee-9d77c0668dc9",
-      tituloSocialMedia: "Síguenos",
-      facebook1: "https://www.facebook.com/londonestilo",
-      facebook2: "",
-      instagram1: "https://www.instagram.com/london_sc/",
-      instagram2: "https://www.instagram.com/ihara_calzado/",
-    },
-  };
-
-  try {
-    const refAbout = realtimeRef(realtimeDB, "contacto");
-    await set(refAbout, contacto);
-
-    console.log("Contacto y social media creado");
-  } catch (e) {
-    console.error("Error al crear el Contacto: ", e);
-    throw e;
-  }
-}
-
-//almacenar datos en el nodo FOOTER de Realtime. Serán los datos iniciales de la BD
-export async function setFooterRealtime() {
-  const footer = {
-    condicionesSitio:
-      "Al navagar este sitio usdted acepta nuestras condiciones de privacidad",
-    privacidad:
-      "Los datos de terceros que recopilamos son exclusivamente para mejorar la navegación del sitio. En caso de solicitarle información será sólo para enviarle novedades.",
-    avisoPrecios:
-      "No se realizan ventas en el sitio. El mismo es de carácter informativo y los precios pueden variar sin previo aviso. Las imágenes de productos son de carácter informativo. Las ofertas aplican sólo a pagos en efectivo en el local.",
-    servicioCliente:
-      "Para más información comuníquese con nosotros vía email o Whatsapp a los datos informados en la sección Contacto.",
-    imagenLogo:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/logosIharaLondon%2Flogo_blanco01.png?alt=media&token=92d797fd-31b6-42de-85d4-f93b662ab7c4",
-  };
-
-  try {
-    const refFooter = realtimeRef(realtimeDB, "footer");
-    await set(refFooter, footer);
-
-    console.log("Footer creado");
-  } catch (e) {
-    console.error("Error al crear el Footer: ", e);
-    throw e;
-  }
-}
-
 //? almacenar todos los datos iniciales para la página
 export async function loadDataInitFirebase() {
   try {
@@ -398,8 +335,8 @@ export async function loadDataInitFirebase() {
       setNodoRealtime("team", teamInitialData),
       setNodoRealtime("main", mainInitialData),
       setNodoRealtime("eslogan", sloganInitialData),
-      setContactRealtime(),
-      setFooterRealtime(),
+      setNodoRealtime("footer", footerInitialData),
+      setNodoRealtime("contacto", contactInitialData),
       setTipsCategoryFirestore(),
       setTipsFirestore(),
       setProductsCategoryFirestore(),

@@ -1,7 +1,7 @@
 "use client";
 
 import CardComponent from "@/ui/CardComponent";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCategory from "@/ui/ComboCategory";
 import Swal from "sweetalert2";
@@ -151,15 +151,15 @@ function CategoryLoader({ data }) {
     }
   };
 
-  //!pruebas
-  const onClickAddSubcategory = async () => {
-    await setDocInCollection(
-      "productos/Caballeros/Pantalon caballeros",
-      "productBase",
-      productBase
-    );
-    console.log("ok");
-  };
+  //agregar subcategoría
+  // const onClickAddSubcategory = async () => {
+  //   await setDocInCollection(
+  //     "productos/Caballeros/Pantalon caballeros",
+  //     "productBase",
+  //     productBase
+  //   );
+  //   console.log("ok");
+  // };
 
   const onClickSwitch = () => {
     setChangeView(!changeView);
@@ -168,27 +168,30 @@ function CategoryLoader({ data }) {
   return (
     <div className="container flex flex-col justify-center">
       {/*Cards que muestran todas las categorias*/}
-      <div
-        className="flex justify-start overflow-x-auto mx-2"
-        style={{
-          overscrollBehaviorX: "contain",
-          scrollSnapType: "x proximity",
-        }}
-      >
-        <div className="flex flex-row gap-2 justify-center items-center text-center my-4">
-          {values && values.length > 0 ? (
-            values.map((value, index) => (
-              <CardComponent
-                key={index}
-                id={value.docID}
-                name={value.docData.id}
-                img={value.docData.imagen}
-                onclickCard={onclickCard}
-              />
-            ))
-          ) : (
-            <SkeletonLoader />
-          )}
+      <div className="flex justify-center">
+        <div
+          className="flex justify-start overflow-x-auto mx-2"
+          style={{
+            overscrollBehaviorX: "contain",
+            scrollSnapType: "x proximity",
+          }}
+        >
+          <div className="flex flex-row gap-2 justify-center items-center text-center my-4">
+            {values && values.length > 0 ? (
+              values.map((value, index) => (
+                <CardComponent
+                  key={index}
+                  id={value.docID}
+                  name={value.docData.id}
+                  img={value.docData.imagen}
+                  onclickCard={onclickCard}
+                  idSelected={valuesEdit.docID}
+                />
+              ))
+            ) : (
+              <SkeletonLoader />
+            )}
+          </div>
         </div>
       </div>
       <div className="mx-2">
@@ -216,9 +219,6 @@ function CategoryLoader({ data }) {
               urlImgReturn={urlImgReturn}
               onclick={onclick}
             />
-            <button className="border" onClick={onClickAddSubcategory}>
-              Add
-            </button>
           </>
         ) : (
           <SubCategory categoryObject={valuesEdit} reloadData={reloadData} />
