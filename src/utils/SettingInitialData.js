@@ -230,8 +230,10 @@ export const dataContactInitial = [
     localidad: "San Cristóbal",
     provincia: "Santa Fe",
     email: "fernandosquaglia@gmail.com",
+    password: "",
     celTE: "543408670000",
     saldo: 0,
+    rol: "admin",
   },
   {
     nombreContacto: "Nombre1 Apellido1",
@@ -240,8 +242,10 @@ export const dataContactInitial = [
     localidad: "San Cristóbal",
     provincia: "Santa Fe",
     email: "email@email.com",
+    password: "",
     celTE: "543408671111",
     saldo: 0,
+    rol: "user",
   },
   {
     nombreContacto: "Nombre2 Apellido2",
@@ -249,9 +253,11 @@ export const dataContactInitial = [
     direccion: "Calle 555",
     localidad: "San Cristóbal",
     provincia: "Santa Fe",
-    email: "email3@email.com  ",
+    email: "user@user.com  ",
+    password: "",
     celTE: "543408675555",
     saldo: 0,
+    rol: "user",
   },
   {
     nombreContacto: "Nombre4 Apellido4",
@@ -260,8 +266,10 @@ export const dataContactInitial = [
     localidad: "San Cristóba",
     provincia: "Santa Fe",
     email: "email999@com.com",
+    password: "",
     celTE: "543408678877",
     saldo: 0,
+    rol: "user",
   },
 ];
 

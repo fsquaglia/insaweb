@@ -1,3 +1,4 @@
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -15,6 +16,15 @@ const nextConfig = {
         pathname: "/**", // Permite cualquier imagen desde via.placeholder.com
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/dashboard",
+        destination: "/login",
+        permanent: false,
+      },
+    ];
   },
 };
 

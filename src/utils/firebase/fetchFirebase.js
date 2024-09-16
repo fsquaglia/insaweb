@@ -49,6 +49,28 @@ import {
 } from "../SettingInitialData";
 
 //!FIRESTORE
+//obtener un usuario o contacto por el email
+export async function getUserByEmail(email) {
+  const q = query(
+    collection(firestoreDB, "contactos"),
+    where("email", "==", email)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const users = [];
+
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    users.push({ id: doc.id, ...doc.data() });
+  });
+
+  console.log("fetchFirebase");
+  console.log(users);
+
+  return users;
+}
+
 //obtener todos los documentos de una colección
 export async function getAllDocsColection(nameCollection) {
   const querySnapshot = await getDocs(collection(firestoreDB, nameCollection));
@@ -231,6 +253,7 @@ export async function addNewContactFirestore(dataObject) {
   localidad:"",
   provincia:"",
   email:"",
+  password:"",
   celTE:"",
   saldo: 0,
   }
