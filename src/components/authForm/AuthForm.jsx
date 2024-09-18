@@ -3,6 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 
 function AuthForm() {
@@ -144,4 +145,11 @@ function AuthForm() {
   );
 }
 
-export default AuthForm;
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="text-lg">Loading...</div>}>
+      <AuthForm />
+    </Suspense>
+  );
+}
+// export default AuthForm;
