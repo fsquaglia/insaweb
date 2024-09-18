@@ -61,7 +61,7 @@ export async function getUserByEmail(email) {
 
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
+    // console.log(doc.id, " => ", doc.data());
     users.push({ id: doc.id, ...doc.data() });
   });
 
@@ -265,6 +265,7 @@ export async function addNewContactFirestore(dataObject) {
       dataObject
     );
     console.log("Contacto agregado: ", docRef.id);
+    return docRef.id;
   } catch (error) {
     console.error("Error al agregar contacto: ", error);
     throw error;

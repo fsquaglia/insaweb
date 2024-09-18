@@ -2,6 +2,7 @@
 import { UserIcon } from "@heroicons/react/24/outline";
 import SmoothScrollLink from "../../utils/SmoothScrollLink";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
   return (
@@ -39,9 +40,13 @@ export default function Navbar() {
           </li>
         </ul>
       </nav>
-      <Link href={"/login"}>
+      <Link href={"/auth/login"}>
         <UserIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
       </Link>
+      <UserIcon
+        className="w-6 h-6 text-red-600 cursor-pointer "
+        onClick={() => signOut()}
+      />
     </div>
   );
 }
