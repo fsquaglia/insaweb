@@ -16,7 +16,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         console.log("soy el middleware");
-
+        console.log(token);
         console.log(token?.role);
 
         // Si no hay token, el usuario no está autenticado
