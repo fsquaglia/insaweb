@@ -1,7 +1,11 @@
-import React from "react";
+import DashboardUser from "./DashboardUser";
 
 function page() {
-  return <div className="mt-40">page users</div>;
+  return (
+    <div>
+      <DashboardUser />
+    </div>
+  );
 }
 
 export default page;

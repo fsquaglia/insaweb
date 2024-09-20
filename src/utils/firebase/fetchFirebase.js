@@ -65,9 +65,6 @@ export async function getUserByEmail(email) {
     users.push({ id: doc.id, ...doc.data() });
   });
 
-  console.log("fetchFirebase");
-  console.log(users);
-
   return users;
 }
 

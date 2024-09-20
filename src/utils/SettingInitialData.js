@@ -233,7 +233,9 @@ export const dataContactInitial = [
     password: "",
     celTE: "543408670000",
     saldo: 0,
+    fechaVenceSaldo: Timestamp.fromDate(new Date("2024-12-31")),
     rol: "admin",
+    imagen: "",
   },
   {
     nombreContacto: "Nombre1 Apellido1",
@@ -245,7 +247,9 @@ export const dataContactInitial = [
     password: "",
     celTE: "543408671111",
     saldo: 0,
+    fechaVenceSaldo: Timestamp.fromDate(new Date("2024-12-31")),
     rol: "user",
+    imagen: "",
   },
   {
     nombreContacto: "Nombre2 Apellido2",
@@ -257,7 +261,9 @@ export const dataContactInitial = [
     password: "",
     celTE: "543408675555",
     saldo: 0,
+    fechaVenceSaldo: Timestamp.fromDate(new Date("2024-12-31")),
     rol: "user",
+    imagen: "",
   },
   {
     nombreContacto: "Nombre4 Apellido4",
@@ -269,7 +275,9 @@ export const dataContactInitial = [
     password: "",
     celTE: "543408678877",
     saldo: 0,
+    fechaVenceSaldo: Timestamp.fromDate(new Date("2024-12-31")),
     rol: "user",
+    imagen: "",
   },
 ];
 

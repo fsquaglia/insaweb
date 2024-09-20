@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { HiUser } from "react-icons/hi2";
 import { GrLogout } from "react-icons/gr";
 import { signOut } from "next-auth/react";
+import CardUserSession from "@/ui/CardUserSession";
 
 function UserData() {
   const { data: session, status } = useSession();
@@ -11,41 +12,28 @@ function UserData() {
 
   useEffect(() => {
     console.log(session);
+    console.log(status);
 
     session ? setDataUser(session.user) : null;
   }, [session]);
 
   return (
     <div className="flex flex-row flex-wrap bg-blue-400 items-center justify-around">
-      <div className="">saldo y otras cosas</div>
+      <div className="">Mostrar algo más...?</div>
       <div className="flex flex-row flex-wrap items-center">
         <div className="flex items-center justify-between px-8 py-2">
-          <div className="flex items-center mr-5">
-            <div className="mr-5">
-              {/*imagen */}
-              <div className="inline-block relative shrink-0 rounded-[.95rem]">
-                {dataUser?.image ? (
-                  <img
-                    className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]"
-                    src={dataUser.image}
-                    alt={`avatar ${dataUser?.name}`}
-                  />
-                ) : (
-                  <HiUser className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem] text-gray-500" />
-                )}
-              </div>
+          {dataUser?.name ? (
+            <CardUserSession
+              name={dataUser.name}
+              email={dataUser.email}
+              image={dataUser.image || null}
+              role={"admin"}
+            />
+          ) : (
+            <div className="tsxt-sm text-gray-500">
+              Cargando datos del usuario...
             </div>
-            <div className="mr-2 ">
-              {/*Nombre y Apellido */}
-              <div className="font-medium text-neutral-200">
-                {dataUser?.name || "Nombre y Apellido"}
-              </div>
-              {/*email */}
-              <span className="font-medium block text-xs text-neutral-300">
-                {dataUser?.email || "alguien@sevidor.com"}
-              </span>
-            </div>
-          </div>
+          )}
           <a
             className="inline-flex relative items-center group justify-end text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-[.95rem] transition-colors duration-150 ease-in-out text-dark bg-transparent shadow-none border-0"
             href="#"

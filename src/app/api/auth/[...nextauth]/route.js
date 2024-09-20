@@ -52,6 +52,8 @@ const handler = NextAuth({
               id: user.id,
               name: user.nombreContacto,
               role: user.rol,
+              image: user.imagen,
+              email: user.email,
             };
           }
 
@@ -92,9 +94,6 @@ const handler = NextAuth({
           // Si el usuario existe, asignar el rol al token
           token.id = foundUser.id;
           token.role = foundUser.rol;
-          // console.log("aca toy");
-          // console.log(foundUser);
-          // console.log(token);
         } else {
           // Si no existe, crear un nuevo usuario en Firestore y asignar un rol por defecto
           const newUser = {
@@ -118,8 +117,11 @@ const handler = NextAuth({
         }
       } else {
         // Si el usuario se autentica con credenciales, ya se añadió el rol en `user`
-        user && (token.id = user.id);
-        user && (token.role = user.role);
+        if (user) {
+          token.id = user.id;
+          token.role = user.role;
+          token.email = user.email;
+        }
       }
 
       return token;
@@ -134,8 +136,10 @@ const handler = NextAuth({
         }
 
         session.user.id = token.id;
-        session.user.role = token.role; // Poner el rol en la sesión
+        session.user.role = token.role;
+        session.user.email = token.email;
       }
+
       return session;
     },
   },
