@@ -67,7 +67,7 @@ const handler = NextAuth({
       },
     }),
   ],
-  debug: true,
+  // debug: true,
   pages: {
     signIn: "/auth/login",
     // signOut: "/auth/signout",
@@ -79,12 +79,6 @@ const handler = NextAuth({
   callbacks: {
     // El primer argumento es el token actual, y el segundo es el usuario retornado por authorize (user puede llegar a ser null si no se pasa por credenciales), account es el proveedor como Google, y profile es la data que devuelve el proveedor
     async jwt({ token, user, account, profile }) {
-      console.log("soy token/user/account/profile en jwt");
-      console.log(token);
-      console.log(user);
-      console.log(account);
-      console.log(profile);
-
       // Si el usuario se autentica con Google
       if (account?.provider === "google") {
         const email = profile.email;
@@ -127,17 +121,11 @@ const handler = NextAuth({
         user && (token.id = user.id);
         user && (token.role = user.role);
       }
-      console.log("el token");
-      console.log(token);
-      console.log("----");
 
       return token;
     },
     async session({ session, token }) {
       // Añadir los datos personalizados del token a la sesión
-      console.log("soy la session que recibo token");
-      console.log(token);
-      console.log("---------------");
 
       if (token) {
         if (!session.user) {

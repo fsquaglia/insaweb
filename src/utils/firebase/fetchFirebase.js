@@ -264,7 +264,7 @@ export async function addNewContactFirestore(dataObject) {
       collection(firestoreDB, "contactos"),
       dataObject
     );
-    console.log("Contacto agregado: ", docRef.id);
+    // console.log("Contacto agregado: ", docRef.id);
     return docRef.id;
   } catch (error) {
     console.error("Error al agregar contacto: ", error);

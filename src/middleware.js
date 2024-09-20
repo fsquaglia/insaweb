@@ -15,10 +15,6 @@ export default withAuth(
     //si no lo defino, tendré acceso a los matcher si estoy logueado y listo
     callbacks: {
       authorized: ({ token, req }) => {
-        console.log("soy el middleware");
-        console.log(token);
-        console.log(token?.role);
-
         // Si no hay token, el usuario no está autenticado
         if (!token) return false;
 

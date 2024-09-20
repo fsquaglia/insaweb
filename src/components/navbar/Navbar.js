@@ -43,10 +43,10 @@ export default function Navbar() {
       <Link href={"/auth/login"}>
         <UserIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
       </Link>
-      <UserIcon
+      {/* <UserIcon
         className="w-6 h-6 text-red-600 cursor-pointer "
         onClick={() => signOut()}
-      />
+      /> */}
     </div>
   );
 }

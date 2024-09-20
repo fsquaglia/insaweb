@@ -1,5 +1,6 @@
 import Sidenav from "../../ui/sidenav";
 import HeaderDashboard from "@/ui/HeaderDashboard";
+import UserData from "@/components/userData/UserData";
 
 export default function Layout({ children }) {
   return (
@@ -16,7 +17,10 @@ export default function Layout({ children }) {
         {/* Contenido a la derecha del Sidenav */}
         <div className="flex flex-col flex-grow overflow-hidden md:ml-64">
           {/* HeaderDashboard fijo en la parte superior derecha */}
-          <div className="bg-blue-100 min-h-32 w-full flex justify-center text-center fixed top-24 left-0 md:left-64 right-0 z-10">
+          <div className="bg-blue-100 min-h-32 w-full flex flex-row flex-wrap justify-center text-center fixed top-24 left-0 md:left-64 right-0 z-10">
+            <div className="w-full">
+              <UserData />
+            </div>
             <HeaderDashboard />
           </div>
 
