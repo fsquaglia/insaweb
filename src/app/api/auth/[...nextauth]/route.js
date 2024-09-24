@@ -6,6 +6,7 @@ import {
   getUserByEmail,
 } from "@/utils/firebase/fetchFirebase";
 import bcrypt from "bcryptjs";
+import { Timestamp } from "firebase/firestore";
 
 const handler = NextAuth({
   providers: [
@@ -106,7 +107,9 @@ const handler = NextAuth({
             password: "",
             celTE: "",
             saldo: 0,
+            fechaVenceSaldo: Timestamp.fromDate(new Date("2024-12-31")),
             rol: "user",
+            imagen: profile.picture || "",
           };
           //!agregar try catch
           //función para agregar nuevo usuario

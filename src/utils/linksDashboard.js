@@ -7,6 +7,7 @@ import { GiFireflake } from "react-icons/gi"; //Slogan o Eslogan
 import { MdCategory } from "react-icons/md"; //Categorías de productos
 import { AiFillProduct } from "react-icons/ai"; //Productos
 import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
+import { RiProductHuntLine } from "react-icons/ri";
 
 export const links = [
   {
@@ -105,6 +106,15 @@ export const links = [
       title: "Sección variaciones",
       description:
         "Las variaciones son atributos o propiedades de los productos y permiten caracterizarlos. Podemos tener colores, talles, y los tipos que se te ocurran.",
+    },
+  },
+  {
+    name: "Editar Producto",
+    href: "/dashboard/productedit",
+    icon: RiProductHuntLine,
+    head: {
+      title: "Sección Editar producto",
+      description: "Esto está en proceso de desarrollo........",
     },
   },
 ];

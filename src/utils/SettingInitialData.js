@@ -357,12 +357,12 @@ export const productBase = {
   precioCompra: 50,
   precioVenta: 100,
   publicado: true,
-  grupoValores: "Remeras Idrogeno", // Categoría o grupo al que pertenece
+  IDgrupoDeValores: 1, // Categoría o grupo al que pertenece
   productosRelacionados: [
     "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
     "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHoww",
   ],
-  enOferta: true,
+  enOferta: false,
   porcentajeDescuentoOferta: 50,
   hashtags: ["#Ofertas", "#Remeras"],
   valoraciones: [

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
+import { AiOutlineHome } from "react-icons/ai";
 
 function AuthForm() {
   const { data: session, status } = useSession();
@@ -75,6 +76,10 @@ function AuthForm() {
               className="flex flex-col w-full h-full pb-6 text-center bg-white rounded-3xl"
               onSubmit={handleSubmit}
             >
+              <Link href={"/"}>
+                <AiOutlineHome className="mx-auto text-2xl mb-2 cursor-pointer transform transition-transform duration-200 hover:scale-110 hover:text-blue-400" />
+              </Link>
+
               <h3 className="mb-3 text-4xl font-extrabold text-dark-grey-900">
                 Inicia sesión
               </h3>

@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/navbar/Navbar";
-import Footer from "../components/footer/Footer";
+// import Navbar from "../components/navbar/Navbar";
+// import Footer from "../components/footer/Footer";
 import Agency from "../components/agency/Agency";
 import { Providers } from "./Providers";
 
@@ -17,11 +17,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className}`}>
         <Providers>
-          <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-20">
+          {/* <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-20">
             <Navbar />
-          </div>
+          </div> */}
           <div>{children}</div>
-          <Footer />
+          {/* <Footer /> */}
           <Agency />
         </Providers>
       </body>
