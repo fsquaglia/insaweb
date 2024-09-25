@@ -402,6 +402,9 @@ export const variationsInitialData1 = {
       { talle: "3XL" },
       { talle: "4XL" },
       { talle: "5XL" },
+      { talle: "Único" },
+      { talle: "Genérico" },
+      { talle: "Extra" },
     ],
   },
   marca: {

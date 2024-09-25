@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-function SwitchVisible({ switchLabel, initialValue, onToggle }) {
+function SwitchVisible({ switchLabel, initialValue = false, onToggle }) {
   const [isOn, setIsOn] = useState(initialValue || false);
 
   const handleToggle = () => {
