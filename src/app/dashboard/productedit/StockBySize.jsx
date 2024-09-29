@@ -46,8 +46,8 @@ function CustomSelect({ options }) {
       </div>
 
       {/* Contenedor derecho */}
-      <div className=" w-1/2 p-2 flex justify-center items-center">
-        <p className="text-sm">
+      <div className=" w-1/2 p-2 flex justify-center border">
+        <p className="text-sm mx-auto border">
           Selecciona un tamaño y cantidad para agregarlo
         </p>
       </div>
