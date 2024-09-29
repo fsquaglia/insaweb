@@ -1,10 +1,11 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { HiUser } from "react-icons/hi2";
+// import { HiUser } from "react-icons/hi2";
 import { GrLogout } from "react-icons/gr";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 import CardUserSession from "@/ui/CardUserSession";
+import { onClickSignOut } from "@/utils/OnSignOutEvent";
 
 function UserData() {
   const { data: session, status } = useSession();
@@ -66,7 +67,7 @@ function UserData() {
           {/*Logout */}
           <GrLogout
             className="text-red-600 text-xl cursor-pointer"
-            onClick={() => signOut()}
+            onClick={() => onClickSignOut()}
           />
         </div>
       </div>

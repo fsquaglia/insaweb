@@ -3,9 +3,10 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import CardUserSession from "@/ui/CardUserSession";
 import { GiPowerButton } from "react-icons/gi";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 import { getUserByEmail } from "@/utils/firebase/fetchFirebase";
 import PendingCard from "./PendingCard";
+import { onClickSignOut } from "@/utils/OnSignOutEvent";
 
 function UserBody({ dataUser }) {
   const hasSaldo = dataUser?.saldo !== undefined && dataUser.saldo !== 0;
@@ -45,10 +46,6 @@ function DashboardUser() {
       }
     }
   }, [session?.user?.email]);
-
-  console.log(status);
-  console.log(dataSession);
-  console.log(dataUser);
 
   return (
     <div className="flex flex-row">
@@ -224,7 +221,7 @@ function DashboardUser() {
                   <span className="">UI Components</span>
                 </a>
                 <div
-                  onClick={() => signOut()}
+                  onClick={() => onClickSignOut()}
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out flex flex-row gap-2 cursor-pointer"
                 >
                   <GiPowerButton className="text-red-600 text-xl hover:text-white" />

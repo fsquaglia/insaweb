@@ -147,6 +147,17 @@ const handler = NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET, // Añade tu secreto para JWT aquí
+  events: {
+    signOut: async (message) => {
+      // Esto se ejecutará cada vez que ocurra el signOut
+      // pero se ejecuta en el lado del servidor
+      // console.log("User signed out", message);
+      // if (typeof window !== "undefined") {
+      //   Limpiar sessionStorage en el navegador
+      //   sessionStorage.removeItem("variations");
+      // }
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

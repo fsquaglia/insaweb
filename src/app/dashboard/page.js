@@ -8,6 +8,7 @@ import {
   addNewContactFirestore,
   addNewProductFirestore,
   setNodoRealtime,
+  createDocConfig,
 } from "../../utils/firebase/fetchFirebase";
 import {
   aboutInitialData,
@@ -21,6 +22,11 @@ import {
   dataProductInitial,
   variationsInitialData1,
 } from "@/utils/SettingInitialData";
+
+import {
+  getVariationsFromStorage,
+  getCodeToUse,
+} from "@/utils/local_session_storage.js/local_session_storage";
 
 export default function Page() {
   //cargamos algunos contactos en Firestore para inicializar
@@ -167,6 +173,33 @@ export default function Page() {
         <ButtonGeneric
           textButton={"Variaciones"}
           onClick={() => setNodoRealtime("variaciones", variationsInitialData1)}
+          fill={false}
+        />
+      </div>
+      <div>
+        <ButtonGeneric
+          textButton={"Configuraciones"}
+          onClick={() => createDocConfig()}
+          fill={false}
+        />
+      </div>
+      <div>
+        <ButtonGeneric
+          textButton={"get variations"}
+          onClick={async () => {
+            const variations = await getVariationsFromStorage();
+            console.log(variations);
+          }}
+          fill={false}
+        />
+      </div>
+      <div>
+        <ButtonGeneric
+          textButton={"get code"}
+          onClick={async () => {
+            const code = await getCodeToUse();
+            console.log(code);
+          }}
           fill={false}
         />
       </div>

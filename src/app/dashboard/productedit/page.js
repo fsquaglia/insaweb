@@ -43,7 +43,7 @@ const sections = [
           labelText={"Detalle largo"}
           type={"textarea"}
         />
-        <InputCustom name={"marca"} labelText={"Marca "} />
+        <InputCustom name={"marca"} labelText={"Marca "} type={"select"} />
         <InputCustom name={"modelo"} labelText={"Modelo "} />
         <InputCustom name={"color"} labelText={"Color "} type={"select"} />
       </>

@@ -329,7 +329,36 @@ export const categoriesProductsInitialData = [
 
 //? PRODUCTO BASE
 export const productBase = {
-  codigoNro: "RemX-Negro", // Código único basado en el modelo y color
+  codigoNro: "", // Código único basado en el modelo y color
+  nombre: "",
+  detalle: "",
+  marca: "Genérico",
+  modelo: "",
+  color: "Genérico",
+  imagen: [],
+  magnitudDisponible: [
+    {
+      magnitud: "Genérico",
+      stock: 0,
+    },
+  ],
+  stockTotal: 0,
+  extra1: "",
+  extra2: "",
+  fechaCompra: "",
+  precioCompra: 0,
+  precioVenta: 0,
+  publicado: false,
+  IDgrupoDeValores: 1, // Categoría o grupo al que pertenece
+  productosRelacionados: [],
+  enOferta: false,
+  porcentajeDescuentoOferta: 0,
+  hashtags: [],
+  valoraciones: [],
+};
+
+/*export const productBase = {
+  codigoNro: "RemX-Negro", Código único basado en el modelo y color
   nombre: "Remera modelo X",
   detalle: "Este es un detalle largo del producto",
   marca: "Idrogeno",
@@ -356,8 +385,8 @@ export const productBase = {
   fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
   precioCompra: 50,
   precioVenta: 100,
-  publicado: true,
-  IDgrupoDeValores: 1, // Categoría o grupo al que pertenece
+  publicado: false,
+  IDgrupoDeValores: 1,    Categoría o grupo al que pertenece
   productosRelacionados: [
     "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
     "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHoww",
@@ -369,7 +398,7 @@ export const productBase = {
     { puntaje: 5, usuario: "Fer", avatar: "url" },
     { puntaje: 4, usuario: "Aye", avatar: "url" },
   ],
-};
+};*/
 
 //variaciones, como colores, talles, marcas, gruposValores, etc
 export const variationsInitialData1 = {
@@ -385,6 +414,7 @@ export const variationsInitialData1 = {
       { color: "Azul" },
       { color: "Verde" },
       { color: "Naranja" },
+      { color: "Genérico" },
     ],
   },
   talle: {
@@ -418,6 +448,7 @@ export const variationsInitialData1 = {
       { marca: "Soya" },
       { marca: "Meet Me" },
       { marca: "Las Locas" },
+      { marca: "Genérico" },
     ],
   },
   grupoDeValores: {
@@ -428,24 +459,30 @@ export const variationsInitialData1 = {
     data: [
       {
         IDgrupoDeValores: 1,
+        grupoDeValores: "Grupo Genérico",
+        precioLista: 0,
+        descEfectPorc: 0,
+      },
+      {
+        IDgrupoDeValores: 2,
         grupoDeValores: "Remera M.C. caballero clase A",
         precioLista: 20000,
         descEfectPorc: 10,
       },
       {
-        IDgrupoDeValores: 2,
+        IDgrupoDeValores: 3,
         grupoDeValores: "Remera M.C. caballero clase B",
         precioLista: 20000,
         descEfectPorc: 20,
       },
       {
-        IDgrupoDeValores: 3,
+        IDgrupoDeValores: 4,
         grupoDeValores: "Perfume caballero clase A",
         precioLista: 20000,
         descEfectPorc: 20,
       },
       {
-        IDgrupoDeValores: 4,
+        IDgrupoDeValores: 5,
         grupoDeValores: "Perfume caballero clase B",
         precioLista: 20000,
         descEfectPorc: 20,
@@ -466,45 +503,10 @@ export const variationsInitialData1 = {
 };
 
 //! modificar de acuerdo a PRODUCTO BASE
-export const dataProductInitial = [
-  {
-    articulo: "14545",
-    color: ["Negro", "Suela"],
-    data1: "Algún dato extra",
-    data2: "Algún dato extra 2",
-    fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-    imagen: [
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2FKids%2F20220331_120224.jpg?alt=media&token=11f991c4-1c4d-4bb2-9cd2-7c1da3d20bcc",
-    ],
-    marca: "Puerto Blue",
-    Modelo: "Milan",
-    nombre: "Zapato de vestir caballero Milan",
-    num_talle: ["42", "44"],
-    precioCompra: 100,
-    precioVenta: 200,
-    publicado: true,
-    stock: 1,
-    grupoValores: "Zapatos PB",
-    idProducto: "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
-  },
-  {
-    articulo: "A1245",
-    color: ["Negro"],
-    data1: "Algún dato extraaaaa",
-    data2: "Algún dato extraaaaa 2",
-    fechaCompra: Timestamp.fromDate(new Date("2024-06-15")),
-    imagen: [
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2FKids%2F20220331_120224.jpg?alt=media&token=11f991c4-1c4d-4bb2-9cd2-7c1da3d20bcc",
-    ],
-    marca: "Meet Me",
-    Modelo: "Milan",
-    nombre: "Zapato de vestir caballero Milan",
-    num_talle: ["42", "44"],
-    precioCompra: 100,
-    precioVenta: 200,
-    publicado: false,
-    stock: 1,
-    grupoValores: "",
-    idProducto: "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
-  },
-];
+export const dataProductInitial = [{}, {}];
+
+export const dataConfigInitial = {
+  codProdEnUso: 0,
+  codProdPrefijo: "AA",
+  codProdBloque: 15,
+};

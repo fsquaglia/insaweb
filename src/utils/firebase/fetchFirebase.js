@@ -1,5 +1,4 @@
 // "use server";
-
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 import {
@@ -10,6 +9,7 @@ import {
 import {
   collection,
   getDocs,
+  getDoc,
   query,
   where,
   orderBy,
@@ -17,6 +17,7 @@ import {
   doc,
   setDoc,
   addDoc,
+  runTransaction,
 } from "firebase/firestore";
 
 import {
@@ -46,9 +47,22 @@ import {
   footerInitialData,
   productBase,
   contactInitialData,
+  dataConfigInitial,
 } from "../SettingInitialData";
 
 //!FIRESTORE
+//crear documento de Configuraciones
+export async function createDocConfig() {
+  try {
+    const docRef = doc(firestoreDB, "configuraciones", "configuraciones");
+    await setDoc(docRef, dataConfigInitial);
+    console.log("Documento de configuraciones creado correctamente.");
+  } catch (error) {
+    console.error("Error al crear el documento de configuraciones: ", error);
+    throw error;
+  }
+}
+
 //obtener un usuario o contacto por el email
 export async function getUserByEmail(email) {
   const q = query(
@@ -78,6 +92,55 @@ export async function getAllDocsColection(nameCollection) {
   });
   return arrayData;
 }
+//obtener documento de configuraciones
+export async function getDocConfig() {
+  try {
+    const docRef = doc(firestoreDB, "configuraciones", "configuraciones");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      //si el doc de configuraciones no existe, crearlo
+      await createDocConfig();
+      console.log("Se creó el doc de configuraciones porque no existía");
+      return dataConfigInitial;
+    }
+  } catch (error) {
+    console.error("Error fetching document:", error);
+    return null;
+  }
+}
+
+//transacción de Firestore para actualizar el bloque de código para productos
+export const getUpdateCodeProd = async () => {
+  const configDocRef = doc(firestoreDB, "configuraciones", "configuraciones");
+  try {
+    let sfDoc;
+    await runTransaction(firestoreDB, async (transaction) => {
+      sfDoc = await transaction.get(configDocRef);
+
+      if (!sfDoc.exists()) {
+        console.log("Document does not exist!");
+        // Crear el documento si no existe
+        await setDoc(configDocRef, dataConfigInitial);
+        // Volver a obtener el documento después de crearlo
+        sfDoc = await transaction.get(configDocRef);
+      }
+
+      const newProdInUse =
+        sfDoc.data().codProdEnUso + sfDoc.data().codProdBloque;
+      transaction.update(configDocRef, { codProdEnUso: newProdInUse });
+    });
+
+    console.log("Transaction successfully committed!");
+    return sfDoc.data();
+  } catch (e) {
+    console.error("Transaction failed: ", e);
+    throw new Error("Transaction failed: ");
+  }
+};
+
 //agregar un documento a una coleccion (ej. una categoría a colección productos, productos/categorias, colección/documento)
 export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
   try {
@@ -116,7 +179,7 @@ export async function createSubcollection(
       nameSubCat,
       "docBase"
     );
-    await setDoc(docSubCategoryRef, { id: "docBase" });
+    await setDoc(docSubCategoryRef, productBase);
   } catch (error) {
     console.error(error);
     throw error;
