@@ -1,8 +1,4 @@
-import {
-  getNodoRealtime,
-  getDocConfig,
-  getUpdateCodeProd,
-} from "../firebase/fetchFirebase";
+import { getNodoRealtime, getUpdateCodeProd } from "../firebase/fetchFirebase";
 
 export const getVariationsFromStorage = async () => {
   // Primero comprobar si está almacenado en sessionStorage
@@ -12,7 +8,7 @@ export const getVariationsFromStorage = async () => {
   const storedVariations = sessionStorage.getItem("variations");
 
   if (storedVariations) {
-    // console.log("Datos encontrados en sessionStorage");
+    console.log("Datos encontrados en sessionStorage");
 
     try {
       variations = JSON.parse(storedVariations);
@@ -26,7 +22,7 @@ export const getVariationsFromStorage = async () => {
 
     // Verificamos si es un objeto vacío
     if (Object.keys(variations).length === 0) {
-      //   console.log("Variations está vacío, obteniendo datos desde Firestore");
+      console.log("Variations está vacío, obteniendo datos desde Firestore");
     } else {
       return variations; // Retornamos si ya hay datos válidos
     }

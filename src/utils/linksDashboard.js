@@ -8,6 +8,7 @@ import { MdCategory } from "react-icons/md"; //Categorías de productos
 import { AiFillProduct } from "react-icons/ai"; //Productos
 import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
 import { RiProductHuntLine } from "react-icons/ri";
+import { FaGear } from "react-icons/fa6";
 
 export const links = [
   {
@@ -115,6 +116,16 @@ export const links = [
     head: {
       title: "Sección Editar producto",
       description: "Esto está en proceso de desarrollo........",
+    },
+  },
+  {
+    name: "Configuraciones",
+    href: "/dashboard/config",
+    icon: FaGear,
+    head: {
+      title: "Sección de Configuracion",
+      description:
+        "Ten cuidado, las configuraciones pueden afectar partes de la aplicación.",
     },
   },
 ];

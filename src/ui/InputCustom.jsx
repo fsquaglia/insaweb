@@ -10,6 +10,8 @@ function TypeShow({
   onChange,
   charLimit,
   inputType = "text",
+  options = [], // Agregado para manejar las opciones del select
+  disabled = false,
 }) {
   switch (typeParam) {
     case "input":
@@ -23,6 +25,7 @@ function TypeShow({
           maxLength={charLimit}
           id={`id${name}`}
           type={inputType === "text" ? "text" : "number"}
+          disabled={disabled}
         />
       );
     case "textarea":
@@ -37,6 +40,7 @@ function TypeShow({
           id={`id${name}`}
           rows="5"
           cols="30"
+          disabled={disabled}
         />
       );
     case "select":
@@ -44,12 +48,26 @@ function TypeShow({
         <select
           className="rounded-md border font-sans font-normal text-blue-gray-700 p-1"
           name={name}
-          placeholder={placeHolder}
+          disabled={disabled}
           value={inputValue}
           onChange={onChange}
-          maxLength={charLimit}
           id={`id${name}`}
-        />
+        >
+          <option value="" disabled>
+            {placeHolder}
+          </option>
+          {options.map((option, index) => {
+            return typeof option === "object" ? (
+              <option key={index} value={option.IDgrupoDeValores}>
+                {option.grupoDeValores}
+              </option>
+            ) : (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            );
+          })}
+        </select>
       );
     default:
       return <input />;
@@ -65,6 +83,9 @@ export default function InputCustom({
   showCharLimits = true,
   type = "input",
   placeHolder = "",
+  options = [], // Agregado para manejar las opciones en el componente principal
+  disabled = false,
+  inputType = "text",
 }) {
   return (
     <>
@@ -82,9 +103,12 @@ export default function InputCustom({
         inputValue={inputValue}
         onChange={onChange}
         charLimit={charLimit}
+        options={options} // Pasar el prop de opciones a TypeShow
+        disabled={disabled}
+        inputType={inputType}
       />
 
-      {showCharLimits && type != "select" ? (
+      {showCharLimits && type !== "select" ? (
         <span className="block text-right text-xs text-blue-gray-600 mt-1">
           {inputValue.length} de {charLimit}
         </span>

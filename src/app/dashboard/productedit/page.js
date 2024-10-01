@@ -1,10 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputCustom from "@/ui/InputCustom";
 import SwitchVisible from "@/ui/SwitchVisible";
-import SwitchText from "@/ui/SwitchText";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import CustomSelect from "./StockBySize";
+import {
+  getCodeToUse,
+  getVariationsFromStorage,
+} from "@/utils/local_session_storage.js/local_session_storage";
+import Swal from "sweetalert2";
+import SwitchPublished from "@/ui/SwitchPublished";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -29,23 +34,64 @@ const Section = ({ title, description, children }) => (
 );
 
 //data de las secciones
-const sections = [
+const sections = (variations, onChange, values, onClickSwitch) => [
   {
     name: "Principal",
     id: 1,
     description: "Comencemos por los datos principales del producto.",
     content: (
       <>
-        <InputCustom name={"codigoNro"} labelText={"Código "} />
-        <InputCustom name={"nombre"} labelText={"Nombre del producto "} />
+        <InputCustom
+          name={"codigoNro"}
+          labelText={"Código "}
+          onChange={onChange}
+          inputValue={values?.codigoNro || ""}
+          charLimit={10}
+          placeHolder={"Se ingresará automático"}
+          disabled={true}
+        />
+        <InputCustom
+          name={"nombre"}
+          labelText={"Nombre del producto "}
+          onChange={onChange}
+          inputValue={values?.nombre || ""}
+          charLimit={25}
+          placeHolder="Ingresa un nombre"
+        />
         <InputCustom
           name={"detalle"}
           labelText={"Detalle largo"}
           type={"textarea"}
+          onChange={onChange}
+          inputValue={values?.detalle || ""}
+          charLimit={100}
+          placeHolder="Detalle largo del producto"
         />
-        <InputCustom name={"marca"} labelText={"Marca "} type={"select"} />
-        <InputCustom name={"modelo"} labelText={"Modelo "} />
-        <InputCustom name={"color"} labelText={"Color "} type={"select"} />
+        <InputCustom
+          labelText="Marca "
+          name="marca"
+          type="select"
+          placeHolder="Elige una opción"
+          inputValue={values?.marca || "Genérico"}
+          options={variations?.marca || []} // Asegurarse que no sea undefined
+          onChange={onChange}
+        />
+        <InputCustom
+          name={"modelo"}
+          labelText={"Modelo "}
+          placeHolder={"Modelo para esa Marca"}
+          inputValue={values?.modelo || ""}
+          onChange={onChange}
+        />
+        <InputCustom
+          name={"color"}
+          labelText={"Color "}
+          type={"select"}
+          placeHolder="Elige una opción"
+          inputValue={values?.color || "Genérico"}
+          options={variations?.color || []}
+          onChange={onChange}
+        />
       </>
     ),
   },
@@ -67,30 +113,57 @@ const sections = [
           name={"precioCompra"}
           labelText={"Precio de compra "}
           inputType={"number"}
+          placeHolder={"0"}
+          inputValue={values?.precioCompra || 0}
+          onChange={onChange}
+          showCharLimits={false}
         />
         <InputCustom
           name={"precioVenta"}
           labelText={"Precio de venta "}
           inputType={"number"}
+          placeHolder={"0"}
+          inputValue={values?.precioVenta || values?.precioCompra * 2 || 0}
+          onChange={onChange}
+          showCharLimits={false}
         />
         <InputCustom
           name={"fechaCompra"}
           labelText={"Fecha de compra AAAAMMDD "}
           inputType={"number"}
+          showCharLimits={false}
           placeHolder={getYesterdayDate()}
+          inputValue={values?.fechaCompra || getYesterdayDate()}
+          onChange={onChange}
         />
         <InputCustom
           name={"IDgrupoDeValores"}
           type={"select"}
           labelText={"Grupo de Valores "}
+          options={variations?.grupoDeValores || []}
+          placeHolder={"Elige una opción"}
+          inputValue={values?.IDgrupoDeValores || 1}
+          onChange={onChange}
+          showCharLimits={false}
         />
         <div className="my-4">
           <CustomSelect
-            options={["Apple", "Banana", "Cherry", "Date", "Grape"]}
+            options={variations?.talle || ["Genérico"]}
+            quantities={
+              values?.magnitudDisponible || [
+                {
+                  magnitud: "Genérico",
+                  stock: 1,
+                },
+              ]
+            }
           />
         </div>
         <div className="my-4">
-          <SwitchText text1={"Borrador"} text2={"Publicado"} />
+          <SwitchPublished
+            published={values?.publicado}
+            onClick={onClickSwitch}
+          />
         </div>
       </>
     ),
@@ -119,16 +192,74 @@ const sections = [
   },
 ];
 
-function TabComponent() {
+function ProductPage() {
   const [openTab, setOpenTab] = useState(1);
+  const [variations, setVariations] = useState({});
+  const [values, setValues] = useState({
+    codigoNro: "",
+    nombre: "",
+    detalle: "",
+    marca: "Genérico",
+    modelo: "",
+    color: "Genérico",
+    stockTotal: 0,
+    extra1: "",
+    extra2: "",
+    fechaCompra: getYesterdayDate(),
+    precioCompra: 0,
+    precioVenta: 0,
+    publicado: false,
+    magnitudDisponible: [
+      {
+        magnitud: "Genérico",
+        stock: 1,
+      },
+      {
+        magnitud: "XL",
+        stock: 2,
+      },
+    ],
+    IDgrupoDeValores: 1,
+  });
+
+  useEffect(() => {
+    const getVariations = async () => {
+      const variationsGet = await getVariationsFromStorage();
+      setVariations(variationsGet);
+      if (Object.keys(variationsGet).length === 0) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Deberás configurar variaciones primero.",
+          showConfirmButton: true,
+        });
+      }
+    };
+    getVariations();
+  }, []);
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+
+  const onClickSwitch = (value) => {
+    setValues((prevValues) => ({ ...prevValues, publicado: value }));
+  };
+
+  const onSubmitValues = async () => {
+    const code = await getCodeToUse();
+    values.codigoNro = code;
+    console.log(values);
+  };
 
   return (
     <div className="bg-gray-100 font-sans flex h-screen justify-center w-full">
       <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
         <div className="w-full">
-          {/* Encabezado y Tabs con botones*/}
+          {/* Encabezado y Tabs con botones */}
           <div className="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
-            {sections.map((section) => (
+            {sections(variations).map((section) => (
               <button
                 key={section.id}
                 onClick={() => setOpenTab(section.id)}
@@ -143,7 +274,7 @@ function TabComponent() {
 
           {/* Aquí van los inputs y componentes de las secciones */}
           <div>
-            {sections.map(
+            {sections(variations, onChange, values, onClickSwitch).map(
               (section) =>
                 openTab === section.id && (
                   <Section
@@ -160,7 +291,10 @@ function TabComponent() {
           {/* Botón Guardar */}
           <div className="mt-4 flex pb-2 bg-white rounded-lg shadow-md">
             <div className="flex justify-center items-center mx-auto">
-              <ButtonDashboard textButton={"Guardar"} />
+              <ButtonDashboard
+                textButton={"Guardar"}
+                onclick={onSubmitValues}
+              />
             </div>
           </div>
         </div>
@@ -169,4 +303,4 @@ function TabComponent() {
   );
 }
 
-export default TabComponent;
+export default ProductPage;

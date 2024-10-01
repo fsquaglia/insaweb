@@ -509,4 +509,6 @@ export const dataConfigInitial = {
   codProdEnUso: 0,
   codProdPrefijo: "AA",
   codProdBloque: 15,
+  coeficienteVenta: 1,
+  multiplicadorCpraVta: 2.2,
 };
