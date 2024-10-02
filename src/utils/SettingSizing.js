@@ -107,4 +107,13 @@ export const imgSizing = {
     minSizeKBaccepted: 50,
     maxSizeKBaccepted: 300,
   },
+  //productClassA codifiqué así por si luego necesito ...ClassB p.ejemplo
+  productClassA: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 50,
+    maxSizeKBaccepted: 500,
+  },
 };

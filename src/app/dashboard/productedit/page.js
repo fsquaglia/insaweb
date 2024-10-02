@@ -11,6 +11,8 @@ import {
 import Swal from "sweetalert2";
 import SwitchPublished from "@/ui/SwitchPublished";
 import MultiSelect from "./MultiSelect";
+import ImageUpload from "./ImageUpload";
+import { doc, setDoc } from "firebase/firestore";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -43,7 +45,8 @@ const sections = (
   handleUpdateStock,
   onClickSwitchPrecioVenta,
   onClickSwitchOferta,
-  handleHashtagsChange
+  handleHashtagsChange,
+  handleUploadSuccess
 ) => [
   {
     name: "Principal",
@@ -111,7 +114,27 @@ const sections = (
     id: 2,
     description: "Agrega una imagen a tu producto.",
     content: (
-      <p> Aquí irán los inputs y componentes para la sección de imagen </p>
+      <div>
+        <h1>Subir Imagen</h1>
+        <ImageUpload onUploadSuccess={handleUploadSuccess} />
+        <div className="flex gap-4 my-2">
+          {values?.imagen && values.imagen.length > 0 ? (
+            values.imagen.map((imgUrl, index) => (
+              <div key={index} className="w-1/2">
+                <img
+                  src={imgUrl}
+                  alt={`Imagen ${index + 1}`}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            ))
+          ) : (
+            <p className="mx-auto text-slate-500 my-2">
+              No hay imágenes para mostrar
+            </p>
+          )}
+        </div>
+      </div>
     ),
   },
   {
@@ -281,6 +304,9 @@ function ProductPage() {
     enOferta: false,
     porcentajeDescuentoOferta: 0,
     hashtags: ["#Ofertas"],
+    imagen: [
+      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2F19562117-placer-feliz-mujer-libre-disfrutando-nature-girl-outdoor.jpg?alt=media&token=cd244e20-a574-482c-aa7f-fc483a8d1fc0",
+    ],
   });
 
   useEffect(() => {
@@ -342,6 +368,12 @@ function ProductPage() {
     }));
   };
 
+  //manejador de subida de imagen
+  const handleUploadSuccess = async (downloadURL) => {
+    console.log(downloadURL);
+    return;
+  };
+
   //submit principal del formulario
   const onSubmitValues = async () => {
     // const code = await getCodeToUse();
@@ -378,7 +410,8 @@ function ProductPage() {
               handleUpdateStock,
               onClickSwitchPrecioVenta,
               onClickSwitchOferta,
-              handleHashtagsChange
+              handleHashtagsChange,
+              handleUploadSuccess
             ).map(
               (section) =>
                 openTab === section.id && (
