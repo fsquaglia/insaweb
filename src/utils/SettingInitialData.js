@@ -348,6 +348,7 @@ export const productBase = {
   fechaCompra: "",
   precioCompra: 0,
   precioVenta: 0,
+  esPrecioVentaDeGrupo: true,
   publicado: false,
   IDgrupoDeValores: 1, // Categoría o grupo al que pertenece
   productosRelacionados: [],

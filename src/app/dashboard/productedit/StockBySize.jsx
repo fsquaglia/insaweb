@@ -5,13 +5,15 @@ import CreatableSelect from "react-select/creatable";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { useState, useEffect } from "react";
 
-function CustomSelect({ options, quantities }) {
+function CustomSelect({ options, quantities, updateStock }) {
   const [amount, setAmount] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantitiesLocal, setQuantitiesLocal] = useState([]);
+  const [stockTotal, setStockTotal] = useState(0);
 
   useEffect(() => {
     setQuantitiesLocal(quantities);
+    setStockTotal(quantities.reduce((acc, item) => acc + item.stock, 0));
   }, [quantities]);
 
   const customOptions = options.map((option) => ({
@@ -19,6 +21,7 @@ function CustomSelect({ options, quantities }) {
     value: option,
   }));
 
+  //botón agregar nueva magnitud y cantidad al contenedor derecho
   const onClickAdd = () => {
     if (!selectedSize?.value || amount < 1) return;
 
@@ -47,6 +50,7 @@ function CustomSelect({ options, quantities }) {
     // Resetear los valores después de agregar
     setSelectedSize(null);
     setAmount(1);
+    setStockTotal(stockTotal + amount);
   };
 
   const handleDelete = (index) => {
@@ -65,19 +69,29 @@ function CustomSelect({ options, quantities }) {
       (item) => item.magnitud !== index
     );
     setQuantitiesLocal(updatedQuantities);
+
+    setStockTotal(updatedQuantities.reduce((acc, item) => acc + item.stock, 0));
   };
 
-  const handleQuantityChange = (name, method) => {
-    // Evita valores negativos
+  //manejador de eventos + y - en stock por magnitud
+  const handleQuantityChange = (name, valueOrMethod) => {
     const updatedQuantities = quantitiesLocal.map((item) => {
       if (item.magnitud === name) {
-        const newStock =
-          method === "increment" ? item.stock + 1 : item.stock - 1;
+        let newStock;
 
-        // Asegúrate de que el stock no sea negativo
+        if (valueOrMethod === "increment") {
+          newStock = item.stock + 1;
+        } else if (valueOrMethod === "dec") {
+          newStock = item.stock - 1 >= 1 ? item.stock - 1 : 1;
+        } else {
+          // Si es un valor directo, asegúrate de convertirlo a un número y evitar negativos
+          newStock =
+            parseInt(valueOrMethod, 10) >= 1 ? parseInt(valueOrMethod, 10) : 1;
+        }
+
         return {
           ...item,
-          stock: newStock >= 1 ? newStock : 1,
+          stock: newStock,
         };
       }
       return item;
@@ -85,6 +99,7 @@ function CustomSelect({ options, quantities }) {
 
     // Actualiza el estado con las nuevas cantidades
     setQuantitiesLocal(updatedQuantities);
+    setStockTotal(updatedQuantities.reduce((acc, item) => acc + item.stock, 0));
   };
 
   return (
@@ -174,6 +189,9 @@ function CustomSelect({ options, quantities }) {
                   id="stock"
                   value={item.stock}
                   className="w-full p-1 text-sm text-right"
+                  onChange={(e) =>
+                    handleQuantityChange(item.magnitud, e.target.value)
+                  }
                 />
                 <button
                   type="button"
@@ -196,6 +214,15 @@ function CustomSelect({ options, quantities }) {
           <p className="text-sm mx-auto border">
             Selecciona un tamaño y cantidad para agregarlo
           </p>
+        )}
+        {quantitiesLocal && quantitiesLocal.length > 0 && (
+          <div className="flex flex-col mx-auto mt-2">
+            <p className="text-gray-500	">Stock total: {stockTotal} un.</p>
+            <ButtonDashboard
+              textButton={"Guardar"}
+              onclick={() => updateStock(quantitiesLocal, stockTotal)}
+            />
+          </div>
         )}
       </div>
     </div>

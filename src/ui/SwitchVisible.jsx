@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-function SwitchVisible({ switchLabel, initialValue = false, onToggle }) {
+function SwitchVisible({ name, switchLabel, initialValue = false, onToggle }) {
   const [isOn, setIsOn] = useState(initialValue || false);
 
   const handleToggle = () => {
@@ -16,7 +16,8 @@ function SwitchVisible({ switchLabel, initialValue = false, onToggle }) {
       </span>
       <label className="relative inline-flex cursor-pointer items-center">
         <input
-          id="switch-2"
+          id={name || "switch-2"}
+          name={name || "switch-2"}
           type="checkbox"
           className="peer sr-only"
           checked={isOn}
