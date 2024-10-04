@@ -115,8 +115,15 @@ const sections = (
     description: "Agrega una imagen a tu producto.",
     content: (
       <div>
-        <h1>Subir Imagen</h1>
-        <ImageUpload onUploadSuccess={handleUploadSuccess} />
+        {values?.imagen?.length >= 2 ? (
+          <div className="mx-auto bg-gray-200 p-1 text-center  my-1 text-red-400 rounded">
+            Llegaste al límite de dos imágenes, elimina alguna para poder subir
+            otra.
+          </div>
+        ) : (
+          <ImageUpload onUploadSuccess={handleUploadSuccess} />
+        )}
+
         <div className="flex gap-4 my-2">
           {values?.imagen && values.imagen.length > 0 ? (
             values.imagen.map((imgUrl, index) => (
@@ -302,11 +309,10 @@ function ProductPage() {
     IDgrupoDeValores: 1,
     productosRelacionados: [],
     enOferta: false,
-    porcentajeDescuentoOferta: 0,
-    hashtags: ["#Ofertas"],
-    imagen: [
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2F19562117-placer-feliz-mujer-libre-disfrutando-nature-girl-outdoor.jpg?alt=media&token=cd244e20-a574-482c-aa7f-fc483a8d1fc0",
-    ],
+    porcentajeDescuentoOferta: 50,
+    hashtags: [],
+    imagen: [],
+    valoraciones: [],
   });
 
   useEffect(() => {
@@ -370,8 +376,10 @@ function ProductPage() {
 
   //manejador de subida de imagen
   const handleUploadSuccess = async (downloadURL) => {
-    console.log(downloadURL);
-    return;
+    setValues((prevValues) => ({
+      ...prevValues,
+      imagen: [...prevValues.imagen, downloadURL],
+    }));
   };
 
   //submit principal del formulario

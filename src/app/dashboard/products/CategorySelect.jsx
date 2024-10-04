@@ -1,12 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import CardComponent from "@/ui/CardComponent";
 import ScrollableContainer from "@/ui/ScrollableContainer";
 import SkeletonLoader from "@/ui/SkeletonLoader";
-import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
+import {
+  addNewProductFirestore,
+  getAllDocsColection,
+} from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
+import { productBase } from "@/utils/SettingInitialData";
 
 function CategorySelect({ data }) {
+  const router = useRouter();
+
   const [values, setValues] = useState([...data]); //es un array de objetos, todas las categorías
   const [categorySelected, setCategorySelected] = useState(values[0]); //es un objeto, lo que se estará editando o creando
   const [subCategories, setSubcategories] = useState(
@@ -50,8 +57,6 @@ function CategorySelect({ data }) {
     fetchProducts();
   }, [subCategories]);
 
-  // console.log(products);
-
   const onclickCard = (id) => {
     const elem = values.find((e) => e.docID === id);
     setCategorySelected(elem);
@@ -60,13 +65,35 @@ function CategorySelect({ data }) {
 
   const onClickSubCard = async (id) => {
     setSubCatSelected(id);
-
     const fetchedProdcuts = await fetchArrayProductos(
       `productos/${categorySelected.docID}/${id}`
     );
-
     setProducts(fetchedProdcuts);
-    console.log(fetchedProdcuts);
+  };
+
+  //handle de clic sobre card de producto
+  const handleOnclickProduct = async (product) => {
+    if (product.docID === "docBase") {
+      //se hizo clic sobre la Card para agregar nuevo producto
+      //crear un producto en la categoría/subcategoría y redirigir a esa ruta para editarlo
+      try {
+        const newProduct = await addNewProductFirestore(
+          "productos",
+          categorySelected.docID,
+          subCatSelected,
+          productBase
+        );
+        const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${newProduct.id}`;
+        router.push(newRoute);
+      } catch (error) {
+        console.error("Error al agregar un doc a Firestore :", error);
+        alert("Error al agregar un doc a Firestore");
+      }
+    } else {
+      //se hizo clic sobre un producto existente, redirigir para editarlo
+      const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${product.docID}`;
+      router.push(newRoute);
+    }
   };
 
   return (
@@ -124,9 +151,13 @@ function CategorySelect({ data }) {
                     <CardComponent
                       key={index}
                       id={prod.docID}
-                      name={prod.docData.id}
+                      name={
+                        prod.docID === "docBase"
+                          ? "Nuevo"
+                          : prod.docData.nombre || "Prod. sin nombre"
+                      }
                       // idSelected={subCatSelected}
-                      // onclickCard={onClickSubCard}
+                      onclickCard={() => handleOnclickProduct(prod)}
                     />
                   ))}
               </ScrollableContainer>

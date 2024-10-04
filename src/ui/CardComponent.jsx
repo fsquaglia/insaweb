@@ -22,7 +22,7 @@ function CardComponent({ id, name, img, onclickCard, idSelected }) {
       ) : null}
       <div
         className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70 z-10"
-        onClick={() => onclickCard(id)}
+        // onClick={() => onclickCard(id)}
       ></div>
       <div className="relative z-20 p-2 mt-auto text-white">
         <span className="block text-xs">{name || "¿Categoría?"}</span>

@@ -339,27 +339,8 @@ export async function addNewProductFirestore(
   subCategoria = "",
   dataObject
 ) {
-  /*dataObject debe ser
-  {
-  Codigo_Nro:"",
-  Nombre:"Zapato de vestir caballero Milan"
-  Marca: "Puerto Blue",
-  Modelo: "Milan",
-  Imagen: ["urls imagenes"],
-  Color:["Negro", "Suela"],
-  Numero: ["42", "44"],
-  Talle: ["42", "44"],
-  Extra_1:"Algún dato extra",
-  Estra_2:"Algún dato extra 2",
-  FechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-  PrecioCompra: 100,
-  PrecioVenta: 200,
-  Publicado: true,
-  Stock: 1,
-  GrupoValores: "Zapatos PB",
-  *idProducto: productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr SOLO PARA TABLA DE OFERTAS
-  }
-  */
+  //dataObject debe como  productBase
+
   let ruta = coleccion; // Colección siempre es obligatoria
   if (categoria) {
     ruta += `/${categoria}`;
@@ -372,6 +353,7 @@ export async function addNewProductFirestore(
     // Agrega un nuevo doc a la colección "coleccion"
     const docRef = await addDoc(collection(firestoreDB, ruta), dataObject);
     console.log("Producto agregado: ", docRef.id);
+    return docRef;
   } catch (error) {
     console.error("Error al agregar producto: ", error);
     throw error;
