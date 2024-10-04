@@ -111,6 +111,64 @@ export async function getDocConfig() {
     return null;
   }
 }
+//obtener un producto por su ID de Firestore (un producto de productos/categoria/subcat/poducto)
+export async function getProductByID(category, subcategory, idDocument) {
+  try {
+    if (!category || !subcategory || !idDocument) {
+      throw new Error(
+        "Todos los argumentos (categoría, subcategoría, idDocumento) son requeridos"
+      );
+    }
+
+    const docRef = doc(
+      firestoreDB,
+      "productos",
+      category,
+      subcategory,
+      idDocument
+    );
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { docID: docSnap.id, ...docSnap.data() };
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching document:", error);
+    return null;
+  }
+}
+
+//actualizar datos de un producto según ID
+export async function updateProductByID(
+  category,
+  subcategory,
+  idDocument,
+  newData
+) {
+  try {
+    if (!category || !subcategory || !idDocument || !newData) {
+      throw new Error(
+        "Todos los argumentos (categoría, subcategoría, idDocumento, newData) son requeridos"
+      );
+    }
+
+    const docRef = doc(
+      firestoreDB,
+      "productos",
+      category,
+      subcategory,
+      idDocument
+    );
+    await setDoc(docRef, newData, { merge: true });
+    console.log("Producto actualizado correctamente.");
+  } catch (error) {
+    console.error("Error al actualizar el producto: ", error);
+    throw error;
+  }
+}
 
 //transacción de Firestore para actualizar el bloque de código para productos
 export const getUpdateCodeProd = async () => {
