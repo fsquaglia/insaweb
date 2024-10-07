@@ -59,15 +59,29 @@ const sections = (
     description: "Comencemos por los datos principales del producto.",
     content: (
       <>
-        <InputCustom
-          name={"codigoNro"}
-          labelText={"Código "}
-          onChange={onChange}
-          inputValue={values?.codigoNro || ""}
-          charLimit={10}
-          placeHolder={"Se ingresará automático"}
-          disabled={true}
-        />
+        <div className="columns-2">
+          <div className="flex flex-col">
+            <InputCustom
+              name={"codigoNro"}
+              labelText={"Código "}
+              onChange={onChange}
+              inputValue={values?.codigoNro || ""}
+              charLimit={10}
+              placeHolder={"Se ingresará automático"}
+              disabled={true}
+            />
+          </div>
+          <div className="flex flex-col">
+            <InputCustom
+              name={"codigoAnterior"}
+              labelText={"Código anterior"}
+              onChange={onChange}
+              inputValue={values?.codigoAnterior || ""}
+              charLimit={10}
+              placeHolder={"Código del sistema anterior"}
+            />
+          </div>
+        </div>
         <InputCustom
           name={"nombre"}
           labelText={"Nombre del producto "}
@@ -295,6 +309,9 @@ function ProductPage({ params }) {
   const [variations, setVariations] = useState({});
   const [values, setValues] = useState({
     codigoNro: "",
+    codigoAnterior: "",
+    categoria: "",
+    subcategoria: "",
     nombre: "",
     detalle: "",
     marca: "Genérico",
@@ -346,15 +363,22 @@ function ProductPage({ params }) {
         setCategory(category);
         setSubcategory(subcategory);
         setProductID(product);
-        const productSelected = await getProductByID(
-          category,
-          subcategory,
-          product
-        );
-        //!verificar esto
-        console.log(productSelected);
-
-        setValues(productSelected);
+        try {
+          const productSelected = await getProductByID(
+            category,
+            subcategory,
+            product
+          );
+          //si no tiene código, asignarle uno
+          if (productSelected.codigoNro === "") {
+            const code = await getCodeToUse();
+            productSelected.codigoNro = code;
+          }
+          setValues(productSelected);
+        } catch (error) {
+          console.error("Error fetching product:", error);
+          setValues(null);
+        }
       }
     };
 
@@ -415,71 +439,81 @@ function ProductPage({ params }) {
 
   //submit principal del formulario
   const onSubmitValues = async () => {
-    // const code = await getCodeToUse();
-    // values.codigoNro = code;
-    console.log(values);
-    //!!! agregar try catch y hacer validaciones antes de enviar
-    //!! agregar key value en el producto/document de la categoria y subcategoria a la que pertenece
-    await updateProductByID(category, subcategory, productID, values);
-    alert("Producto actualizado");
+    try {
+      await updateProductByID(category, subcategory, productID, values);
+      alert("Producto actualizado");
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Error al actualizar el producto");
+    }
   };
 
   return (
     <div className="bg-gray-100 font-sans flex h-screen justify-center w-full">
-      <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
-        <div className="w-full">
-          {/* Encabezado y Tabs con botones */}
-          <div className="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
-            {sections(variations).map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setOpenTab(section.id)}
-                className={`flex-1 py-2 px-4 rounded-md focus:outline-none transition-all duration-300 ${
-                  openTab === section.id ? "bg-blue-600 text-white" : ""
-                }`}
-              >
-                {section.name}
-              </button>
-            ))}
+      {values ? (
+        <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
+          <div className="flex items-center justify-center border rounded shadow my-2 bg-white">
+            <span className="text-xs text-slate-500 my-2">{`Categoría: ${category} - Subcategoría: ${subcategory} - Producto ID: ${productID}`}</span>
           </div>
+          <div className="w-full">
+            {/* Encabezado y Tabs con botones */}
+            <div className="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
+              {sections(variations).map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => setOpenTab(section.id)}
+                  className={`flex-1 py-2 px-4 rounded-md focus:outline-none transition-all duration-300 ${
+                    openTab === section.id ? "bg-blue-600 text-white" : ""
+                  }`}
+                >
+                  {section.name}
+                </button>
+              ))}
+            </div>
 
-          {/* Aquí van los inputs y componentes de las secciones */}
-          <div>
-            {sections(
-              variations,
-              onChange,
-              values,
-              onClickSwitch,
-              handleUpdateStock,
-              onClickSwitchPrecioVenta,
-              onClickSwitchOferta,
-              handleHashtagsChange,
-              handleUploadSuccess
-            ).map(
-              (section) =>
-                openTab === section.id && (
-                  <Section
-                    key={section.id}
-                    title={section.name}
-                    description={section.description}
-                  >
-                    {section.content}
-                  </Section>
-                )
-            )}
-          </div>
+            {/* Aquí van los inputs y componentes de las secciones */}
+            <div>
+              {sections(
+                variations,
+                onChange,
+                values,
+                onClickSwitch,
+                handleUpdateStock,
+                onClickSwitchPrecioVenta,
+                onClickSwitchOferta,
+                handleHashtagsChange,
+                handleUploadSuccess
+              ).map(
+                (section) =>
+                  openTab === section.id && (
+                    <Section
+                      key={section.id}
+                      title={section.name}
+                      description={section.description}
+                    >
+                      {section.content}
+                    </Section>
+                  )
+              )}
+            </div>
 
-          {/* Botón Guardar */}
-          <div className="mt-4 flex pb-2 bg-white rounded-lg shadow-md">
-            <div className="flex justify-center items-center mx-auto">
-              <ButtonDashboard
-                textButton={"Guardar"}
-                onclick={onSubmitValues}
-              />
+            {/* Botón Guardar */}
+            <div className="mt-4 flex pb-2 bg-white rounded-lg shadow-md">
+              <div className="flex justify-center items-center mx-auto">
+                <ButtonDashboard
+                  textButton={"Guardar"}
+                  onclick={onSubmitValues}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="mx-auto my-4">
+          Buscando el producto, si no lo encontramos deberás volver a
+          intentarlo...
+        </div>
+      )}
     </div>
   );
 }

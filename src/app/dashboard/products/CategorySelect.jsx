@@ -81,7 +81,7 @@ function CategorySelect({ data }) {
           "productos",
           categorySelected.docID,
           subCatSelected,
-          productBase
+          product.docData
         );
         const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${newProduct.id}`;
         router.push(newRoute);
@@ -158,6 +158,7 @@ function CategorySelect({ data }) {
                       }
                       // idSelected={subCatSelected}
                       onclickCard={() => handleOnclickProduct(prod)}
+                      img={prod?.docData?.imagen[0] || null}
                     />
                   ))}
               </ScrollableContainer>

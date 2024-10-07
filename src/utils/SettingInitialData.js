@@ -329,7 +329,10 @@ export const categoriesProductsInitialData = [
 
 //? PRODUCTO BASE
 export const productBase = {
-  codigoNro: "0",
+  codigoNro: "",
+  codigoAnterior: "",
+  categoria: "",
+  subcategoria: "",
   nombre: "",
   detalle: "",
   marca: "Genérico",
@@ -514,4 +517,5 @@ export const dataConfigInitial = {
   codProdBloque: 15,
   coeficienteVenta: 1,
   multiplicadorCpraVta: 2.2,
+  precioVisibleRol: 0, //0: admin, 1: users, 2: visitors
 };

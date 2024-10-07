@@ -1,4 +1,9 @@
-import { getNodoRealtime, getUpdateCodeProd } from "../firebase/fetchFirebase";
+import {
+  getDocConfig,
+  getNodoRealtime,
+  getUpdateCodeProd,
+  updateDocInCollection,
+} from "../firebase/fetchFirebase";
 
 export const getVariationsFromStorage = async () => {
   // Primero comprobar si está almacenado en sessionStorage
@@ -152,5 +157,81 @@ const getBlockToUse = async () => {
   } catch (error) {
     console.error("Error al obtener el bloque de código ", error);
     throw new Error("Error al obtener el bloque de código ");
+  }
+};
+
+//obtener el documento de configuraciones y guardarlo en sessionStorage
+const getConfigToUse = async () => {
+  try {
+    let docConfig = await getDocConfig();
+    sessionStorage.setItem("configurations", JSON.stringify(docConfig));
+    return docConfig;
+  } catch (error) {
+    console.error("Error al obtener la configuración ", error);
+    throw new Error("Error al obtener la configuración ");
+  }
+};
+//obtener el documento de configuraciones de sessionStorage
+const getConfigFromStorage = () => {
+  let config = {};
+  const storedConfig = sessionStorage.getItem("configurations");
+
+  if (storedConfig) {
+    try {
+      config = JSON.parse(storedConfig);
+    } catch (error) {
+      console.warn(
+        "Datos no son válidos en sessionStorage. Asignando un objeto vacío.",
+        error
+      );
+      config = {}; // Asignar un objeto vacío si no es parseable
+    }
+  }
+
+  return config;
+};
+
+// obtener el documento de configuraciones de sessionStorage o de BDD si no se entuentra en sessionStorage
+export const getConfig = async () => {
+  let config = getConfigFromStorage();
+  if (Object.keys(config).length === 0) {
+    config = await getConfigToUse();
+  }
+
+  return config;
+};
+
+//actualizar el documento de configuraciones en sessionStorage y en la BDD. Recibir datos como {key: value, key:value}
+export const updateConfig = async (onlyUpdateData) => {
+  // Recuperar el objeto almacenado en sessionStorage
+  let storedObject = JSON.parse(sessionStorage.getItem("configurations"));
+
+  // Verificar que onlyUpdateData sea un objeto y que contenga propiedades
+  if (onlyUpdateData && typeof onlyUpdateData === "object") {
+    // Iterar sobre las propiedades del objeto para actualizar las correspondientes en storedObject
+    Object.keys(onlyUpdateData).forEach((key) => {
+      const value = onlyUpdateData[key];
+
+      // Actualizar el objeto almacenado con el nuevo valor
+      if (key in storedObject) {
+        storedObject[key] = value;
+      }
+    });
+  }
+
+  // Guardar el objeto actualizado nuevamente en sessionStorage
+  sessionStorage.setItem("configurations", JSON.stringify(storedObject));
+
+  // Incluir la lógica para actualizar también en la base de datos
+  try {
+    await updateDocInCollection(
+      "configuraciones",
+      "configuraciones",
+      onlyUpdateData
+    );
+    console.log("Configuración actualizada");
+  } catch (error) {
+    console.error("Error al actualizar la configuración: ", error);
+    throw new Error("Error al actualizar la configuración");
   }
 };

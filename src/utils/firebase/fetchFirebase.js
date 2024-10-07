@@ -133,11 +133,11 @@ export async function getProductByID(category, subcategory, idDocument) {
       return { docID: docSnap.id, ...docSnap.data() };
     } else {
       console.log("No such document!");
-      return null;
+      throw new Error("No encontramos el documento");
     }
   } catch (error) {
     console.error("Error fetching document:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -199,6 +199,18 @@ export const getUpdateCodeProd = async () => {
   }
 };
 
+//actualizar (update) un documento del una colección Firestore
+export async function updateDocInCollection(nameCollection, nameDoc, newData) {
+  try {
+    const docRef = doc(firestoreDB, nameCollection, nameDoc);
+    await setDoc(docRef, newData, { merge: true });
+    console.log("Documento actualizado correctamente.");
+  } catch (error) {
+    console.error("Error al actualizar el documento: ", error);
+    throw error;
+  }
+}
+
 //agregar un documento a una coleccion (ej. una categoría a colección productos, productos/categorias, colección/documento)
 export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
   try {
@@ -222,6 +234,7 @@ export async function createSubcollection(
         "Todos los argumentos (categoryID, nameSubCat, arrayIndexSubCat) son requeridos"
       );
     }
+
     // agregar el array índice al documento padre de Categoría
     const docCategoryRef = doc(firestoreDB, "productos", categoryID);
     await setDoc(
@@ -237,7 +250,12 @@ export async function createSubcollection(
       nameSubCat,
       "docBase"
     );
-    await setDoc(docSubCategoryRef, productBase);
+    const document = {
+      ...productBase,
+      categoria: categoryID,
+      subcategoria: nameSubCat,
+    };
+    await setDoc(docSubCategoryRef, document);
   } catch (error) {
     console.error(error);
     throw error;
