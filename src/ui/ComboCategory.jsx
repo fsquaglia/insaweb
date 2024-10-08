@@ -9,6 +9,7 @@ export default function ComboCategory({
   docID,
   titleID,
   description,
+  textoSeccionWeb,
   titleCard,
   switchLabel,
   initialValue,
@@ -22,8 +23,12 @@ export default function ComboCategory({
   textButton,
 }) {
   //restricciones de string extraidas de SettingSizing
-  const { maxLengthTitle, maxLengthDescription, maxLengthTitleCard } =
-    stringSizing[section];
+  const {
+    maxLengthTitle,
+    maxLengthDescription,
+    maxLengthTitleCard,
+    maxLengthTextoSeccionWeb,
+  } = stringSizing[section];
 
   return (
     <div className="block flex flex-row flex-wrap justify-center my-4 bg-gray-100 p-6">
@@ -39,24 +44,31 @@ export default function ComboCategory({
 
       {/*div de los input */}
       <div className="w-96 min-h-96 flex flex-col justify-center border p-4 shadow-lg bg-gray-50">
-        {docID !== undefined && docID !== null && (
-          <InputCustom
-            labelText="Doc. ID"
-            name="docID"
-            inputValue={docID}
-            onChange={handleChange}
-            charLimit={maxLengthTitle}
-          />
-        )}
-        {titleID !== undefined && titleID !== null && (
-          <InputCustom
-            labelText="Nombre"
-            name="id"
-            inputValue={titleID}
-            onChange={handleChange}
-            charLimit={maxLengthTitle}
-          />
-        )}
+        <div className="columns-2">
+          <div className="flex flex-col">
+            {docID !== undefined && docID !== null && (
+              <InputCustom
+                labelText="Doc. ID"
+                name="docID"
+                inputValue={docID}
+                onChange={handleChange}
+                charLimit={maxLengthTitle}
+              />
+            )}
+          </div>
+          <div className="flex flex-col">
+            {titleID !== undefined && titleID !== null && (
+              <InputCustom
+                labelText="Nombre"
+                name="id"
+                inputValue={titleID}
+                onChange={handleChange}
+                charLimit={maxLengthTitle}
+              />
+            )}
+          </div>
+        </div>
+
         {description !== undefined && description !== null && (
           <InputCustom
             labelText="Descripción"
@@ -67,21 +79,37 @@ export default function ComboCategory({
             charLimit={maxLengthDescription}
           />
         )}
-        {titleCard !== undefined && titleCard !== null && (
+
+        {textoSeccionWeb !== undefined && textoSeccionWeb !== null && (
           <InputCustom
-            labelText="Texto Home"
-            name="tituloCard"
-            inputValue={titleCard}
+            labelText="Texto Portal"
+            name="textoSeccionWeb"
+            type="area"
+            inputValue={textoSeccionWeb}
             onChange={handleChange}
-            charLimit={maxLengthTitleCard}
+            charLimit={maxLengthTextoSeccionWeb}
           />
         )}
-
-        <SwitchVisible
-          switchLabel={switchLabel}
-          initialValue={initialValue}
-          onToggle={onToggle}
-        />
+        <div className=" flex flex-row items-center">
+          <div className="flex flex-col">
+            {titleCard !== undefined && titleCard !== null && (
+              <InputCustom
+                labelText="Texto Home"
+                name="tituloCard"
+                inputValue={titleCard}
+                onChange={handleChange}
+                charLimit={maxLengthTitleCard}
+              />
+            )}
+          </div>
+          <div className="flex flex-col">
+            <SwitchVisible
+              switchLabel={switchLabel}
+              initialValue={initialValue}
+              onToggle={onToggle}
+            />
+          </div>
+        </div>
 
         <ButtonDashboard
           textButton={textButton || "Actualizar"}

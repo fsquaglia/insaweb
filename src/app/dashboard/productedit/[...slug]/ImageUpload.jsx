@@ -12,9 +12,9 @@ export default function ImageUpload({ onUploadSuccess }) {
   const [uploading, setUploading] = useState(false);
 
   const maxFileSize = imgSizing?.productClassA?.maxSizeKBaccepted * 1024; // Tamaño máximo en bytes
-  console.log(maxFileSize, " bytes");
+  // console.log(maxFileSize, " bytes");
 
-  const validFormats = ["image/jpeg", "image/png", "image/gif"];
+  const validFormats = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];

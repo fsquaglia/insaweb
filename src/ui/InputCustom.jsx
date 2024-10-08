@@ -29,6 +29,21 @@ function TypeShow({
         />
       );
     case "textarea":
+    // return (
+    //   <textarea
+    //     className="rounded-md border font-sans font-normal text-blue-gray-700 p-1 overflow-y-auto"
+    //     name={name}
+    //     placeholder={placeHolder}
+    //     value={inputValue}
+    //     onChange={onChange}
+    //     maxLength={charLimit}
+    //     id={`id${name}`}
+    //     rows="5"
+    //     cols="30"
+    //     disabled={disabled}
+    //   />
+    // );
+    case "area":
       return (
         <textarea
           className="rounded-md border font-sans font-normal text-blue-gray-700 p-1 overflow-y-auto"
@@ -38,7 +53,7 @@ function TypeShow({
           onChange={onChange}
           maxLength={charLimit}
           id={`id${name}`}
-          rows="5"
+          rows="3"
           cols="30"
           disabled={disabled}
         />

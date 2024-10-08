@@ -286,6 +286,9 @@ export const categoriesProductsInitialData = [
   {
     id: "Accesorios",
     descripcion: "El complemento indispensable para cualquier look.",
+    textoSeccionWeb:
+      "Los detalles hacen la diferencia. Descubre nuestra amplia variedad de accesorios que complementan cualquier outfit. Bolsos, cinturones, y más, pensados para agregar estilo y funcionalidad a tu día a día.",
+    colorBase: "orange",
     imagen:
       "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2Faccesorios02.jpg?alt=media&token=d1a25704-9159-4b8a-9368-7366f6d18812",
     showLanding: true,
@@ -295,6 +298,9 @@ export const categoriesProductsInitialData = [
     id: "Caballeros",
     descripcion:
       "La moda masculina es sutil. Un buen estilo y gusto agradable.",
+    textoSeccionWeb:
+      "Descubre la elegancia y sofisticación que define el estilo masculino. Nuestra colección para caballeros combina diseño y confort, con prendas ideales para destacar en cada ocasión. Renueva tu guardarropa con piezas que reflejan tu personalidad y buen gusto.",
+    colorBase: "blue",
     imagen:
       "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2F_DMD9151bis.jpg?alt=media&token=a86eefdd-7203-4671-86cc-740394a6ac97",
     showLanding: true,
@@ -304,6 +310,9 @@ export const categoriesProductsInitialData = [
     id: "Damas",
     descripcion:
       "Encuentra lo que necesitas para resaltar tu belleza de manera única.",
+    textoSeccionWeb:
+      "Explora nuestra exclusiva colección para damas, diseñada para realzar tu estilo y feminidad. Desde looks casuales hasta elegantes conjuntos, encontrarás prendas que se adaptan a cada ocasión, siempre con un toque de sofisticación y tendencia.",
+    colorBase: "pink",
     imagen:
       "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2F405ad68e-7fb3-4073-86d5-57886500292c.jpg?alt=media&token=98f8511b-d7ea-42af-b77e-056ce6aa782d",
     showLanding: true,
@@ -312,6 +321,9 @@ export const categoriesProductsInitialData = [
   {
     id: "Kids",
     descripcion: "Los más peques también quieren tener su lugar.",
+    textoSeccionWeb:
+      "Nuestra colección para niños ofrece prendas diseñadas para brindar un toque de sofisticación y estilo a los más pequeños. Desde prendas infantiles hasta accesorios para niños, encontrarás todo lo que necesitas para brindar un momento de diversión.",
+    colorBase: "green",
     imagen:
       "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2FK050A.jpg?alt=media&token=b370ec09-f12e-4e9e-8618-dd98e3dbea5a",
     showLanding: false,
@@ -320,6 +332,9 @@ export const categoriesProductsInitialData = [
   {
     id: "Unisex",
     descripcion: "La moda también tiene un lugar para compartir.",
+    textoSeccionWeb:
+      "Estilo sin límites. Nuestra colección unisex ofrece prendas versátiles y modernas, diseñadas para todos. Descubre piezas esenciales que combinan comodidad y tendencia, perfectas para cualquier ocasión y género.",
+    colorBase: "purple",
     imagen:
       "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2Funisex.webp?alt=media&token=92dd937d-729a-40bb-85a5-4ffad7bacab4",
     showLanding: false,

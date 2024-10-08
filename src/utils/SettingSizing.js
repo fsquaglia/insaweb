@@ -39,6 +39,7 @@ export const stringSizing = {
     maxLengthTitle: 20,
     maxLengthDescription: 75,
     maxLengthTitleCard: 20,
+    maxLengthTextoSeccionWeb: 260,
   },
 };
 

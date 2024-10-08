@@ -23,6 +23,8 @@ const newCategory = {
     imagen: urlGenerica,
     showLanding: false,
     tituloCard: "",
+    textoSeccionWeb: "",
+    colorBase: "slate",
   },
 };
 
@@ -208,6 +210,7 @@ function CategoryLoader({ data }) {
               docID={valuesEdit.docID}
               titleID={valuesEdit.docData.id}
               description={valuesEdit.docData.descripcion}
+              textoSeccionWeb={valuesEdit.docData.textoSeccionWeb || ""}
               titleCard={valuesEdit.docData.tituloCard}
               handleChange={handleChange}
               switchLabel={"Mostrar en Home"}

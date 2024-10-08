@@ -12,12 +12,10 @@ import Swal from "sweetalert2";
 import SwitchPublished from "@/ui/SwitchPublished";
 import MultiSelect from "./MultiSelect";
 import ImageUpload from "./ImageUpload";
-import { doc, setDoc } from "firebase/firestore";
 import {
   getProductByID,
   updateProductByID,
 } from "@/utils/firebase/fetchFirebase";
-import { set } from "zod";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -51,7 +49,8 @@ const sections = (
   onClickSwitchPrecioVenta,
   onClickSwitchOferta,
   handleHashtagsChange,
-  handleUploadSuccess
+  handleUploadSuccess,
+  handleDeleteImage
 ) => [
   {
     name: "Principal",
@@ -146,12 +145,34 @@ const sections = (
         <div className="flex gap-4 my-2">
           {values?.imagen && values.imagen.length > 0 ? (
             values.imagen.map((imgUrl, index) => (
-              <div key={index} className="w-1/2">
+              <div key={index} className="w-1/2 relative">
                 <img
                   src={imgUrl}
                   alt={`Imagen ${index + 1}`}
                   className="w-full h-auto object-cover"
+                  onLoad={(e) =>
+                    e.target.nextSibling.classList.remove("invisible")
+                  } // Mostrar botón al cargar la imagen
                 />
+                <button
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 invisible" // Inicialmente invisible
+                  onClick={() => handleDeleteImage(index)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
             ))
           ) : (
@@ -436,6 +457,21 @@ function ProductPage({ params }) {
       imagen: [...prevValues.imagen, downloadURL],
     }));
   };
+  //handle para eliminar imagen del array de imágenes del producto
+  const handleDeleteImage = (item) => {
+    if (values.imagen.length <= 1) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "No puedes eliminar todas las imágenes.",
+        showConfirmButton: true,
+      });
+      return;
+    }
+    const newImages = values.imagen.filter((_, index) => index !== item);
+    setValues((prevValues) => ({ ...prevValues, imagen: newImages }));
+    console.log(values.imagen);
+  };
 
   //submit principal del formulario
   const onSubmitValues = async () => {
@@ -482,7 +518,8 @@ function ProductPage({ params }) {
                 onClickSwitchPrecioVenta,
                 onClickSwitchOferta,
                 handleHashtagsChange,
-                handleUploadSuccess
+                handleUploadSuccess,
+                handleDeleteImage
               ).map(
                 (section) =>
                   openTab === section.id && (
