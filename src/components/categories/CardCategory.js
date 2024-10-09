@@ -1,12 +1,21 @@
+"use client";
 import ButtonGeneric from "../generic/ButtonGeneric";
+import { useRouter } from "next/navigation";
 
 export default function CardCategory({
+  id,
   imageSrc,
   title,
   text,
   buttonText,
   bgColorTailwind,
 }) {
+  const router = useRouter();
+
+  const handleClickButton = () => {
+    router.push(`/product-category/${id}`);
+  };
+
   return (
     <div
       className={`relative w-80 h-96 text-white overflow-hidden shadow-lg m-6 transition-transform transform hover:shadow-2xl hover:scale-105 ${
@@ -29,7 +38,11 @@ export default function CardCategory({
         <h2 className="text-2xl font-bold">{title || "Titulo"}</h2>
         <p className="text-center">{text || "soy la descripcion"}</p>
 
-        <ButtonGeneric textButton={buttonText || "Acceder"} fill={false} />
+        <ButtonGeneric
+          textButton={buttonText || "Acceder"}
+          fill={false}
+          onClick={handleClickButton}
+        />
       </div>
     </div>
   );

@@ -25,6 +25,7 @@ export default async function Categories() {
           dataCategories.map((cat) => (
             <CardCategory
               key={cat.id}
+              id={cat.id}
               title={cat.tituloCard}
               text={cat.descripcion}
               imageSrc={cat.imagen}

@@ -16,19 +16,7 @@ export default async function layout({ children }) {
     <div>
       <NavbarCategories categories={categories} />
       {/* <NavbarCategories categories={categories} /> */}
-
-      <div className={`bg-slate-100 p-20 flex flex-row gap-12`}>
-        <div className="w-1/4  ">
-          <div className="border rounded shadow flex flex-row items-center justify-center p-2">
-            <input
-              className="border-0 bg-transparent m-1"
-              placeholder="Buscar..."
-            />
-            <FaSearch className="mx-2 text-gray-600 cursor-pointer" />
-          </div>
-        </div>
-        <div className="w-3/4 bg-white border">{children}</div>
-      </div>
+      <div>{children}</div>
     </div>
   );
 }
