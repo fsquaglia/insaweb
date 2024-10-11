@@ -1,12 +1,17 @@
 import React from "react";
 import NavbarCategories from "./NavbarCategories";
-import { FaSearch } from "react-icons/fa";
-import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
 
 export default async function layout({ children }) {
   let categories = [];
   try {
-    categories = await getAllDocsColection("productos");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories/categories`
+    );
+
+    if (!res.ok) {
+      throw new Error("Error al obtener las categorías");
+    }
+    categories = await res.json();
   } catch (error) {
     console.error("Error al obtener las categorías de la BDD: ", error);
     categories = [];
@@ -15,7 +20,6 @@ export default async function layout({ children }) {
   return (
     <div>
       <NavbarCategories categories={categories} />
-      {/* <NavbarCategories categories={categories} /> */}
       <div>{children}</div>
     </div>
   );

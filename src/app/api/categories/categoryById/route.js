@@ -1,5 +1,4 @@
 import { getCategoryProduct } from "@/utils/firebase/fetchFirebase";
-import { get } from "firebase/database";
 
 export const revalidate = 21600; // Cachea la respuesta por 6 horas
 
