@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import InputCustom from "@/ui/InputCustom";
 import SliderPoint from "./SliderPoint";
 import {
@@ -8,15 +8,26 @@ import {
 } from "@/utils/local_session_storage.js/local_session_storage";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import Swal from "sweetalert2";
+import SwitchVisible from "@/ui/SwitchVisible";
+import { InfinitySpin } from "react-loader-spinner";
 
 function PageConfig() {
   //agregar en componente edit product tomar
   //multiplicador compra venta desde BDD o sessionStorage
   const [configurations, setConfigurations] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchConfig = async () => {
-      setConfigurations(await getConfig());
+      try {
+        setLoading(true);
+        setConfigurations(await getConfig());
+      } catch (error) {
+        console.error("Error al obtener la configuración:", error);
+        setConfigurations({});
+      } finally {
+        setLoading(false);
+      }
     };
     fetchConfig();
   }, []);
@@ -26,18 +37,29 @@ function PageConfig() {
     setConfigurations({ ...configurations, [name]: value });
   };
 
+  //handle para el slider de precio visible
   const handleChangeSlider = (value) => {
     if (value !== null && value !== undefined) {
       setConfigurations({ ...configurations, precioVisibleRol: value });
     }
   };
 
+  //handle para el switch de mostrar productos sin stock
+  const handleChangeSwitch = (value) => {
+    setConfigurations({
+      ...configurations,
+      mostrarProductosSinStock: value,
+    });
+  };
+
+  //handle botón submit para actualizar datos en la BBDD
   const handleSubmit = async () => {
     const newValues = {
       codProdPrefijo: configurations.codProdPrefijo,
       multiplicadorCpraVta: parseFloat(configurations.multiplicadorCpraVta),
       coeficienteVenta: parseFloat(configurations.coeficienteVenta),
       precioVisibleRol: configurations.precioVisibleRol,
+      mostrarProductosSinStock: configurations.mostrarProductosSinStock,
     };
 
     try {
@@ -61,7 +83,16 @@ function PageConfig() {
     }
   };
 
-  return (
+  return loading ? (
+    <div className="w-full min-h-screen bg-slate-50 text-center pt-20 flex justify-center">
+      <InfinitySpin
+        visible={true}
+        width="200"
+        color="#4fa94d"
+        ariaLabel="infinity-spin-loading"
+      />
+    </div>
+  ) : (
     <div className="w-96 flex flex-col m-4 ">
       <InputCustom
         labelText={"Prefijo Código Producto"}
@@ -96,6 +127,14 @@ function PageConfig() {
           onChangeValue={handleChangeSlider}
         />
       </div>
+
+      <SwitchVisible
+        switchLabel={"Mostrar productos sin stock: "}
+        name={"mostrarProductosSinStock"}
+        initialValue={configurations.mostrarProductosSinStock || false}
+        onToggle={handleChangeSwitch}
+      />
+
       <ButtonDashboard onclick={handleSubmit} textButton={"Actualizar"} />
     </div>
   );

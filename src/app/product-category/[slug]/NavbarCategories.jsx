@@ -54,7 +54,7 @@ const NavbarCategories = ({ categories, children }) => {
             )}
 
             {/* Icono de usuario para el login */}
-            <Link href="/login">
+            <Link href="/auth/login">
               <div className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <FaUserCircle size={20} className="mr-1" /> Login
               </div>

@@ -163,3 +163,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 22.0.1+8-16, mixed mode, sharing)
 
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
+[debug] [2024-10-10T02:43:06.880Z] > refreshing access token with scopes: []
+[debug] [2024-10-10T02:43:06.976Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-10-10T02:43:06.981Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-10T02:43:07.516Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-10-10T02:43:07.518Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-10T02:43:07.598Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/iharalondon/adminSdkConfig [none]
+[debug] [2024-10-10T02:43:08.255Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/iharalondon/adminSdkConfig 200
+[debug] [2024-10-10T02:43:08.256Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/iharalondon/adminSdkConfig {"projectId":"iharalondon","databaseURL":"https://iharalondon-default-rtdb.firebaseio.com","storageBucket":"iharalondon.appspot.com","locationId":"us-east1"}

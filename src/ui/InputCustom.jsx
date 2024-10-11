@@ -105,7 +105,7 @@ export default function InputCustom({
   return (
     <>
       <label
-        className="text-sm text-left ml-2 mb-1 text-gray-600"
+        className="text-xs text-left ml-2 mt-2 mb-1 text-gray-600"
         htmlFor={`id${name}`}
       >
         {labelText}
@@ -124,7 +124,7 @@ export default function InputCustom({
       />
 
       {showCharLimits && type !== "select" ? (
-        <span className="block text-right text-xs text-blue-gray-600 mt-1">
+        <span className="block text-right text-xs text-gray-600 my-1">
           {inputValue.length} de {charLimit}
         </span>
       ) : null}

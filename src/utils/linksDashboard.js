@@ -109,15 +109,15 @@ export const links = [
         "Las variaciones son atributos o propiedades de los productos y permiten caracterizarlos. Podemos tener colores, talles, y los tipos que se te ocurran.",
     },
   },
-  {
-    name: "Editar Producto",
-    href: "/dashboard/productedit",
-    icon: RiProductHuntLine,
-    head: {
-      title: "Sección Editar producto",
-      description: "Esto está en proceso de desarrollo........",
-    },
-  },
+  // {
+  //   name: "Editar Producto",
+  //   href: "/dashboard/productedit",
+  //   icon: RiProductHuntLine,
+  //   head: {
+  //     title: "Sección Editar producto",
+  //     description: "Esto está en proceso de desarrollo........",
+  //   },
+  // },
   {
     name: "Configuraciones",
     href: "/dashboard/config",

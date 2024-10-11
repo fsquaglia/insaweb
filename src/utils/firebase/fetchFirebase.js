@@ -280,6 +280,23 @@ export async function getOffersLandingFirestore() {
   }
 }
 
+//obtener una categoría de producto
+export async function getCategoryProduct(categoryID) {
+  try {
+    const docRef = doc(firestoreDB, "productos", categoryID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { docID: docSnap.id, docData: docSnap.data() };
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching document:", error);
+    return null;
+  }
+}
 //obtener los tres Tips para la Landing
 export async function getTipsLandingFirestore() {
   try {

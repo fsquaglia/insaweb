@@ -19,7 +19,7 @@ const SliderPoint = ({ actualPoint, onChangeValue }) => {
 
   return (
     <div className="flex flex-col">
-      <label className="text-sm text-slate-600 mb-2">
+      <label className="text-xs text-slate-600 mb-2">
         Visibilidad de precios:
       </label>
       <ReactSlider
@@ -33,8 +33,9 @@ const SliderPoint = ({ actualPoint, onChangeValue }) => {
         onChange={handleSliderChange}
         marks={true}
       />
-      <p className="text-sm text-slate-600 my-2">
-        Actual visibilidad: {labels[visibility]}
+      <p className="text-xs text-slate-600 my-2">
+        Actual visibilidad: &nbsp;
+        <span className="font-bold">{labels[visibility]}</span>
       </p>
     </div>
   );

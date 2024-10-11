@@ -488,8 +488,8 @@ function ProductPage({ params }) {
     <div className="bg-gray-100 font-sans flex h-screen justify-center w-full">
       {values ? (
         <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
-          <div className="flex items-center justify-center border rounded shadow my-2 bg-white">
-            <span className="text-xs text-slate-500 my-2">{`Categoría: ${category} - Subcategoría: ${subcategory} - Producto ID: ${productID}`}</span>
+          <div className="flex items-center justify-center border rounded shadow my-2 bg-gray-700">
+            <span className="text-xs text-gray-100 my-2">{`Categoría: ${category} - Subcategoría: ${subcategory} - Producto ID: ${productID}`}</span>
           </div>
           <div className="w-full">
             {/* Encabezado y Tabs con botones */}

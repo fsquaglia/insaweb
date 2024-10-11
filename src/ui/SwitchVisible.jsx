@@ -1,8 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function SwitchVisible({ name, switchLabel, initialValue = false, onToggle }) {
   const [isOn, setIsOn] = useState(initialValue || false);
+
+  useEffect(() => {
+    setIsOn(initialValue); // Actualiza el estado cuando el initialValue cambie
+  }, [initialValue]);
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -11,7 +15,7 @@ function SwitchVisible({ name, switchLabel, initialValue = false, onToggle }) {
 
   return (
     <div className="flex items-center gap-1">
-      <span className="text-sm text-left ml-2 mb-1 text-gray-600">
+      <span className="text-xs text-left ml-2 mb-1 text-gray-600">
         {switchLabel || "Visible en Home: "}
       </span>
       <label className="relative inline-flex cursor-pointer items-center">
