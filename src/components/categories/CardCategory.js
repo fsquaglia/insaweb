@@ -9,11 +9,13 @@ export default function CardCategory({
   text,
   buttonText,
   bgColorTailwind,
+  subcategories,
 }) {
   const router = useRouter();
 
+  const subcategoriesArrayZero = subcategories[0] || "noSubcategoria";
   const handleClickButton = () => {
-    router.push(`/product-category/${id}`);
+    router.push(`/product-category/${id}/${subcategoriesArrayZero}`);
   };
 
   return (

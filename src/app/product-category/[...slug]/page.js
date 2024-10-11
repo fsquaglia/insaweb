@@ -1,33 +1,53 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import Products from "./Products";
 import { InfinitySpin } from "react-loader-spinner";
 
 function Page({ params }) {
-  const categoria = params.slug;
+  const router = useRouter();
+  const [categoria, subcategoria] = params.slug;
   const [subCategories, setSubCategories] = useState([]);
   const [categoryData, setCategoryData] = useState(null); // Inicializar en null en vez de un objeto vacío
   const [bgColor, setBgColor] = useState("bg-slate-100");
-  const [subCategorySelected, setSubcategorySelected] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [category, setCategory] = useState(decodeURIComponent(categoria));
+  const [subCategorySelected, setSubcategorySelected] = useState(
+    decodeURIComponent(subcategoria)
+  );
+  const [shouldFetch, setShouldFetch] = useState(true); // Nueva bandera para controlar el efecto
 
   useEffect(() => {
+    if (!shouldFetch) return; // Si no debemos hacer fetch, salimos del efecto
+    setCategory(decodeURIComponent(categoria));
+    setSubcategorySelected(decodeURIComponent(subcategoria));
+
     const fetchData = async () => {
       try {
         setLoading(true);
+        //obtener de la BDD la info de la categoría
         const res = await fetch(
-          `/api/categories/categoryById?categoria=${categoria}`
+          `/api/categories/categoryById?categoria=${decodeURIComponent(
+            categoria
+          )}`
         );
         const categ = await res.json();
 
         if (categ && !categ.hasOwnProperty("error")) {
           setCategoryData(categ);
-          setSubCategories(categ.docData.subcategorias || []);
-          setSubcategorySelected(categ.docData.subcategorias?.[0] || "");
-
+          const subCategoriesList = categ.docData.subcategorias || [];
+          setSubCategories(subCategoriesList);
+          // setSubcategorySelected(categ.docData.subcategorias?.[0] || "");
+          const subCatExist = subCategoriesList.some(
+            (subCat) => subCat === decodeURIComponent(subcategoria)
+          );
+          if (!subCatExist) {
+            throw new Error("La subcategoría no fue encontrada");
+          }
           const colorBase = categ.docData.colorBase || "slate";
           const bgClass = {
             slate: "bg-slate-50",
@@ -53,7 +73,21 @@ function Page({ params }) {
       }
     };
     fetchData();
-  }, [params]);
+  }, [categoria]);
+
+  //handler de hacer clic en la subcategoría
+  const handleSubcategoryClick = (item) => {
+    setSubcategorySelected(item);
+    router.push(`/product-category/${categoria}/${item}`, undefined, {
+      shallow: true,
+    });
+    // router.replace(`/product-category/${categoria}/${item}`, undefined, {
+    //   shallow: true,
+    // });
+
+    // Bloquear el fetch en el useEffect
+    setShouldFetch(false); // Al cambiar la subcategoría, bloqueamos el fetch
+  };
 
   if (error) {
     return (
@@ -84,18 +118,21 @@ function Page({ params }) {
         </div>
         {/*SideNav -> SubCategorias*/}
         <div className="flex flex-col gap-4 my-12 text-slate-800">
-          <span className="text-xl">
+          <span className="text-xl mb-6">
             SubCategorías {categoryData?.docData?.id}
           </span>
           {subCategories.length > 0 &&
             subCategories.map((item, index) => (
               <div key={index}>
-                <span
-                  className="cursor-pointer ms-2"
-                  onClick={() => setSubcategorySelected(item)}
+                <p
+                  className={`cursor-pointer ms-2 ${
+                    item === subCategorySelected &&
+                    "bg-gray-700 text-gray-50 rounded p-2"
+                  }`}
+                  onClick={() => handleSubcategoryClick(item)}
                 >
                   {item}
-                </span>
+                </p>
               </div>
             ))}
         </div>
@@ -117,7 +154,7 @@ function Page({ params }) {
         </p>
         {/*Productos*/}
         <div className="my-8">
-          <Products />
+          <Products category={category} subCategory={subCategorySelected} />
         </div>
       </div>
     </div>

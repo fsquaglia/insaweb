@@ -5,7 +5,7 @@ import { FaUserCircle } from "react-icons/fa"; // Para el ícono de usuario
 import { HiMenu, HiX } from "react-icons/hi"; // Para el menú tipo burger
 // import { FaSearch } from "react-icons/fa";
 
-const NavbarCategories = ({ categories, children }) => {
+const NavbarCategories = ({ categories }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -42,7 +42,7 @@ const NavbarCategories = ({ categories, children }) => {
               categories.map((category) => (
                 <Link
                   key={category.docID}
-                  href={`/product-category/${category.docID}`}
+                  href={`/product-category/${category.docID}/${category.docData.subcategorias[0]}`}
                 >
                   <div className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
                     {category.docData.id}
@@ -69,7 +69,7 @@ const NavbarCategories = ({ categories, children }) => {
               categories.map((category) => (
                 <Link
                   key={category.docID}
-                  href={`/product-category/${category.docID}`}
+                  href={`/product-category/${category.docID}/${category.docData.subcategorias[0]}`}
                 >
                   <div className="block text-white bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                     {category.docData.id}

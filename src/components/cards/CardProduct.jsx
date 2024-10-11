@@ -7,6 +7,8 @@ import { FaHeart } from "react-icons/fa";
 }
 
 function CardProduct({ product }) {
+  console.log(product);
+
   return (
     <div className="container w-72  flex justify-center">
       <div className="bg-white  shadow-lg  rounded transform hover:scale-105 duration-300 ease-in-out">
@@ -16,14 +18,16 @@ function CardProduct({ product }) {
           </span> */}
 
           <FaRegHeart
-            className="absolute top-0 right-0 m-2 cursor-pointer"
+            className="absolute top-0 right-0 m-2 cursor-pointer text-gray-500"
             size={20}
           />
-          <img
-            src="https://picsum.photos/400/300"
-            alt=""
-            className="rounded-t"
-          />
+          {product && product?.docData.imagen.length > 0 && (
+            <img
+              src={product.docData.imagen[0]}
+              alt={product.docData.nombre}
+              className="rounded-t"
+            />
+          )}
         </div>
         <div className="flex justify-around w-full transform -translate-y-5 px-4">
           <div className="rounded-full shadow w-10 h-10 flex justify-center items-center bg-gray-100 cursor-pointer">
@@ -32,17 +36,21 @@ function CardProduct({ product }) {
           <div className="rounded-full shadow w-10 h-10 flex justify-center items-center bg-gray-100 cursor-pointer">
             2
           </div>
-          {/* <div className="rounded-full shadow w-10 h-10 flex justify-center items-center bg-gray-100">
-            3
-          </div> */}
         </div>
-        <div className="p-4">
-          <h2 className="text-2xl uppercase">Item a</h2>
+        <div className="p-2 text-center">
+          {product && (
+            <h2 className="text-lg uppercase">{product?.docData.nombre}</h2>
+          )}
+
           <p className="font-light text-gray-500 text-lg my-2">29,99 &euro;</p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt
-          </p>
+          {product && (
+            <p>
+              {product?.docData.detalle.length > 60
+                ? product?.docData.detalle.slice(0, 60) + "..."
+                : product?.docData.detalle}
+            </p>
+          )}
+
           {/* <a
             href="#"
             className="block bg-gray-300 py-2 px-2 text-gray-600 text-center rounded shadow-lg uppercase font-light mt-6 hover:bg-gray-400 hover:text-white duration-300 ease-in-out"

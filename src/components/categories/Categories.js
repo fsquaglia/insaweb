@@ -30,6 +30,7 @@ export default async function Categories() {
               text={cat.descripcion}
               imageSrc={cat.imagen}
               bgColorTailwind={colorCard(cat.id)}
+              subcategories={cat.subcategorias}
             />
           ))
         ) : (

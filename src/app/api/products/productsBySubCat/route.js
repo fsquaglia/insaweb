@@ -20,7 +20,10 @@ export async function GET(req) {
     const collectionPath = `productos/${categoria}/${subcategoria}`;
 
     // Realiza la consulta a Firebase con la ruta dinámica
-    const products = await getAllDocsColection(collectionPath);
+    const productsWithdocBase = await getAllDocsColection(collectionPath);
+    const products = productsWithdocBase.filter(
+      (prod) => prod.docID !== "docBase"
+    );
 
     // Verifica si se encontraron productos
     if (!products || products.length === 0) {
