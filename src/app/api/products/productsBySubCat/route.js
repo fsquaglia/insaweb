@@ -22,7 +22,7 @@ export async function GET(req) {
     // Realiza la consulta a Firebase con la ruta dinámica
     const productsWithdocBase = await getAllDocsColection(collectionPath);
     const products = productsWithdocBase.filter(
-      (prod) => prod.docID !== "docBase"
+      (prod) => prod.docID !== "docBase" && prod.docData.publicado === true
     );
 
     // Verifica si se encontraron productos

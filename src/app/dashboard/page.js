@@ -138,7 +138,7 @@ export default function Page() {
           }}
         />
       </div>
-      <div>
+      {/* <div>
         <ButtonGeneric
           textButton={"Contactos"}
           onClick={loadInitialContacts}
@@ -164,7 +164,7 @@ export default function Page() {
           onClick={() => loadInitialProd_Ofert("ofertas", "", "")}
           fill={false}
         />
-      </div>
+      </div> */}
       <hr />
       <span>
         Las variaciones son los colores, talles, marcas, grupos de precios, etc
@@ -180,26 +180,6 @@ export default function Page() {
         <ButtonGeneric
           textButton={"Configuraciones"}
           onClick={() => createDocConfig()}
-          fill={false}
-        />
-      </div>
-      <div>
-        <ButtonGeneric
-          textButton={"get variations"}
-          onClick={async () => {
-            const variations = await getVariationsFromStorage();
-            console.log(variations);
-          }}
-          fill={false}
-        />
-      </div>
-      <div>
-        <ButtonGeneric
-          textButton={"get code"}
-          onClick={async () => {
-            const code = await getCodeToUse();
-            console.log(code);
-          }}
           fill={false}
         />
       </div>

@@ -65,7 +65,12 @@ function Products({ category, subCategory }) {
   return (
     <div className="flex flex-row flex-wrap gap-6">
       {products.map((product) => (
-        <CardProduct key={product.docID} product={product} />
+        <CardProduct
+          key={product.docID}
+          product={product}
+          category={category}
+          subCategory={subCategory}
+        />
       ))}
     </div>
   );

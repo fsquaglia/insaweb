@@ -81,6 +81,8 @@ const transformVariations = (variations) => {
       transformedVariations[key] = variations[key].map((item) => ({
         IDgrupoDeValores: item.IDgrupoDeValores,
         grupoDeValores: item.grupoDeValores,
+        descEfectPorc: item.descEfectPorc,
+        precioLista: item.precioLista,
       }));
     } else {
       // Para cualquier otra propiedad, la transformamos a un array de strings
