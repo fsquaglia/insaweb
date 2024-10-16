@@ -1,26 +1,43 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-// import { HiUser } from "react-icons/hi2";
 import { GrLogout } from "react-icons/gr";
-// import { signOut } from "next-auth/react";
 import CardUserSession from "@/ui/CardUserSession";
 import { onClickSignOut } from "@/utils/OnSignOutEvent";
+import { getConfig } from "@/utils/local_session_storage.js/local_session_storage";
 
 function UserData() {
   const { data: session, status } = useSession();
   const [dataUser, setDataUser] = useState({});
+  const [configurations, setConfigurations] = useState({});
 
   useEffect(() => {
     console.log(session);
     console.log(status);
 
-    session ? setDataUser(session.user) : null;
+    // Establecer los datos del usuario si existe la sesión
+    if (session) {
+      setDataUser(session.user);
+
+      // Si el usuario es admin, obtener la configuración
+      if (session.user.role === "admin") {
+        const fetchConfig = async () => {
+          const config = await getConfig();
+          setConfigurations(config);
+        };
+
+        fetchConfig();
+      }
+    }
   }, [session]);
 
   return (
     <div className="flex flex-row flex-wrap bg-blue-400 items-center justify-around">
-      <div className="">Mostrar algo más...?</div>
+      <div className="text-slate-100">
+        {configurations &&
+          configurations?.coeficienteVenta &&
+          `Coeficiente de venta: ${configurations?.coeficienteVenta}`}
+      </div>
       <div className="flex flex-row flex-wrap items-center">
         <div className="flex items-center justify-between px-8 py-2">
           {dataUser?.name ? (

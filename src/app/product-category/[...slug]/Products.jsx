@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CardProduct from "@/components/cards/CardProduct";
 import { InfinitySpin } from "react-loader-spinner";
+import { getConfig } from "@/utils/local_session_storage.js/local_session_storage";
 
 function Products({ category, subCategory }) {
   const [products, setProducts] = useState([]);
@@ -12,9 +13,17 @@ function Products({ category, subCategory }) {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/products/productsBySubCat?categoria=${category}&subcategoria=${subCategory}`
-        );
+        const configurations = await getConfig();
+
+        const url = `/api/products/productsBySubCat?categoria=${encodeURIComponent(
+          category
+        )}&subcategoria=${encodeURIComponent(
+          subCategory
+        )}&includeProductsWithoutStock=${
+          configurations?.mostrarProductosSinStock
+        }`;
+
+        const res = await fetch(url);
         const data = await res.json();
 
         if (data && !data.hasOwnProperty("error") && data.length > 0) {

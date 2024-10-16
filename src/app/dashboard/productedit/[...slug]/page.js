@@ -7,6 +7,7 @@ import CustomSelect from "./StockBySize";
 import {
   getCodeToUse,
   getVariationsFromStorage,
+  getConfig,
 } from "@/utils/local_session_storage.js/local_session_storage";
 import Swal from "sweetalert2";
 import SwitchPublished from "@/ui/SwitchPublished";
@@ -42,6 +43,7 @@ const Section = ({ title, description, children }) => (
 //data de las secciones
 const sections = (
   variations,
+  configurations,
   onChange,
   values,
   onClickSwitch,
@@ -200,15 +202,31 @@ const sections = (
           showCharLimits={false}
         />
 
-        {/*! * */}
-        <div className="flex flex-row">
-          <div className="flex flex-col w-1/2">
+        <div className="flex flex-row gap-2">
+          <div className="flex flex-col w-1/3">
             <InputCustom
               name={"precioVenta"}
               labelText={"Precio de venta "}
               inputType={"number"}
               placeHolder={"0"}
-              inputValue={values?.precioVenta || values?.precioCompra * 2 || 0}
+              inputValue={
+                values?.precioVenta ||
+                values?.precioCompra * configurations?.multiplicadorCpraVta ||
+                0
+              }
+              onChange={onChange}
+              showCharLimits={false}
+              disabled={values?.esPrecioVentaDeGrupo || false}
+            />
+          </div>
+
+          <div className="flex flex-col w-1/3">
+            <InputCustom
+              name={"descEfectPorc"}
+              labelText={"Descto pago Efect. "}
+              inputType={"number"}
+              placeHolder={"10"}
+              inputValue={values?.descEfectPorc}
               onChange={onChange}
               showCharLimits={false}
               disabled={values?.esPrecioVentaDeGrupo || false}
@@ -328,6 +346,7 @@ function ProductPage({ params }) {
   const [productID, setProductID] = useState("");
   const [openTab, setOpenTab] = useState(1);
   const [variations, setVariations] = useState({});
+  const [configurations, setConfigurations] = useState({});
   const [values, setValues] = useState({
     codigoNro: "",
     codigoAnterior: "",
@@ -344,6 +363,7 @@ function ProductPage({ params }) {
     fechaCompra: getYesterdayDate(),
     precioCompra: 0,
     precioVenta: 0,
+    descEfectPorc: 10,
     esPrecioVentaDeGrupo: true,
     publicado: false,
     magnitudDisponible: [
@@ -376,6 +396,20 @@ function ProductPage({ params }) {
       }
     };
 
+    //cargar las configuraciones desde la BDD
+    const getConfigurations = async () => {
+      const configurationsGet = await getConfig();
+      setConfigurations(configurationsGet);
+      if (Object.keys(configurationsGet).length === 0) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Deberás revisar las Configuraciones primero.",
+          showConfirmButton: true,
+        });
+      }
+    };
+
     //traer el producto de la BDD
     const getProduct = async () => {
       if (params?.slug) {
@@ -402,7 +436,7 @@ function ProductPage({ params }) {
         }
       }
     };
-
+    getConfigurations();
     getVariations();
     getProduct();
   }, []);
@@ -477,10 +511,23 @@ function ProductPage({ params }) {
   const onSubmitValues = async () => {
     try {
       await updateProductByID(category, subcategory, productID, values);
-      alert("Producto actualizado");
+      console.log(values);
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Producto actualizado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error("Error updating product:", error);
-      alert("Error al actualizar el producto");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Hubo un error",
+        showConfirmButton: true,
+      });
     }
   };
 
@@ -511,6 +558,7 @@ function ProductPage({ params }) {
             <div>
               {sections(
                 variations,
+                configurations,
                 onChange,
                 values,
                 onClickSwitch,

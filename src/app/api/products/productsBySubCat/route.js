@@ -6,6 +6,9 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const categoria = searchParams.get("categoria");
   const subcategoria = searchParams.get("subcategoria");
+  // Obtener el valor del query "includeProductsWithoutStock" y convertirlo a booleano
+  const includeProductsWithoutStock =
+    searchParams.get("includeProductsWithoutStock") === "true";
 
   // Verifica si los parámetros están presentes
   if (!categoria || !subcategoria) {
@@ -21,9 +24,21 @@ export async function GET(req) {
 
     // Realiza la consulta a Firebase con la ruta dinámica
     const productsWithdocBase = await getAllDocsColection(collectionPath);
-    const products = productsWithdocBase.filter(
-      (prod) => prod.docID !== "docBase" && prod.docData.publicado === true
-    );
+    let products = [];
+    if (includeProductsWithoutStock) {
+      //se devuelven todos los productos
+      products = productsWithdocBase.filter(
+        (prod) => prod.docID !== "docBase" && prod.docData.publicado === true
+      );
+    } else {
+      //productos con stock mayor que cero
+      products = productsWithdocBase.filter(
+        (prod) =>
+          prod.docID !== "docBase" &&
+          prod.docData.publicado === true &&
+          prod.docData.stockTotal > 0
+      );
+    }
 
     // Verifica si se encontraron productos
     if (!products || products.length === 0) {

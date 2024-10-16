@@ -85,7 +85,7 @@ function CardProduct({ product, category, subCategory }) {
           {/*Marca del producto */}
 
           {product && (
-            <p className="bg-gray-600 font-light text-slate-50 text-md my-2 mx-4 py-2 rounded hover:underline cursor-pointer">
+            <p className="bg-gray-600 font-light text-slate-50 text-md my-2 mx-4 py-2 rounded">
               {product?.docData.marca}
             </p>
           )}

@@ -9,7 +9,10 @@ import Image from "next/image";
 import { InfinitySpin } from "react-loader-spinner";
 import { useSession } from "next-auth/react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { getVariationsFromStorage } from "@/utils/local_session_storage.js/local_session_storage";
+import {
+  getConfig,
+  getVariationsFromStorage,
+} from "@/utils/local_session_storage.js/local_session_storage";
 
 function PageProductDetail({ params }) {
   const router = useRouter();
@@ -23,6 +26,7 @@ function PageProductDetail({ params }) {
   const [error, setError] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
   const [variations, setVariations] = useState(null);
+  const [configurations, setConfigurations] = useState({});
   const category = decodeURIComponent(cat);
   const subcategory = decodeURIComponent(subcat);
 
@@ -32,6 +36,8 @@ function PageProductDetail({ params }) {
         setLoading(true);
         const variations = await getVariationsFromStorage();
         setVariations(variations);
+        const config = await getConfig();
+        setConfigurations(config);
         const res = await fetch(
           `/api/products/productById?categoria=${category}&subcategoria=${subcategory}&productId=${productId}`
         );
@@ -171,7 +177,11 @@ function PageProductDetail({ params }) {
                     }`}
                   >
                     {visibleAdmin && (
-                      <AdminDiv product={product} variations={variations} />
+                      <AdminDiv
+                        product={product}
+                        variations={variations}
+                        configurations={configurations}
+                      />
                     )}
                   </div>
                 </div>
@@ -260,8 +270,8 @@ const LoadingDiv = () => {
   );
 };
 
-const AdminDiv = ({ product, variations }) => {
-  console.log(variations);
+const AdminDiv = ({ product, variations, configurations }) => {
+  // console.log(variations);
 
   const grupoDeValores = variations?.grupoDeValores?.find(
     (varItem) => varItem.IDgrupoDeValores === product?.IDgrupoDeValores
@@ -281,6 +291,10 @@ const AdminDiv = ({ product, variations }) => {
       <div className="flex flex-col ">
         <span>{`Precio de compra: $${product?.precioCompra} - Fecha compra: ${product?.fechaCompra}`}</span>
         <hr className="border border-gray-100 my-2" />
+        {/* Coeficiente de  venta */}
+        <div className="flex flex-row flex-wrap italic">
+          <span>{`Coeficiente de venta: ${configurations?.coeficienteVenta}`}</span>
+        </div>
         <div className="flex flex-row flex-wrap">
           {product?.esPrecioVentaDeGrupo ? (
             // precio de venta grupal
@@ -293,7 +307,9 @@ const AdminDiv = ({ product, variations }) => {
                 <div>
                   <span>Precios: Lista $</span>
                   <span className="font-bold text-xl">
-                    {grupoDeValores.precioLista}.00
+                    {grupoDeValores.precioLista *
+                      (configurations?.coeficienteVenta || 1)}
+                    .00
                   </span>
                 </div>
                 <div>
@@ -304,6 +320,7 @@ const AdminDiv = ({ product, variations }) => {
                   <span>Efectivo $</span>
                   <span className="font-bold text-xl">
                     {grupoDeValores.precioLista *
+                      (configurations?.coeficienteVenta || 1) *
                       (1 - grupoDeValores.descEfectPorc / 100)}
                     .00
                   </span>
@@ -321,7 +338,9 @@ const AdminDiv = ({ product, variations }) => {
                 <div>
                   <span>Precios: Lista $</span>
                   <span className="font-bold text-xl">
-                    {product?.precioVenta}.00
+                    {product?.precioVenta *
+                      (configurations?.coeficienteVenta || 1)}
+                    .00
                   </span>
                 </div>
                 <div>
@@ -332,6 +351,7 @@ const AdminDiv = ({ product, variations }) => {
                   <span>Efectivo $</span>
                   <span className="font-bold text-xl">
                     {product?.precioVenta *
+                      (configurations?.coeficienteVenta || 1) *
                       (1 - (product?.descEfectPorc || 10) / 100)}
                     .00
                   </span>
