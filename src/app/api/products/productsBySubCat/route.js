@@ -1,6 +1,6 @@
 import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
 
-export const revalidate = 21600; // Cachea la respuesta por 6 horas
+// export const revalidate = 21600;
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import Products from "./Products";
-import { InfinitySpin } from "react-loader-spinner";
+import LoadingDiv from "@/ui/LoadingDiv";
 
 function Page({ params }) {
   const router = useRouter();
@@ -19,10 +19,8 @@ function Page({ params }) {
   const [subCategorySelected, setSubcategorySelected] = useState(
     decodeURIComponent(subcategoria)
   );
-  const [shouldFetch, setShouldFetch] = useState(true); // Nueva bandera para controlar el efecto
 
   useEffect(() => {
-    if (!shouldFetch) return; // Si no debemos hacer fetch, salimos del efecto
     setCategory(decodeURIComponent(categoria));
     setSubcategorySelected(decodeURIComponent(subcategoria));
 
@@ -73,7 +71,7 @@ function Page({ params }) {
       }
     };
     fetchData();
-  }, [categoria]);
+  }, []);
 
   //handler de hacer clic en la subcategoría
   const handleSubcategoryClick = (item) => {
@@ -81,12 +79,6 @@ function Page({ params }) {
     router.push(`/product-category/${categoria}/${item}`, undefined, {
       shallow: true,
     });
-    // router.replace(`/product-category/${categoria}/${item}`, undefined, {
-    //   shallow: true,
-    // });
-
-    // Bloquear el fetch en el useEffect
-    setShouldFetch(false); // Al cambiar la subcategoría, bloqueamos el fetch
   };
 
   if (error) {
@@ -162,16 +154,3 @@ function Page({ params }) {
 }
 
 export default Page;
-
-const LoadingDiv = () => {
-  return (
-    <div className="w-full min-h-screen bg-slate-50 text-center pt-20 flex justify-center">
-      <InfinitySpin
-        visible={true}
-        width="200"
-        color="#4fa94d"
-        ariaLabel="infinity-spin-loading"
-      />
-    </div>
-  );
-};

@@ -8,8 +8,6 @@ function CardProduct({ product, category, subCategory }) {
   const { data: session, status } = useSession();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  console.log(product);
-
   // Función para cambiar la imagen al hacer clic en el botón
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -27,10 +25,10 @@ function CardProduct({ product, category, subCategory }) {
   };
 
   return (
-    <div className="container w-72  flex justify-center">
+    <div className="container w-72  flex justify-center h-fit">
       <div className="bg-white  shadow-lg  rounded transform hover:scale-105 duration-300 ease-in-out">
         {/*Imágenes del producto y LIKE */}
-        <div className="relative">
+        <div className="relative ">
           {/* <span className="absolute top-0 left-0 bg-yellow-500 text-white text-xs font-semibold py-1 px-2 rounded-br">
             New
           </span> */}
@@ -75,19 +73,20 @@ function CardProduct({ product, category, subCategory }) {
           {/*Precio de producto */}
           <p className="font-light text-gray-500 text-lg my-2">29,99 &euro;</p>
           {/*Detalle del producto */}
-          {product && (
+          {/* {product && (
             <p className="text-slate-600">
               {product?.docData.detalle.length > 60
                 ? product?.docData.detalle.slice(0, 60) + "..."
                 : product?.docData.detalle}
             </p>
-          )}
+          )} */}
+        </div>
+        <div>
           {/*Marca del producto */}
-
           {product && (
-            <p className="bg-gray-600 font-light text-slate-50 text-md my-2 mx-4 py-2 rounded">
+            <div className=" text-center bg-gray-400 font-light text-slate-50 text-md w-full p-2">
               {product?.docData.marca}
-            </p>
+            </div>
           )}
 
           {/* <a

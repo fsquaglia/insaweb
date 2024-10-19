@@ -39,12 +39,17 @@ function PageProductDetail({ params }) {
         const config = await getConfig();
         setConfigurations(config);
         const res = await fetch(
-          `/api/products/productById?categoria=${category}&subcategoria=${subcategory}&productId=${productId}`
+          `/api/products/productById/${category}/${subcategory}/${productId}`
         );
-        const data = await res.json();
-        setProduct(data);
-        setCurrentImage(data?.imagen?.[0] || null); // *** Asignar la primera imagen como predeterminada ***
-        // console.log(data);
+
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+          setCurrentImage(data?.imagen?.[0] || null); // *** Asignar la primera imagen como predeterminada ***
+        } else {
+          console.error("Error:", response.statusText);
+          setError(response.statusText);
+        }
       } catch (error) {
         console.error("Error al obtener el producto de la BDD: ", error);
         setError(error.message);

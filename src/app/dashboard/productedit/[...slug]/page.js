@@ -510,16 +510,28 @@ function ProductPage({ params }) {
   //submit principal del formulario
   const onSubmitValues = async () => {
     try {
-      await updateProductByID(category, subcategory, productID, values);
-      console.log(values);
-
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Producto actualizado",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      if (values.publicado) {
+        //el producto se PUBLICA
+        alert("aquí hacer las validaciones");
+        await updateProductByID(category, subcategory, productID, values);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Producto actualizado y publicado",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } else {
+        //el producto se GUARDA y NO se publica
+        await updateProductByID(category, subcategory, productID, values);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Producto GUARDADO, no publicado",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
     } catch (error) {
       console.error("Error updating product:", error);
       Swal.fire({
