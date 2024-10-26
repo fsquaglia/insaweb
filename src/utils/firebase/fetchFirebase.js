@@ -18,6 +18,7 @@ import {
   setDoc,
   addDoc,
   runTransaction,
+  startAfter,
 } from "firebase/firestore";
 
 import {
@@ -48,6 +49,7 @@ import {
   productBase,
   contactInitialData,
   dataConfigInitial,
+  variationsInitialData1,
 } from "../SettingInitialData";
 
 //!FIRESTORE
@@ -63,6 +65,52 @@ export async function createDocConfig() {
   }
 }
 
+//obtener todos los usuarios
+export async function getAllUsers(onlyBalances = false) {
+  try {
+    let usersQuery;
+
+    if (onlyBalances) {
+      // Filtra y ordena por `fechaVenceSaldo` cuando `onlyBalances` es true
+      usersQuery = query(
+        collection(firestoreDB, "contactos"),
+        where("saldo", "!=", 0),
+        orderBy("fechaVenceSaldo", "asc") // Ordena en base a los segundos de `fechaVenceSaldo`
+      );
+    } else {
+      // Ordena por `rol` y luego por `email` cuando `onlyBalances` es false
+      usersQuery = query(
+        collection(firestoreDB, "contactos"),
+        orderBy("rol", "asc"),
+        orderBy("email", "asc")
+      );
+    }
+
+    const querySnapshot = await getDocs(usersQuery);
+    const users = [];
+    querySnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    return []; // Retorna un array vacío en caso de error
+  }
+}
+
+//obtener un documento por su ID de una colección
+export async function getDocumentById(collectionPath, docId) {
+  const docRef = doc(firestoreDB, collectionPath, docId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() };
+  } else {
+    console.log("No such document!");
+    return null;
+  }
+}
 //obtener un usuario o contacto por el email
 export async function getUserByEmail(email) {
   const q = query(
@@ -92,6 +140,57 @@ export async function getAllDocsColection(nameCollection) {
   });
   return arrayData;
 }
+
+//obtener un producto de Firestore y aplicar los filtros de paginación
+export async function getProductFirestore(
+  collectionPath,
+  limitNumber,
+  startAfterDoc = null,
+  includeProductsWithoutStock
+) {
+  try {
+    // Referencia a la colección
+    const collectionRef = collection(firestoreDB, collectionPath);
+
+    // Crear la query base
+    let q = query(
+      collectionRef,
+      where("publicado", "==", true), // Solo productos publicados
+      orderBy("nombre"), // Ordenamos por nombre
+      limit(limitNumber)
+    );
+
+    // Filtro para excluir productos sin stock
+    if (!includeProductsWithoutStock) {
+      q = query(q, where("stockTotal", ">", 0));
+    }
+
+    // Si hay un cursor de paginación (startAfterDoc), lo agregamos
+    if (startAfterDoc) {
+      q = query(q, startAfter(startAfterDoc));
+    }
+
+    // Ejecutamos la query
+    const snapshot = await getDocs(q);
+
+    // Mapeamos los resultados
+    const products = snapshot.docs.map((doc) => ({
+      docID: doc.id,
+      docData: doc.data(),
+    }));
+    console.log(snapshot.docs[snapshot.docs.length - 1]);
+
+    // Devolver los productos y el último documento visible
+    return {
+      products,
+      lastVisible: snapshot.docs[snapshot.docs.length - 1], // Cursor para la paginación
+    };
+  } catch (error) {
+    console.error("Error al obtener productos de Firestore:", error);
+    throw error;
+  }
+}
+
 //obtener documento de configuraciones
 export async function getDocConfig() {
   try {
@@ -199,7 +298,39 @@ export const getUpdateCodeProd = async () => {
   }
 };
 
-//actualizar (update) un documento del una colección Firestore
+//transacción de Firestore para agregar el código de producto al índice general
+export const setIndexProduct = async (code, productData) => {
+  const indexRef = doc(firestoreDB, "indices", "indiceProductos");
+
+  try {
+    await runTransaction(firestoreDB, async (transaction) => {
+      const sfDoc = await transaction.get(indexRef);
+
+      if (!sfDoc.exists()) {
+        console.log("Document does not exist, creating it!");
+        // Crear el documento vacío si no existe
+        await transaction.set(indexRef, { [code]: productData });
+      } else {
+        // Obtener los datos actuales del índice
+        const currentIndex = sfDoc.data() || {};
+
+        // Actualizar o agregar el nuevo código
+        const newIndex = { ...currentIndex, [code]: productData };
+
+        // Actualizar el documento con el nuevo índice
+        transaction.update(indexRef, newIndex);
+      }
+    });
+
+    console.log("Transaction successfully committed!");
+    return { success: true };
+  } catch (e) {
+    console.error("Transaction failed: ", e);
+    throw new Error("Transaction failed: " + e.message);
+  }
+};
+
+//actualizar (update) un documento de una colección Firestore
 export async function updateDocInCollection(nameCollection, nameDoc, newData) {
   try {
     const docRef = doc(firestoreDB, nameCollection, nameDoc);
@@ -496,9 +627,11 @@ export async function loadDataInitFirebase() {
       setNodoRealtime("eslogan", sloganInitialData),
       setNodoRealtime("footer", footerInitialData),
       setNodoRealtime("contacto", contactInitialData),
+      setNodoRealtime("variaciones", variationsInitialData1),
       setTipsCategoryFirestore(),
       setTipsFirestore(),
       setProductsCategoryFirestore(),
+      createDocConfig(), //documento de Firestore
     ]);
     Swal.fire({
       position: "top-end",

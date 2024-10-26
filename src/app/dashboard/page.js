@@ -23,11 +23,6 @@ import {
   variationsInitialData1,
 } from "@/utils/SettingInitialData";
 
-import {
-  getVariationsFromStorage,
-  getCodeToUse,
-} from "@/utils/local_session_storage.js/local_session_storage";
-
 export default function Page() {
   //cargamos algunos contactos en Firestore para inicializar
   const loadInitialContacts = async () => {

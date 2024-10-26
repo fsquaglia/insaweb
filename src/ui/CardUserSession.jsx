@@ -29,7 +29,7 @@ function CardUserSession({ name, email, image, role }) {
   } else if (role === "admin") {
     //renderizo ADMIN
     return (
-      <div className="flex items-center mr-5">
+      <div className="flex items-center ">
         <div className="mr-5">
           {/*imagen */}
           <div className="inline-block relative shrink-0 rounded-[.95rem]">
@@ -60,7 +60,7 @@ function CardUserSession({ name, email, image, role }) {
     //no llega el role, renderizo SIN USUARIO
     return (
       <div className="w-[40px] h-[40px] bg-gray-200 text-gray-800">
-        <span>SIn información de usuario...</span>
+        <span>Sin información de usuario...</span>
       </div>
     );
   }

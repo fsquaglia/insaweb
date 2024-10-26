@@ -28,7 +28,7 @@ function CardProduct({ product, category, subCategory }) {
     <div className="container w-72  flex justify-center h-fit">
       <div className="bg-white  shadow-lg  rounded transform hover:scale-105 duration-300 ease-in-out">
         {/*Imágenes del producto y LIKE */}
-        <div className="relative ">
+        <div className="relative">
           {/* <span className="absolute top-0 left-0 bg-yellow-500 text-white text-xs font-semibold py-1 px-2 rounded-br">
             New
           </span> */}
@@ -37,28 +37,28 @@ function CardProduct({ product, category, subCategory }) {
             className="absolute top-0 right-0 m-2 cursor-pointer text-gray-500"
             size={25}
           />
+
           {product && product?.docData.imagen.length > 0 && (
             <Image
               src={product.docData.imagen[currentImageIndex]}
               alt={product.docData.nombre}
               width={300}
               height={300}
-              className="rounded-t"
-              objectFit="cover"
+              className="rounded-t object-cover"
             />
           )}
-        </div>
-        {/*-----Botón de cambio de imagen */}
-        {product?.docData.imagen.length > 1 && (
-          <div className="flex justify-around w-full transform -translate-y-5 px-4">
-            <div
-              className="rounded-full shadow w-10 h-10 flex justify-center items-center bg-gray-100 cursor-pointer"
-              onClick={handleNextImage}
-            >
-              <FaArrowRight />
+          {/*-----Botón de cambio de imagen */}
+          {product?.docData.imagen.length > 1 && (
+            <div className="absolute bottom-0 right-0">
+              <div
+                className="w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-emerald-100 flex justify-center items-center  cursor-pointer"
+                onClick={handleNextImage}
+              >
+                <FaArrowRight />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/*-----Datos del producto----- */}
         <div className="p-2 text-center">
@@ -84,7 +84,7 @@ function CardProduct({ product, category, subCategory }) {
         <div>
           {/*Marca del producto */}
           {product && (
-            <div className=" text-center bg-gray-400 font-light text-slate-50 text-md w-full p-2">
+            <div className=" text-center bg-emerald-200 font-light text-slate-500 text-md w-full p-2">
               {product?.docData.marca}
             </div>
           )}

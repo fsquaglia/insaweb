@@ -7,8 +7,8 @@ import { GiFireflake } from "react-icons/gi"; //Slogan o Eslogan
 import { MdCategory } from "react-icons/md"; //Categorías de productos
 import { AiFillProduct } from "react-icons/ai"; //Productos
 import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
-import { RiProductHuntLine } from "react-icons/ri";
 import { FaGear } from "react-icons/fa6";
+import { FaUserPen } from "react-icons/fa6";
 
 export const links = [
   {
@@ -126,6 +126,16 @@ export const links = [
       title: "Sección de Configuracion",
       description:
         "Ten cuidado, las configuraciones pueden afectar partes de la aplicación.",
+    },
+  },
+  {
+    name: "Control de usuarios",
+    href: "/dashboard/userManagement",
+    icon: FaUserPen,
+    head: {
+      title: "Sección de Control de usuarios",
+      description:
+        "Aquí podrás gestionar los permisos a los usuarios y administrar otros datos.",
     },
   },
 ];

@@ -221,7 +221,7 @@ export const tipsCategoriesInitialData = [
   },
 ];
 
-//datos de algunos contactos iniciales
+//!datos de algunos contactos iniciales SI NO SE USA BORRAR
 export const dataContactInitial = [
   {
     nombreContacto: "Fernando Squaglia",
@@ -280,6 +280,34 @@ export const dataContactInitial = [
     imagen: "",
   },
 ];
+
+// Datos iniciales para el nuevo usuario que se carga desde RegisterForm
+export const newUserDataInitial = (
+  nombreContacto,
+  email,
+  passwordHash,
+  rolUser,
+  image
+) => {
+  return {
+    nombreContacto: nombreContacto,
+    sobrenombre: "",
+    direccion: "",
+    localidad: "",
+    provincia: "",
+    email: email,
+    password: passwordHash, // Guardamos el hash de la contraseña
+    celTE: "",
+    saldo: 0,
+    rol: rolUser,
+    fechaAlta: Timestamp.fromDate(new Date()),
+    imagen: image
+      ? image
+      : "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/images%2FUserGeneric.png?alt=media&token=46f36e6c-9009-4641-ae30-841df4a23cde",
+    fechaVenceSaldo: Timestamp.fromDate(new Date("1900-01-01")),
+    fechaNacimiento: null,
+  };
+};
 
 // Categorias de productos Iniciales
 export const categoriesProductsInitialData = [
@@ -342,7 +370,7 @@ export const categoriesProductsInitialData = [
   },
 ];
 
-//? PRODUCTO BASE
+//? PRODUCTO BASE docBase
 export const productBase = {
   codigoNro: "",
   codigoAnterior: "",
@@ -378,49 +406,6 @@ export const productBase = {
   hashtags: [],
   valoraciones: [],
 };
-
-/*export const productBase = {
-  codigoNro: "RemX-Negro", Código único basado en el modelo y color
-  nombre: "Remera modelo X",
-  detalle: "Este es un detalle largo del producto",
-  marca: "Idrogeno",
-  modelo: "Aspen",
-  color: "Negro",
-  imagen: ["urlImagen1", "urImagen2"],
-  magnitudDisponible: [
-    {
-      magnitud: "M",
-      stock: 5,
-    },
-    {
-      magnitud: "L",
-      stock: 3,
-    },
-    {
-      magnitud: "XL",
-      stock: 2,
-    },
-  ],
-  stockTotal: 10,
-  extra1: "Algún dato extra",
-  extra2: "Algún dato extra 2",
-  fechaCompra: Timestamp.fromDate(new Date("2024-06-06")),
-  precioCompra: 50,
-  precioVenta: 100,
-  publicado: false,
-  IDgrupoDeValores: 1,    Categoría o grupo al que pertenece
-  productosRelacionados: [
-    "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHovr",
-    "productos/Caballeros/Calzado Caballeros/KIcFk5axys0ZpAuOHoww",
-  ],
-  enOferta: false,
-  porcentajeDescuentoOferta: 50,
-  hashtags: ["#Ofertas", "#Remeras"],
-  valoraciones: [
-    { puntaje: 5, usuario: "Fer", avatar: "url" },
-    { puntaje: 4, usuario: "Aye", avatar: "url" },
-  ],
-};*/
 
 //variaciones, como colores, talles, marcas, gruposValores, etc
 export const variationsInitialData1 = {

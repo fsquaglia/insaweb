@@ -8,6 +8,7 @@ import {
   addNewContactFirestore,
   getUserByEmail,
 } from "@/utils/firebase/fetchFirebase"; // Asegúrate de tener estas funciones
+import { newUserDataInitial } from "@/utils/SettingInitialData";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -39,18 +40,8 @@ function RegisterForm() {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear nuevo usuario en Firestore
-      const newUser = {
-        nombreContacto: name,
-        sobrenombre: "",
-        direccion: "",
-        localidad: "",
-        provincia: "",
-        email,
-        password: hashedPassword, // Guardamos el hash de la contraseña
-        celTE: "",
-        saldo: 0,
-        rol: "user", // Asignar rol por defecto
-      };
+
+      const newUser = newUserDataInitial(name, email, hashedPassword, "user");
 
       const userAdd = await addNewContactFirestore(newUser);
 
