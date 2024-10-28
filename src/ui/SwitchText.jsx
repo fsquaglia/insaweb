@@ -1,8 +1,13 @@
 "use client";
 import { useState } from "react";
 
-function SwitchText({ text1 = "Borrador", text2 = "Publicado", onClick }) {
-  const [active, setActive] = useState(text1);
+function SwitchText({
+  text1 = "Borrador",
+  text2 = "Publicado",
+  onClick,
+  activeTextInitial = "Borrador",
+}) {
+  const [active, setActive] = useState(activeTextInitial);
 
   const handleClick = (text) => {
     setActive(text);

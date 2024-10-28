@@ -1,21 +1,122 @@
 "use client";
 import { useState, useEffect } from "react";
 import InputCustom from "@/ui/InputCustom";
+import SwitchText from "@/ui/SwitchText";
+import ButtonDashboard from "@/ui/ButtonDashboard";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
+import { updateDocInCollection } from "@/utils/firebase/fetchFirebase";
+import { Timestamp } from "firebase/firestore";
+import LoadingDiv from "@/ui/LoadingDiv";
+import { GoVerified, GoUnverified } from "react-icons/go";
 
-function UserEditForm({ userData, onSubmit }) {
-  const [user, setUser] = useState(userData);
+import { BsQuestionCircleFill, BsFillCheckCircleFill } from "react-icons/bs";
+
+// Convertir la fecha de Timestamp al formato deseado
+const formatDate = (date) => {
+  if (!date) return "";
+  const mlSeconds = Math.trunc(date.seconds) * 1000;
+  return new Date(mlSeconds).toISOString().split("T")[0];
+};
+
+function UserEditForm({ userData }) {
+  const [user, setUser] = useState({});
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setUser(userData);
+    const formattedDate = userData?.fechaNacimiento
+      ? formatDate(userData.fechaNacimiento)
+      : "";
+    setUser({ ...userData, fechaNacimiento: formattedDate });
+    setLoading(false);
   }, [userData]);
+
+  if (status === "loading" || loading) {
+    return <LoadingDiv />;
+  }
+  if (status === "unauthenticated" || session?.user?.role !== "admin") {
+    return <div className="text-center my-4">Acceso denegado</div>;
+  }
 
   const onChangeValue = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  console.log("user");
-  console.log(user);
+  const onSwitchChange = () => {
+    setUser({ ...user, rol: user?.rol === "user" ? "admin" : "user" });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //comprobar campos obligatorios
+    if (
+      !(
+        user.nombreContacto &&
+        user.celTE &&
+        user.direccion &&
+        user.localidad &&
+        user.provincia
+      )
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Algunos campos obligatorios no están completos.",
+      });
+      return;
+    }
+
+    //comprobar formato celular
+    if (!/^\d{12}$/.test(user.celTE)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "El número de celular debe tener 12 dígitos (54 3408 xxxxxx).",
+      });
+      return;
+    }
+    //comprobar fecha de nacimiento
+    if (
+      user.fechaNacimiento &&
+      !/^\d{4}-\d{2}-\d{2}$/.test(user.fechaNacimiento)
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "La fecha de nacimiento debe tener el formato AAAA-MM-DD.",
+      });
+      return;
+    }
+
+    // Convertir fecha de nacimiento a Timestamp de Firestore
+    let date;
+    if (user.fechaNacimiento) {
+      date = new Date(user.fechaNacimiento);
+      date = Timestamp.fromDate(date);
+    }
+    try {
+      await updateDocInCollection("contactos", user.id, {
+        ...user,
+        fechaNacimiento: date,
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Datos de usuario actualizados correctamente.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema al actualizar los datos del usuario.",
+      });
+    }
+  };
 
   return (
     <div className="h-full bg-gray-200 p-8">
@@ -40,22 +141,11 @@ function UserEditForm({ userData, onSubmit }) {
             <p className="text-2xl">
               {user?.nombreContacto || "Nombre y Apellido"}
             </p>
-            <span className="bg-blue-500 rounded-full p-1" title="Verified">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-gray-100 h-2.5 w-2.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="4"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-            </span>
+            {user?.nombreContacto.length < 3 ? (
+              <BsQuestionCircleFill size={20} className="text-blue-400" />
+            ) : (
+              <BsFillCheckCircleFill size={20} className="text-green-600" />
+            )}
           </div>
           {/* <p className="text-gray-700">
             Senior Software Engineer at Tailwind CSS
@@ -111,7 +201,9 @@ function UserEditForm({ userData, onSubmit }) {
             <ul className="mt-2 text-gray-700">
               <li className="flex border-y py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Nombre y apellido:</span>
+                  <span className="font-semibold w-40">
+                    Nombre y apellido: *
+                  </span>
                   <InputCustom
                     labelText=""
                     name={"nombreContacto"}
@@ -123,7 +215,7 @@ function UserEditForm({ userData, onSubmit }) {
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Celular:</span>
+                  <span className="font-semibold w-40">Celular: *</span>
                   <InputCustom
                     labelText=""
                     name={"celTE"}
@@ -138,7 +230,7 @@ function UserEditForm({ userData, onSubmit }) {
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Dirección:</span>
+                  <span className="font-semibold w-40">Dirección: *</span>
                   <InputCustom
                     labelText=""
                     name={"direccion"}
@@ -151,7 +243,7 @@ function UserEditForm({ userData, onSubmit }) {
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Localidad:</span>
+                  <span className="font-semibold w-40">Localidad: *</span>
                   <InputCustom
                     labelText=""
                     name={"localidad"}
@@ -164,7 +256,7 @@ function UserEditForm({ userData, onSubmit }) {
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Provincia:</span>
+                  <span className="font-semibold w-40">Provincia: *</span>
                   <InputCustom
                     labelText=""
                     name={"provincia"}
@@ -177,13 +269,22 @@ function UserEditForm({ userData, onSubmit }) {
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Fecha de nacimiento:</span>
-                  <InputCustom labelText="" />
+                  <span className="font-semibold w-40">
+                    Fecha de nacimiento:
+                  </span>
+                  <InputCustom
+                    labelText={""}
+                    name={"fechaNacimiento"}
+                    inputValue={user?.fechaNacimiento || ""}
+                    showCharLimits={false}
+                    placeHolder={"AAAA-MM-DD"}
+                    onChange={onChangeValue}
+                  />
                 </div>
               </li>
               <li className="flex border-b py-2">
                 <div className="flex flex-row gap-2 items-end">
-                  <span className="font-bold w-40">Apodo:</span>
+                  <span className="font-semibold w-40">Apodo:</span>
                   <InputCustom
                     labelText=""
                     name={"sobrenombre"}
@@ -194,6 +295,22 @@ function UserEditForm({ userData, onSubmit }) {
                   />
                 </div>
               </li>
+              {session?.user?.role === "admin" && (
+                <li className="flex border-b py-2">
+                  <div className="flex flex-row gap-2 items-end">
+                    <span className="font-semibold w-40">Rol del usuario:</span>
+                    <div className="ms-4 w-48">
+                      <SwitchText
+                        text1={"user"}
+                        text2={"admin"}
+                        activeTextInitial={user?.rol}
+                        onClick={onSwitchChange}
+                      />
+                    </div>
+                  </div>
+                </li>
+              )}
+
               {/* <li className="flex items-center border-b py-2 space-x-2">
                 <span className="font-bold w-24">Elsewhere:</span>
                 <a href="#" title="Twitter">
@@ -248,6 +365,13 @@ function UserEditForm({ userData, onSubmit }) {
                 </a>
               </li> */}
             </ul>
+            <div className="w-fit mx-auto">
+              <ButtonDashboard
+                textButton={"Actualizar"}
+                onclick={handleSubmit}
+              />
+            </div>
+            <span className="mx-auto my-2">* Indica campos obligatorios</span>
           </div>
           {/*seccion Actividad */}
           <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
