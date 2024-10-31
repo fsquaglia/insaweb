@@ -1,4 +1,6 @@
 import { HiUser } from "react-icons/hi2";
+import Image from "next/image";
+import MessageComponent from "./MessageComponent";
 
 function CardUserSession({ name, email, image, role }) {
   if (role === "user") {
@@ -6,10 +8,12 @@ function CardUserSession({ name, email, image, role }) {
     return (
       <div id="profile" className="space-y-3">
         {image ? (
-          <img
+          <Image
             src={image || ""}
             alt={`Avatar ${name || "user"}`}
-            className="w-10 md:w-16 rounded-full mx-auto"
+            className="w-10 h-10 md:w-16 md:h-16 rounded-full mx-auto"
+            width={40}
+            height={40}
           />
         ) : (
           <div className="w-10 h-10 md:w-16 md:h-16 rounded-full mx-auto bg-gray-100 flex items-center justify-center">
@@ -34,10 +38,12 @@ function CardUserSession({ name, email, image, role }) {
           {/*imagen */}
           <div className="inline-block relative shrink-0 rounded-[.95rem]">
             {image ? (
-              <img
+              <Image
                 className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]"
                 src={image}
                 alt={`Avatar ${name || "user"}`}
+                width={40}
+                height={40}
               />
             ) : (
               <HiUser className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem] text-gray-500" />
@@ -60,7 +66,10 @@ function CardUserSession({ name, email, image, role }) {
     //no llega el role, renderizo SIN USUARIO
     return (
       <div className="w-[40px] h-[40px] bg-gray-200 text-gray-800">
-        <span>Sin información de usuario...</span>
+        <MessageComponent
+          message={"Sin información de usuario"}
+          type={"info"}
+        />
       </div>
     );
   }

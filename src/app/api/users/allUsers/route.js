@@ -1,4 +1,5 @@
 import { getAllUsers } from "@/utils/firebase/fetchFirebase";
+export const revalidate = 21600; // Cachea la respuesta por 6 horas
 
 export async function GET() {
   try {

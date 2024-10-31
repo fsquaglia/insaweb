@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import InputCustom from "@/ui/InputCustom";
 import SwitchText from "@/ui/SwitchText";
 import ButtonDashboard from "@/ui/ButtonDashboard";
@@ -8,9 +8,12 @@ import Swal from "sweetalert2";
 import { updateDocInCollection } from "@/utils/firebase/fetchFirebase";
 import { Timestamp } from "firebase/firestore";
 import LoadingDiv from "@/ui/LoadingDiv";
-import { GoVerified, GoUnverified } from "react-icons/go";
-
 import { BsQuestionCircleFill, BsFillCheckCircleFill } from "react-icons/bs";
+import { setImageStorage } from "@/utils/firebase/fetchFirebase";
+import { imgSizing } from "@/utils/SettingSizing";
+import validateImage from "@/utils/ImageValidator";
+import Image from "next/image";
+import MessageComponent from "@/ui/MessageComponent";
 
 // Convertir la fecha de Timestamp al formato deseado
 const formatDate = (date) => {
@@ -23,6 +26,15 @@ function UserEditForm({ userData }) {
   const [user, setUser] = useState({});
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
+  const fileInputRef = useRef(null);
+  const {
+    minWidthAccepted,
+    maxWidthAccepted,
+    minHeightAccepted,
+    maxHeigthAccepted,
+    minSizeKBaccepted,
+    maxSizeKBaccepted,
+  } = imgSizing.profileUser;
 
   useEffect(() => {
     const formattedDate = userData?.fechaNacimiento
@@ -35,21 +47,28 @@ function UserEditForm({ userData }) {
   if (status === "loading" || loading) {
     return <LoadingDiv />;
   }
-  if (status === "unauthenticated" || session?.user?.role !== "admin") {
-    return <div className="text-center my-4">Acceso denegado</div>;
+  //if (status === "unauthenticated" || session?.user?.role !== "admin") {
+  if (status === "unauthenticated") {
+    return (
+      <MessageComponent
+        message={"Debes iniciar sesión para editar un usuario"}
+        type={"error"}
+      />
+    );
   }
-
+  //handle de los eventos onChange de los inputs
   const onChangeValue = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
-
+  //handle del Switch rol user/admin
   const onSwitchChange = () => {
     setUser({ ...user, rol: user?.rol === "user" ? "admin" : "user" });
   };
-
+  //handle submit del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //comprobar campos obligatorios
     if (
       !(
@@ -91,11 +110,12 @@ function UserEditForm({ userData }) {
     }
 
     // Convertir fecha de nacimiento a Timestamp de Firestore
-    let date;
+    let date = "";
     if (user.fechaNacimiento) {
       date = new Date(user.fechaNacimiento);
       date = Timestamp.fromDate(date);
     }
+
     try {
       await updateDocInCollection("contactos", user.id, {
         ...user,
@@ -104,8 +124,8 @@ function UserEditForm({ userData }) {
 
       Swal.fire({
         icon: "success",
-        title: "Éxito",
-        text: "Datos de usuario actualizados correctamente.",
+        title: "Bien!",
+        text: "Actualizaste tus datos. Deberás reiniciar tu sesión.",
         showConfirmButton: false,
         timer: 2000,
       });
@@ -117,6 +137,61 @@ function UserEditForm({ userData }) {
       });
     }
   };
+  //handle cuando hago clic sobre el div o imagen del profile
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+  //handle para seleccionar el archivo de imagen a modificar
+  const handleFileChange = async (e) => {
+    try {
+      const file = e.target.files[0];
+      if (!file) {
+        // urlImgReturn(null);
+        return;
+      }
+
+      // Verificar si la extensión del archivo es válida
+      const validExtensions = ["jpg", "jpeg", "png", "webp"];
+      const extension = file.name.split(".").pop().toLowerCase();
+      if (
+        !validExtensions.includes(extension) ||
+        file.type.indexOf("image/") !== 0
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Extensión de archivo no válida o tipo de archivo incorrecto. Solo se permiten imágenes jpg, jpeg, webp y png.",
+        });
+        // urlImgReturn(null);
+        return;
+      }
+
+      // Llama a la función de validación antes de subir la imagen
+      // validamos ancho, alto y tamaño de la imagen. Si todo está bien, continua la ejecución. Si no, va al bloque catch.
+      await validateImage(
+        file,
+        minWidthAccepted,
+        maxWidthAccepted,
+        minHeightAccepted,
+        maxHeigthAccepted,
+        minSizeKBaccepted,
+        maxSizeKBaccepted
+      );
+
+      // subir la imagen al Storage de Firebase en la carpeta:...
+      const folder = "users";
+
+      const downloadURL = await setImageStorage(file, folder);
+      setUser({ ...user, imagen: downloadURL });
+    } catch (error) {
+      console.error("Error al subir archivo: ", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error al subir la imagen, intenta de nuevo.",
+      });
+    }
+  };
 
   return (
     <div className="h-full bg-gray-200 p-8">
@@ -124,18 +199,43 @@ function UserEditForm({ userData }) {
       <div className="bg-white rounded-lg shadow-xl pb-8">
         {/*imagen de fondo */}
         <div className="w-full h-[250px]">
-          <img
-            src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg"
-            className="w-full h-full rounded-tl-lg rounded-tr-lg"
+          <Image
+            src="https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/images%2Fprofile-background.jpg?alt=media&token=c97b083a-6396-4967-99d1-998a33a98db5"
+            alt="Profile background"
+            width={1000}
+            height={250}
+            style={{ width: "auto", height: "100%" }}
+            className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover"
+            priority={true}
           />
         </div>
         {/*sección datos Imagen, nombre... */}
         <div className="flex flex-col items-center -mt-20">
           {user?.imagen && (
-            <img
-              src={user?.imagen}
-              className="w-40 border-4 border-white rounded-full"
-            />
+            <div onClick={handleImageClick}>
+              <Image
+                src={
+                  user?.imagen ||
+                  "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/images%2FUserGeneric.png?alt=media&token=46f36e6c-9009-4641-ae30-841df4a23cde"
+                }
+                className="w-40 h-40 border-4 border-white rounded-full object-cover cursor-pointer"
+                alt={
+                  `Image Profile ${user?.nombreContacto}` ||
+                  "User Profile Image"
+                }
+                width={160}
+                height={160}
+                priority={true}
+              />
+              <input
+                ref={fileInputRef}
+                className="hidden"
+                type="file"
+                id="fileInput"
+                accept=".jpg, .jpeg, .png, .webp"
+                onChange={handleFileChange}
+              />
+            </div>
           )}
           <div className="flex items-center space-x-2 mt-2">
             <p className="text-2xl">

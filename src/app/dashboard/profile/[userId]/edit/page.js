@@ -6,7 +6,9 @@ async function page({ params }) {
   const userID = params.userId;
   let user = null;
   try {
-    const response = await fetch(`${apiUrl}/api/users/userById/${userID}`);
+    const response = await fetch(`${apiUrl}/api/users/userById/${userID}`, {
+      cache: "no-store",
+    });
     if (!response.ok) throw new Error("Failed to fetch user");
     user = await response.json();
   } catch (error) {

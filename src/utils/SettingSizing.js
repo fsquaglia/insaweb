@@ -117,4 +117,12 @@ export const imgSizing = {
     minSizeKBaccepted: 50,
     maxSizeKBaccepted: 500,
   },
+  profileUser: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 5,
+    maxSizeKBaccepted: 500,
+  },
 };
