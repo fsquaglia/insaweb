@@ -520,4 +520,5 @@ export const dataConfigInitial = {
   multiplicadorCpraVta: 2.2,
   precioVisibleRol: 0, //0: admin, 1: users, 2: visitors
   mostrarProductosSinStock: false,
+  productsByPage: 2,
 };

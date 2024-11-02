@@ -19,6 +19,7 @@ import {
   addDoc,
   runTransaction,
   startAfter,
+  getCountFromServer,
 } from "firebase/firestore";
 
 import {
@@ -148,15 +149,15 @@ export async function getProductFirestore(
   startAfterDoc = null,
   includeProductsWithoutStock
 ) {
+  console.log("startAfterDoc", startAfterDoc);
   try {
-    // Referencia a la colección
     const collectionRef = collection(firestoreDB, collectionPath);
 
     // Crear la query base
     let q = query(
       collectionRef,
-      where("publicado", "==", true), // Solo productos publicados
-      orderBy("nombre"), // Ordenamos por nombre
+      where("publicado", "==", true),
+      orderBy("nombre"),
       limit(limitNumber)
     );
 
@@ -165,25 +166,43 @@ export async function getProductFirestore(
       q = query(q, where("stockTotal", ">", 0));
     }
 
-    // Si hay un cursor de paginación (startAfterDoc), lo agregamos
+    // Agregar paginación
     if (startAfterDoc) {
       q = query(q, startAfter(startAfterDoc));
     }
 
-    // Ejecutamos la query
+    // Ejecutar la query para obtener documentos
     const snapshot = await getDocs(q);
 
-    // Mapeamos los resultados
+    // Consultar el total de documentos solo en la primera consulta
+    let totalDocs = null;
+    if (!startAfterDoc) {
+      const totalQuery = [where("publicado", "==", true)];
+      if (!includeProductsWithoutStock) {
+        totalQuery.push(where("stockTotal", ">", 0));
+      }
+
+      // Obtener el conteo total de documentos sin limit ni startAfter
+      const totalDocsInQuery = await getCountFromServer(
+        query(collectionRef, ...totalQuery)
+      );
+      totalDocs = totalDocsInQuery.data().count;
+    }
+
+    // Mapeo de resultados
     const products = snapshot.docs.map((doc) => ({
       docID: doc.id,
       docData: doc.data(),
     }));
-    console.log(snapshot.docs[snapshot.docs.length - 1]);
 
-    // Devolver los productos y el último documento visible
+    const lastVisible =
+      products.length > 0 ? products[products.length - 1].docData.nombre : null;
+
     return {
       products,
-      lastVisible: snapshot.docs[snapshot.docs.length - 1], // Cursor para la paginación
+      lastVisible,
+      // lastVisible: snapshot.docs[snapshot.docs.length - 1],
+      totalDocs, // Solo contiene el total en la primera consulta
     };
   } catch (error) {
     console.error("Error al obtener productos de Firestore:", error);

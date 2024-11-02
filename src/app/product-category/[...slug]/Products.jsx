@@ -4,20 +4,24 @@ import CardProduct from "@/components/cards/CardProduct";
 import { getConfig } from "@/utils/local_session_storage.js/local_session_storage";
 import LoadingDiv from "@/ui/LoadingDiv";
 import Pagination from "@/ui/Pagination";
+import MessageComponent from "@/ui/MessageComponent";
 
-// Productos a mostrar por página
-const productsByPage = 2;
+const defaultProductsByPage = 2; //productos a mostrar por página por defecto (si hay error al traerlos de config)
 
 function Products({ category, subCategory }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastVisible, setLastVisible] = useState(null); // Último documento visible para la paginación
+  const [lastVisible, setLastVisible] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [productsByPage, setProductsByPage] = useState(defaultProductsByPage);
+  const [updateTotalPages, setUpdateTotalPages] = useState(false);
 
-  // Función para obtener los productos de Firestore
-  const fetchProducts = async (limit = productsByPage, startAfter = null) => {
+  const fetchProducts = async (startAfter = null) => {
+    console.log("startAfter");
+    console.log(startAfter);
+
     try {
       setLoading(true);
       const configurations = await getConfig();
@@ -30,24 +34,39 @@ function Products({ category, subCategory }) {
       url.searchParams.append("subcategoria", encodeURIComponent(subCategory));
       url.searchParams.append(
         "includeProductsWithoutStock",
-        configurations?.mostrarProductosSinStock
+        configurations?.mostrarProductosSinStock || false
       );
-      url.searchParams.append("limit", limit);
+      url.searchParams.append(
+        "limit",
+        configurations?.productsByPage || defaultProductsByPage
+      );
 
       if (startAfter) {
         url.searchParams.append("startAfter", startAfter);
       }
-      console.log(url);
 
       const res = await fetch(url);
+
+      // const res = await fetch(url, {
+      //   method: "POST", // Cambia el método a POST
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(startAfter || {}),
+      // });
+
       const data = await res.json();
 
       if (res.ok && data && !data.hasOwnProperty("error")) {
         setProducts((prevProducts) => [...prevProducts, ...data.products]);
-        setLastVisible(data.lastVisible); // Actualiza el último documento visible
-        console.log(data);
+        setLastVisible(data.lastVisible);
+        // Actualizamos totalPages en base al total de productos devueltos
+        if (!updateTotalPages) {
+          setTotalPages(Math.ceil(data?.totalDocs / productsByPage));
+          setUpdateTotalPages(true);
+        }
       } else {
-        setProducts([]); // Si no hay productos
+        setProducts([]);
       }
     } catch (error) {
       console.error("Error al obtener los productos: ", error);
@@ -57,47 +76,33 @@ function Products({ category, subCategory }) {
     }
   };
 
-  // Actualiza el total de páginas cada vez que cambia la lista de productos
-  useEffect(() => {
-    const calculatedTotalPages = Math.ceil(products.length / productsByPage);
-    setTotalPages(calculatedTotalPages);
-  }, [products]);
-
-  // Llama a fetchProducts cuando cambian la categoría o subcategoría
   useEffect(() => {
     fetchProducts();
   }, [category, subCategory]);
 
-  // Handle de cambio de página
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
       if (newPage > currentPage) {
-        fetchProducts(productsByPage, lastVisible); // Llama a Firestore para obtener más productos
+        fetchProducts(lastVisible);
       }
     }
   };
 
-  // Loading state
   if (loading) {
     return <LoadingDiv />;
   }
 
-  // Error state
   if (error) {
-    return (
-      <div className="w-full min-h-screen bg-slate-50 text-center pt-20 flex justify-center">
-        {error}
-      </div>
-    );
+    return <MessageComponent message={error} type={"error"} />;
   }
 
-  // No hay productos
   if (products.length === 0) {
     return (
-      <div className="text-gray-600 text-center my-12">
-        No hay productos para mostrar aún...
-      </div>
+      <MessageComponent
+        message={"No hay productos para mostrar aún..."}
+        type={"info"}
+      />
     );
   }
 
@@ -119,12 +124,12 @@ function Products({ category, subCategory }) {
           ))}
       </div>
       <div className="flex justify-center items-center mt-6">
-        {products.length > productsByPage && (
+        {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-            disableNext={lastVisible === null || currentPage === totalPages}
+            disableNext={currentPage >= totalPages || !lastVisible}
             disablePrev={currentPage === 1}
           />
         )}
