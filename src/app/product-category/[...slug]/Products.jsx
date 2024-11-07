@@ -3,29 +3,22 @@ import React, { useEffect, useState } from "react";
 import CardProduct from "@/components/cards/CardProduct";
 import { getConfig } from "@/utils/local_session_storage.js/local_session_storage";
 import LoadingDiv from "@/ui/LoadingDiv";
-import Pagination from "@/ui/Pagination";
 import MessageComponent from "@/ui/MessageComponent";
 
-const defaultProductsByPage = 2; //productos a mostrar por página por defecto (si hay error al traerlos de config)
+const defaultProductsByPage = 2;
 
 function Products({ category, subCategory }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [lastVisible, setLastVisible] = useState(null);
-  const [totalPages, setTotalPages] = useState(1);
-  const [productsByPage, setProductsByPage] = useState(defaultProductsByPage);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [updateTotalPages, setUpdateTotalPages] = useState(false);
 
-  const fetchProducts = async (startAfter = null) => {
-    console.log("startAfter");
-    console.log(startAfter);
-
+  const fetchProducts = async (startAfter = null, reset = false) => {
     try {
       setLoading(true);
       const configurations = await getConfig();
-
       const url = new URL(
         "/api/products/productsBySubCat",
         window.location.origin
@@ -38,7 +31,7 @@ function Products({ category, subCategory }) {
       );
       url.searchParams.append(
         "limit",
-        configurations?.productsByPage || defaultProductsByPage
+        Number(configurations?.productosPorPagina) || defaultProductsByPage
       );
 
       if (startAfter) {
@@ -46,23 +39,21 @@ function Products({ category, subCategory }) {
       }
 
       const res = await fetch(url);
-
-      // const res = await fetch(url, {
-      //   method: "POST", // Cambia el método a POST
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(startAfter || {}),
-      // });
-
       const data = await res.json();
 
       if (res.ok && data && !data.hasOwnProperty("error")) {
-        setProducts((prevProducts) => [...prevProducts, ...data.products]);
+        const newProducts = data.products.filter(
+          (newProduct) =>
+            !products.some((prod) => prod.docID === newProduct.docID)
+        );
+
+        setProducts((prevProducts) =>
+          reset ? newProducts : [...prevProducts, ...newProducts]
+        );
         setLastVisible(data.lastVisible);
-        // Actualizamos totalPages en base al total de productos devueltos
+
         if (!updateTotalPages) {
-          setTotalPages(Math.ceil(data?.totalDocs / productsByPage));
+          setTotalProducts(data?.totalDocs);
           setUpdateTotalPages(true);
         }
       } else {
@@ -77,26 +68,20 @@ function Products({ category, subCategory }) {
   };
 
   useEffect(() => {
-    fetchProducts();
+    setProducts([]); // Limpiar productos cuando cambia la categoría o subcategoría
+    fetchProducts(null, true);
   }, [category, subCategory]);
 
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-      if (newPage > currentPage) {
-        fetchProducts(lastVisible);
-      }
-    }
+  const handleLoadMore = () => {
+    fetchProducts(lastVisible);
   };
 
   if (loading) {
     return <LoadingDiv />;
   }
-
   if (error) {
     return <MessageComponent message={error} type={"error"} />;
   }
-
   if (products.length === 0) {
     return (
       <MessageComponent
@@ -109,29 +94,23 @@ function Products({ category, subCategory }) {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-row flex-wrap gap-6 flex-grow">
-        {products
-          .slice(
-            (currentPage - 1) * productsByPage,
-            currentPage * productsByPage
-          )
-          .map((product) => (
-            <CardProduct
-              key={product.docID}
-              product={product}
-              category={category}
-              subCategory={subCategory}
-            />
-          ))}
+        {products.map((product) => (
+          <CardProduct
+            key={product.docID}
+            product={product}
+            category={category}
+            subCategory={subCategory}
+          />
+        ))}
       </div>
       <div className="flex justify-center items-center mt-6">
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            disableNext={currentPage >= totalPages || !lastVisible}
-            disablePrev={currentPage === 1}
-          />
+        {products.length < totalProducts && (
+          <button
+            onClick={handleLoadMore}
+            className="border rounded shadow-lg p-2 font-light text-slate-500 bg-emerald-200 hover:shadow-xl"
+          >
+            Mostrar más
+          </button>
         )}
       </div>
     </div>

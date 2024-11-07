@@ -17,7 +17,6 @@ import {
 function PageProductDetail({ params }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
 
   const [visibleAdmin, setVisibleAdmin] = useState(false);
   const [cat, subcat, productId] = params.slug;

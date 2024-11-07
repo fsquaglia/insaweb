@@ -71,7 +71,7 @@ function CardProduct({ product, category, subCategory }) {
             )}
           </Link>
           {/*Precio de producto */}
-          <p className="font-light text-gray-500 text-lg my-2">29,99 &euro;</p>
+          {/* <p className="font-light text-gray-500 text-lg my-2">29,99 &euro;</p> */}
           {/*Detalle del producto */}
           {/* {product && (
             <p className="text-slate-600">

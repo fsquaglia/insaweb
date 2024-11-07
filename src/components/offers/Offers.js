@@ -4,6 +4,7 @@ import { getOffersLandingFirestore } from "@/utils/firebase/fetchFirebase";
 
 export default async function Offers() {
   const dataOffer = await getOffersLandingFirestore();
+  console.log(dataOffer);
 
   return (
     <div className="flex flex-col text-center justify-center bg-gray-100 pb-10">

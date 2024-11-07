@@ -60,6 +60,13 @@ export async function createDocConfig() {
     const docRef = doc(firestoreDB, "configuraciones", "configuraciones");
     await setDoc(docRef, dataConfigInitial);
     console.log("Documento de configuraciones creado correctamente.");
+    Swal.fire({
+      icon: "success",
+      title: "Documento de configuraciones creado correctamente.",
+      showConfirmButton: false,
+      position: "center",
+      timer: 2000,
+    });
   } catch (error) {
     console.error("Error al crear el documento de configuraciones: ", error);
     throw error;

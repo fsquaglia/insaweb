@@ -196,12 +196,15 @@ function CategoryLoader({ data }) {
           </div>
         </div>
       </div>
-      <div className="mx-2">
-        <SwitchText
-          text1={"Categorías"}
-          text2={"Subcategorías"}
-          onClick={onClickSwitch}
-        />
+      <div className="flex justify-center w-full">
+        <div className="w-full max-w-lg">
+          <SwitchText
+            text1={"Categorías"}
+            text2={"Subcategorías"}
+            onClick={onClickSwitch}
+            activeTextInitial={"Categorías"}
+          />
+        </div>
       </div>
       <div className="my-2 flex justify-center">
         {changeView ? (

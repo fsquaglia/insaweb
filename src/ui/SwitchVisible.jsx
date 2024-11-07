@@ -10,7 +10,7 @@ function SwitchVisible({ name, switchLabel, initialValue = false, onToggle }) {
 
   const handleToggle = () => {
     setIsOn(!isOn);
-    onToggle && onToggle(!isOn); // Notificar al componente padre
+    onToggle && onToggle(!isOn, name); // Notificar al componente padre
   };
 
   return (

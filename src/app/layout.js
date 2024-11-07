@@ -22,7 +22,9 @@ export default function RootLayout({ children }) {
           </div> */}
           <div>{children}</div>
           {/* <Footer /> */}
-          <Agency />
+          <div className="z-50 bg-green-500">
+            <Agency />
+          </div>
         </Providers>
       </body>
     </html>

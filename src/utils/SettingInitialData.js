@@ -100,7 +100,7 @@ export const contactInitialData = {
     logoURL: "",
   },
   medios: {
-    cel: "54 3492 613004",
+    cel: "543492613004",
     TE: "",
     email: "ayecompagnon@gmail.com",
   },
@@ -520,5 +520,15 @@ export const dataConfigInitial = {
   multiplicadorCpraVta: 2.2,
   precioVisibleRol: 0, //0: admin, 1: users, 2: visitors
   mostrarProductosSinStock: false,
-  productsByPage: 2,
+  productosPorPagina: 2,
+  mostrarOfertasEnHome: false,
+  mostrarTipsEnHome: false,
+  mostrarHistoriaEnHome: true,
+  mostrarAboutEnHome: true,
+  mostrarEquipoEnHome: true,
+  mostrarSocialMediaEnHome: true,
+  mostrarMapaEnHome: true,
+  mostrarSloganEnHome: true,
+  mostrarNovedadesEnHome: true,
+  mostrarMasMeGustaEnHome: true,
 };
