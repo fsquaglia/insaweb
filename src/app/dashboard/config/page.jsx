@@ -55,14 +55,10 @@ function PageConfig() {
 
   //handle botón submit para actualizar datos en la BBDD
   const handleSubmit = async () => {
-    console.log(configurations.productosPorPagina);
-
     const newValues = {
-      codProdPrefijo: configurations.codProdPrefijo,
+      ...configurations,
       multiplicadorCpraVta: parseFloat(configurations.multiplicadorCpraVta),
       coeficienteVenta: parseFloat(configurations.coeficienteVenta),
-      precioVisibleRol: configurations.precioVisibleRol,
-      mostrarProductosSinStock: configurations.mostrarProductosSinStock,
       productosPorPagina: parseInt(configurations.productosPorPagina),
     };
 
@@ -150,69 +146,77 @@ function PageConfig() {
           onToggle={handleChangeSwitch}
         />
 
-        <div className="border rounded my-2 flex flex-col justify-center items-center">
-          <p className="text-slate-800">Mostrar secciones en Home</p>
-          <div className="flex flex-col justify-center">
-            <SwitchVisible
-              switchLabel={"Ofertas "}
-              name={"mostrarOfertasEnHome"}
-              initialValue={configurations.mostrarOfertasEnHome || false}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Tips "}
-              name={"mostrarTipsEnHome"}
-              initialValue={configurations.mostrarTipsEnHome || false}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Historia "}
-              name={"mostrarHistoriaEnHome"}
-              initialValue={configurations.mostrarHistoriaEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"About "}
-              name={"mostrarAboutEnHome"}
-              initialValue={configurations.mostrarAboutEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Equipo "}
-              name={"mostrarEquipoEnHome"}
-              initialValue={configurations.mostrarEquipoEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Social Media "}
-              name={"mostrarSocialMediaEnHome"}
-              initialValue={configurations.mostrarSocialMediaEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Mapa "}
-              name={"mostrarMapaEnHome"}
-              initialValue={configurations.mostrarMapaEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Slogan "}
-              name={"mostrarSloganEnHome"}
-              initialValue={configurations.mostrarSloganEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Novedades "}
-              name={"mostrarNovedadesEnHome"}
-              initialValue={configurations.mostrarNovedadesEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
-            <SwitchVisible
-              switchLabel={"Mas Me Gusta "}
-              name={"mostrarMasMeGustaEnHome"}
-              initialValue={configurations.mostrarMasMeGustaEnHome || true}
-              onToggle={handleChangeSwitch}
-            />
+        {/*Mostrar secciones en Home */}
+        <div className="border rounded-lg mt-4 mb-2 flex flex-col ">
+          <div className="w-full flex justify-center items-center my-2">
+            <p className="text-slate-800">Mostrar secciones en Home</p>
+          </div>
+          <div className="flex flex-row flex-wrap gap-8 items-center justify-center">
+            <div className="flex flex-col justify-center gap-4 my-2">
+              <SwitchVisible
+                switchLabel={"Ofertas "}
+                name={"mostrarOfertasEnHome"}
+                initialValue={configurations.mostrarOfertasEnHome || false}
+                onToggle={handleChangeSwitch}
+              />
+
+              <SwitchVisible
+                switchLabel={"Tips "}
+                name={"mostrarTipsEnHome"}
+                initialValue={configurations.mostrarTipsEnHome || false}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Historia "}
+                name={"mostrarHistoriaEnHome"}
+                initialValue={configurations.mostrarHistoriaEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"About "}
+                name={"mostrarAboutEnHome"}
+                initialValue={configurations.mostrarAboutEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Equipo "}
+                name={"mostrarEquipoEnHome"}
+                initialValue={configurations.mostrarEquipoEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+            </div>
+            <div className="flex flex-col justify-center gap-4 my-2">
+              <SwitchVisible
+                switchLabel={"Social Media "}
+                name={"mostrarSocialMediaEnHome"}
+                initialValue={configurations.mostrarSocialMediaEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Mapa "}
+                name={"mostrarMapaEnHome"}
+                initialValue={configurations.mostrarMapaEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Slogan "}
+                name={"mostrarSloganEnHome"}
+                initialValue={configurations.mostrarSloganEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Novedades "}
+                name={"mostrarNovedadesEnHome"}
+                initialValue={configurations.mostrarNovedadesEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+              <SwitchVisible
+                switchLabel={"Mas Me Gusta "}
+                name={"mostrarMasMeGustaEnHome"}
+                initialValue={configurations.mostrarMasMeGustaEnHome || true}
+                onToggle={handleChangeSwitch}
+              />
+            </div>
           </div>
         </div>
 

@@ -7,9 +7,12 @@ import SkeletonLoader from "@/ui/SkeletonLoader";
 import {
   addNewProductFirestore,
   getAllDocsColection,
+  setIndexProduct,
+  updateDocInCollection,
 } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
 import { productBase } from "@/utils/SettingInitialData";
+import MessageComponent from "@/ui/MessageComponent";
 
 function CategorySelect({ data }) {
   const router = useRouter();
@@ -24,8 +27,16 @@ function CategorySelect({ data }) {
 
   const fetchArrayProductos = async (fullCollection) => {
     try {
-      const products = await getAllDocsColection(fullCollection);
-      // console.log(fullCollection);
+      const response = await fetch(
+        `/api/products/productsIndexBySubCat/${fullCollection}`,
+        {
+          cache: "no-store",
+        }
+      );
+      if (!response.ok)
+        throw new Error("Error al cargar las categorías de productos");
+
+      const products = await response.json();
 
       return products;
     } catch (error) {
@@ -45,11 +56,11 @@ function CategorySelect({ data }) {
     const fetchProducts = async () => {
       if (subCategories.length > 0) {
         const fetchedProdcuts = await fetchArrayProductos(
-          `productos/${categorySelected.docID}/${subCategories[0]}`
+          `${categorySelected.docID}/${subCategories[0]}`
         );
         setSubCatSelected(subCategories[0]);
         setProducts(fetchedProdcuts);
-        console.log(fetchedProdcuts);
+        // console.log(fetchedProdcuts);
       } else {
         setSubCatSelected(null);
       }
@@ -66,23 +77,42 @@ function CategorySelect({ data }) {
   const onClickSubCard = async (id) => {
     setSubCatSelected(id);
     const fetchedProdcuts = await fetchArrayProductos(
-      `productos/${categorySelected.docID}/${id}`
+      `${categorySelected.docID}/${id}`
     );
     setProducts(fetchedProdcuts);
   };
 
   //handle de clic sobre card de producto
   const handleOnclickProduct = async (product) => {
-    if (product.docID === "docBase") {
-      //se hizo clic sobre la Card para agregar nuevo producto
+    if (product.id === "docBase") {
+      //se hizo clic sobre la Card para AGREGAR NUEVO PRODUCTO
       //crear un producto en la categoría/subcategoría y redirigir a esa ruta para editarlo
       try {
         const newProduct = await addNewProductFirestore(
           "productos",
           categorySelected.docID,
           subCatSelected,
-          product.docData
+          {
+            ...product.docData,
+            categoria: categorySelected.docID,
+            subcategoria: subCatSelected,
+          }
         );
+        //updateDocInCollection me crea otro producto, esto es experimental para manejar en un futuro de otra forma los productos
+        await updateDocInCollection("items", newProduct.id, {
+          ...product.docData,
+          docID: newProduct.id,
+          categoria: categorySelected.docID,
+          subcategoria: subCatSelected,
+        });
+
+        await setIndexProduct("indicePorIdProducto", newProduct.id, [
+          categorySelected.docID,
+          subCatSelected,
+          "",
+          product.docData.imagen[0],
+        ]);
+
         const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${newProduct.id}`;
         router.push(newRoute);
       } catch (error) {
@@ -91,7 +121,7 @@ function CategorySelect({ data }) {
       }
     } else {
       //se hizo clic sobre un producto existente, redirigir para editarlo
-      const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${product.docID}`;
+      const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${product.id}`;
       router.push(newRoute);
     }
   };
@@ -144,24 +174,41 @@ function CategorySelect({ data }) {
               </ScrollableContainer>
             </div>
             <div className="flex flex-col justify-center text-center p-2 min-h-64 bg-gradient-to-b from-gray-100 to-gray-300">
-              <span className="text-center">Productos incluidos</span>
-              <ScrollableContainer>
-                {products &&
-                  products.map((prod, index) => (
+              <div>
+                <span className="text-center">Productos incluidos</span>
+                <button
+                  className="rounded p-1 mx-2 text-sm cursor-pointer hover:shadow bg-blue-200 text-slate-600"
+                  onClick={() =>
+                    handleOnclickProduct({
+                      id: "docBase",
+                      docData: productBase,
+                    })
+                  }
+                >
+                  Agregar
+                </button>
+              </div>
+              {products && products.length > 0 ? (
+                <ScrollableContainer>
+                  {products.map((prod, index) => (
                     <CardComponent
                       key={index}
-                      id={prod.docID}
-                      name={
-                        prod.docID === "docBase"
-                          ? "Nuevo"
-                          : prod.docData.nombre || "Prod. sin nombre"
-                      }
+                      id={prod?.id}
+                      name={prod?.nombre || "Prod. sin nombre"}
                       // idSelected={subCatSelected}
                       onclickCard={() => handleOnclickProduct(prod)}
-                      img={prod?.docData?.imagen[0] || null}
+                      img={prod?.imagen || null}
                     />
                   ))}
-              </ScrollableContainer>
+                </ScrollableContainer>
+              ) : (
+                <div className="flex justify-center mt-4">
+                  <MessageComponent
+                    message={"Crea un nuevo producto"}
+                    type={"info"}
+                  />
+                </div>
+              )}
             </div>
           </>
         ) : (

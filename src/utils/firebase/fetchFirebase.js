@@ -288,7 +288,7 @@ export async function updateProductByID(
       idDocument
     );
     await setDoc(docRef, newData, { merge: true });
-    console.log("Producto actualizado correctamente.");
+    // console.log("Producto actualizado correctamente.");
   } catch (error) {
     console.error("Error al actualizar el producto: ", error);
     throw error;
@@ -325,8 +325,8 @@ export const getUpdateCodeProd = async () => {
 };
 
 //transacción de Firestore para agregar el código de producto al índice general
-export const setIndexProduct = async (code, productData) => {
-  const indexRef = doc(firestoreDB, "indices", "indiceProductos");
+export const setIndexProduct = async (nameIndex, code, productData) => {
+  const indexRef = doc(firestoreDB, "indices", nameIndex);
 
   try {
     await runTransaction(firestoreDB, async (transaction) => {
@@ -348,7 +348,7 @@ export const setIndexProduct = async (code, productData) => {
       }
     });
 
-    console.log("Transaction successfully committed!");
+    // console.log("Transaction successfully committed!");
     return { success: true };
   } catch (e) {
     console.error("Transaction failed: ", e);
@@ -361,7 +361,7 @@ export async function updateDocInCollection(nameCollection, nameDoc, newData) {
   try {
     const docRef = doc(firestoreDB, nameCollection, nameDoc);
     await setDoc(docRef, newData, { merge: true });
-    console.log("Documento actualizado correctamente.");
+    // console.log("Documento actualizado correctamente.");
   } catch (error) {
     console.error("Error al actualizar el documento: ", error);
     throw error;
@@ -582,7 +582,7 @@ export async function addNewContactFirestore(dataObject) {
   }
 }
 
-//Agregar nuevo PRODUCTO
+//Agregar nuevo PRODUCTO y Firestore crea el ID
 export async function addNewProductFirestore(
   coleccion,
   categoria = "",
@@ -602,7 +602,7 @@ export async function addNewProductFirestore(
   try {
     // Agrega un nuevo doc a la colección "coleccion"
     const docRef = await addDoc(collection(firestoreDB, ruta), dataObject);
-    console.log("Producto agregado: ", docRef.id);
+    // console.log("Producto agregado: ", docRef.id);
     return docRef;
   } catch (error) {
     console.error("Error al agregar producto: ", error);

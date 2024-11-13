@@ -1,4 +1,3 @@
-import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
 import CategoryLoader from "./CategoryLoader";
 import MessageComponent from "@/ui/MessageComponent";
 
@@ -7,7 +6,6 @@ async function PageCategory() {
 
   try {
     // Obtener categorías de productos
-    // const categoriesProducts = await getAllDocsColection("productos");
     const response = await fetch(`${apiUrl}/api/categories/categories`, {
       cache: "no-store",
     });

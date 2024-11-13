@@ -14,7 +14,7 @@ const MapCommerce = () => {
         id="gmap_canvas"
         src="https://maps.google.com/maps?width=520&height=400&hl=en&q=Ituzaing%C3%B3%201393%20+(Ihara%20&%20London)&t=&z=16&ie=UTF8&iwloc=B&output=embed"
       ></iframe>{" "}
-      {/* <a href="http://maps-website.com/es">Maps Generator ES</a> */}
+      <a href="http://maps-website.com/es">Maps Generator ES</a>
       <script
         type="text/javascript"
         src="https://embedmaps.com/google-maps-authorization/script.js?id=e3b1c2b0197ff87866a71ae0de1f1440a95901fd"

@@ -1,14 +1,18 @@
-import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
-// import CategoryLoader from "./CategoryLoader";
 import CategorySelect from "./CategorySelect";
-// import { useRouter } from "next/router";
+import MessageComponent from "@/ui/MessageComponent";
 
 async function PageProducts() {
-  // const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
     // Obtener categorías de productos
-    const categoriesProducts = await getAllDocsColection("productos");
+    const response = await fetch(`${apiUrl}/api/categories/categories`, {
+      cache: "no-store",
+    });
+    if (!response.ok)
+      throw new Error("Error al cargar las categorías de productos");
+
+    const categoriesProducts = await response.json();
 
     return (
       <div className="container flex flex-col justify-center text-center">
@@ -19,7 +23,10 @@ async function PageProducts() {
     console.error("Error al cargar las categorías de productos:", error);
     return (
       <div className="flex mx-auto my-4">
-        Error al cargar las categorías. Por favor, recarga la página.
+        <MessageComponent
+          message="Error al cargar las categorías. Intenta recarga la página."
+          type={"error"}
+        />
       </div>
     );
   }

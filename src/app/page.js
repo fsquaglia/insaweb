@@ -9,32 +9,105 @@ import About from "../components/about/About";
 import SocialMedia from "../components/socialMedia/SocialMedia";
 import Contact from "../components/contact/Contact";
 import Slogan from "../components/slogan/Slogan";
-import { getDataFromFirebaseWithCache } from "../utils/firebase/firebaseCache";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 
 export default async function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const data = await getDataFromFirebaseWithCache();
-  let configurations;
+  let configurations, data;
+
   try {
-    const response = await fetch(`${apiUrl}/api/configurations`, {
-      cache: "no-store",
-    });
-    if (!response.ok) throw new Error("Error al cargar la configuración");
-    configurations = await response.json();
+    // Realizamos ambas peticiones de forma paralela
+    const [homeResponse, configResponse] = await Promise.all([
+      fetch(`${apiUrl}/api/home`),
+      fetch(`${apiUrl}/api/configurations`, { cache: "no-store" }),
+    ]);
+
+    // Validamos ambas respuestas
+    if (!homeResponse.ok) throw new Error("Error al cargar home");
+    if (!configResponse.ok) throw new Error("Error al cargar la configuración");
+
+    // Obtenemos los datos de ambas respuestas
+    data = await homeResponse.json();
+    configurations = await configResponse.json();
   } catch (error) {
-    console.error("Error al cargar la configuración:", error);
+    console.error("Error en las solicitudes:", error);
     return (
       <div className="flex mx-auto my-4">
         <MessageComponent
-          message="Error al cargar la configuración. Intenta recarga la página."
+          message="Error al cargar los datos. Intenta recargar la página."
           type={"error"}
         />
       </div>
     );
   }
+
+  const sections = [
+    {
+      id: "main",
+      component: <Main main={data ? data.main : null} />,
+      condition: true,
+    },
+    {
+      id: "carousel",
+      component: <Carousel />,
+      condition: true,
+    },
+    {
+      id: "categories",
+      component: <Categories />,
+      condition: true,
+    },
+    {
+      id: "offers",
+      component: <Offers />,
+      condition: configurations?.mostrarOfertasEnHome,
+    },
+    {
+      id: "tips",
+      component: <Tips />,
+      condition: configurations?.mostrarTipsEnHome,
+    },
+    {
+      id: "history",
+      component: <History historia={data ? data.historia : null} />,
+      condition: configurations?.mostrarHistoriaEnHome,
+    },
+    {
+      id: "about",
+      component: <About about={data ? data.about : null} />,
+      condition: configurations?.mostrarAboutEnHome,
+    },
+    {
+      id: "team",
+      component: <Team team={data ? data.team : null} />,
+      condition: configurations?.mostrarEquipoEnHome,
+    },
+    {
+      id: "social-media",
+      component: (
+        <SocialMedia socialMedia={data?.contacto?.socialMedia ?? null} />
+      ),
+      condition: configurations?.mostrarSocialMediaEnHome,
+    },
+    {
+      id: "contact",
+      component: (
+        <Contact
+          medios={data ? data?.contacto?.medios : null}
+          ubicacion={data ? data?.contacto?.ubicacion : null}
+          showMap={configurations?.mostrarMapaEnHome ?? false}
+        />
+      ),
+      condition: true,
+    },
+    {
+      id: "slogan",
+      component: <Slogan slogan={data ? data.eslogan : null} />,
+      condition: configurations?.mostrarSloganEnHome,
+    },
+  ];
 
   return (
     <div>
@@ -42,68 +115,13 @@ export default async function Home() {
         <Navbar configurations={configurations} />
       </div>
       <main className="w-full flex flex-col items-center justify-center">
-        <section id="main" className="w-full">
-          {/*Main recibe data de Realtime*/}
-          <Main main={data ? data.main : null} />
-        </section>
-        <section id="carousel" className="w-full">
-          {/*Carousel toma imgs de Storage, carpeta Carousel*/}
-          <Carousel />
-        </section>
-        <section id="categories" className="w-full">
-          {/*Categories recibe datos de BD Firestore*/}
-          <Categories />
-        </section>
-        {configurations?.mostrarOfertasEnHome && (
-          <section id="offers" className="w-full">
-            {/*offers recibe datos de BD Firestore */}
-            <Offers />
-          </section>
-        )}
-        {configurations?.mostrarTipsEnHome && (
-          <section id="tips" className="w-full">
-            {/*tips recibe datos de BD Firestore */}
-            <Tips />
-          </section>
-        )}
-        {configurations?.mostrarHistoriaEnHome && (
-          <section id="history" className="w-full">
-            {/*History recibe data de Realtime*/}
-            <History historia={data ? data.historia : null} />
-          </section>
-        )}
-        {configurations?.mostrarAboutEnHome && (
-          <section id="about" className="w-full">
-            {/*About recibe data de Realtime*/}
-            <About about={data ? data.about : null} />
-          </section>
-        )}
-
-        {/*Team recibe data de Realtime*/}
-        {configurations?.mostrarEquipoEnHome && (
-          <Team team={data ? data.team : null} />
-        )}
-
-        {configurations?.mostrarSocialMediaEnHome && (
-          <section id="social-media" className="w-full">
-            {/*SocialMedia recibe data de Realtime, dentro del nodo contacto*/}
-            <SocialMedia socialMedia={data?.contacto?.socialMedia ?? null} />
-          </section>
-        )}
-
-        <section id="contact" className="w-full">
-          {/*Contact recibe data de Realtime, dentro del nodo contacto*/}
-          <Contact
-            medios={data ? data?.contacto?.medios : null}
-            ubicacion={data ? data?.contacto?.ubicacion : null}
-            showMap={configurations?.mostrarMapaEnHome ?? false}
-          />
-        </section>
-
-        {/*Slogan recibe data de Realtime*/}
-        {configurations?.mostrarSloganEnHome && (
-          <Slogan slogan={data ? data.eslogan : null} />
-        )}
+        {sections
+          .filter((section) => section.condition)
+          .map((section) => (
+            <section key={section.id} id={section.id} className="w-full">
+              {section.component}
+            </section>
+          ))}
       </main>
       <Footer />
     </div>

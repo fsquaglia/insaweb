@@ -405,6 +405,8 @@ export const productBase = {
   porcentajeDescuentoOferta: 50,
   hashtags: [],
   valoraciones: [],
+  fechaCreado: Timestamp.fromDate(new Date()),
+  fechaModificado: Timestamp.fromDate(new Date()),
 };
 
 //variaciones, como colores, talles, marcas, gruposValores, etc

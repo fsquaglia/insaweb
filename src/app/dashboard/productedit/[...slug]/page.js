@@ -1,4 +1,5 @@
 "use client";
+import { Timestamp } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import InputCustom from "@/ui/InputCustom";
 import SwitchVisible from "@/ui/SwitchVisible";
@@ -16,6 +17,7 @@ import ImageUpload from "./ImageUpload";
 import {
   getProductByID,
   setIndexProduct,
+  updateDocInCollection,
   updateProductByID,
 } from "@/utils/firebase/fetchFirebase";
 
@@ -191,9 +193,9 @@ const sections = (
     ),
   },
   {
-    name: "Control stock",
+    name: "Stock",
     id: 3,
-    description: "Control de stock y magnitudes.",
+    description: "Control de stock, magnitudes y producto publicado.",
     content: (
       <>
         <InputCustom
@@ -383,6 +385,7 @@ function ProductPage({ params }) {
     hashtags: [],
     imagen: [],
     valoraciones: [],
+    fechaModificado: Timestamp.fromDate(new Date()),
   });
 
   useEffect(() => {
@@ -512,64 +515,87 @@ function ProductPage({ params }) {
   };
 
   //fn para actualizar documento de índice de Firestore con códigos de productos
-  const indexCodeProducts = async (values) => {
-    try {
-      if (values?.codigoNro != "") {
-        //almacenar índice de código nuevo
-        await setIndexProduct(values.codigoNro, [
-          values.nombre,
-          values.categoria,
-          values.subcategoria,
-          values.docID,
-        ]);
+  const indexCodeProducts = async (nameIndex, values) => {
+    if (nameIndex === "indicePorArticuloProducto") {
+      try {
+        if (values?.codigoNro != "") {
+          //almacenar índice de código nuevo
+          await setIndexProduct(nameIndex, values.codigoNro, [
+            values.docID,
+            values.categoria,
+            values.subcategoria,
+            values.nombre,
+          ]);
+        }
+        if (values?.codigoAnterior != "") {
+          //almacenar índice de código anterior
+          await setIndexProduct(nameIndex, values.codigoAnterior, [
+            values.docID,
+            values.categoria,
+            values.subcategoria,
+            values.nombre,
+          ]);
+        }
+      } catch (error) {
+        Swal({
+          position: "center",
+          icon: "error",
+          title: "Error en documento de índices",
+          showConfirmButton: true,
+        });
       }
-      if (values?.codigoAnterior != "") {
-        //almacenar índice de código anterior
-        await setIndexProduct(values.codigoAnterior, [
-          values.nombre,
-          values.categoria,
-          values.subcategoria,
-          values.docID,
-        ]);
+    }
+
+    if (nameIndex === "indicePorIdProducto") {
+      try {
+        if (values?.docID != "") {
+          //almacenar índice de código nuevo
+          await setIndexProduct(nameIndex, values.docID, [
+            values.categoria,
+            values.subcategoria,
+            values.nombre,
+            values.imagen[0],
+          ]);
+        }
+      } catch (error) {
+        Swal({
+          position: "center",
+          icon: "error",
+          title: "Error en documento de índices",
+          showConfirmButton: true,
+        });
       }
-    } catch (error) {
-      Swal({
-        position: "center",
-        icon: "error",
-        title: "Error en documento de índices",
-        showConfirmButton: true,
-      });
     }
   };
 
   //submit principal del formulario
   const onSubmitValues = async () => {
-    try {
-      if (values.publicado) {
-        //el producto se PUBLICA
-        alert("aquí hacer las validaciones");
+    if (values.publicado) {
+      //el producto se PUBLICA
+      //!AQUI HACER LAS VALIDACIONES DE LOS CAMPOS
+      alert("aquí hacer las validaciones");
+    }
+    const showMessage = values.publicado
+      ? "Producto actualizado y publicado"
+      : "Producto GUARDADO, no publicado";
 
-        await updateProductByID(category, subcategory, productID, values);
-        await indexCodeProducts(values);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Producto actualizado y publicado",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      } else {
-        //el producto se GUARDA y NO se publica
-        await updateProductByID(category, subcategory, productID, values);
-        await indexCodeProducts(values);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Producto GUARDADO, no publicado",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
+    try {
+      //actualiza el producto en la colección productos/categ.../subcat..
+      await updateProductByID(category, subcategory, productID, values);
+      //actualiza el producto en el índice por ARTICULO (para búsqueda de producto por artículo)
+      await indexCodeProducts("indicePorArticuloProducto", values);
+      //actualiza el producto en el índice (resumen) por ID de Firestore
+      await indexCodeProducts("indicePorIdProducto", values);
+      //actualiza el producto en la colección items (esto es experimental para manejar en un futuro de otra forma los productos)
+      await updateDocInCollection("items", productID, values);
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: showMessage || "Error Ingresando datos",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     } catch (error) {
       console.error("Error updating product:", error);
       Swal.fire({
@@ -582,7 +608,7 @@ function ProductPage({ params }) {
   };
 
   return (
-    <div className="bg-gray-100 font-sans flex h-screen justify-center w-full">
+    <div className="font-sans flex min-h-screen justify-center w-full">
       {values ? (
         <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
           <div className="flex items-center justify-center border rounded shadow my-2 bg-gray-700">
