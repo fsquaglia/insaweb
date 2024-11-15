@@ -6,7 +6,6 @@ import ScrollableContainer from "@/ui/ScrollableContainer";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import {
   addNewProductFirestore,
-  getAllDocsColection,
   setIndexProduct,
   updateDocInCollection,
 } from "@/utils/firebase/fetchFirebase";

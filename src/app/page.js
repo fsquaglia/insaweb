@@ -11,6 +11,7 @@ import Contact from "../components/contact/Contact";
 import Slogan from "../components/slogan/Slogan";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import MessageComponent from "@/ui/MessageComponent";
 
 export default async function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;

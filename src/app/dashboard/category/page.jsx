@@ -1,35 +1,44 @@
+"use client";
+import { useEffect, useState } from "react";
 import CategoryLoader from "./CategoryLoader";
 import MessageComponent from "@/ui/MessageComponent";
 
-async function PageCategory() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export default function PageCategory() {
+  const [categoriesProducts, setCategoriesProducts] = useState(null);
+  const [error, setError] = useState(false);
 
-  try {
-    // Obtener categorías de productos
-    const response = await fetch(`${apiUrl}/api/categories/categories`, {
-      cache: "no-store",
-    });
-    if (!response.ok)
-      throw new Error("Error al cargar las categorías de productos");
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const categoriesProducts = await response.json();
+      try {
+        const response = await fetch(`${apiUrl}/api/categories/categories`, {
+          cache: "no-store",
+        });
+        if (!response.ok)
+          throw new Error("Error al cargar las categorías de productos");
 
-    return (
-      <div className="container flex flex-col justify-center text-center">
-        <CategoryLoader data={categoriesProducts} />
-      </div>
-    );
-  } catch (error) {
-    console.error("Error al cargar las categorías de productos:", error);
-    return (
-      <div className="flex mx-auto my-4">
+        const data = await response.json();
+        setCategoriesProducts(data);
+      } catch (error) {
+        console.error("Error al cargar las categorías de productos:", error);
+        setError(true);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  return (
+    <div className="container flex flex-col justify-center text-center">
+      {error ? (
         <MessageComponent
-          message="Error al cargar las categorías. Intenta recarga la página."
-          type={"error"}
+          message="Error al cargar las categorías. Intenta recargar la página."
+          type="error"
         />
-      </div>
-    );
-  }
+      ) : categoriesProducts ? (
+        <CategoryLoader data={categoriesProducts} />
+      ) : null}
+    </div>
+  );
 }
-
-export default PageCategory;
