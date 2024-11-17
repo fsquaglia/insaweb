@@ -14,7 +14,7 @@ import Footer from "@/components/footer/Footer";
 import MessageComponent from "@/ui/MessageComponent";
 
 export default async function Home() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   let configurations, data;
 
@@ -22,7 +22,7 @@ export default async function Home() {
     // Realizamos ambas peticiones de forma paralela
     const [homeResponse, configResponse] = await Promise.all([
       fetch(`${apiUrl}/api/home`),
-      fetch(`${apiUrl}/api/configurations`, { cache: "no-store" }),
+      fetch(`${apiUrl}/api/configurations`),
     ]);
 
     // Validamos ambas respuestas
