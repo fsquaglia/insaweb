@@ -67,10 +67,10 @@ export default function ContactUs() {
       onSubmit={handleSubmit((data) => {
         sendEmail(data);
       })}
-      className="relative flex flex-col z-10 md:w-2/3 mx-auto p-8 md:ml-auto mt-10 md:mt-0 bg-white shadow-md"
+      className="relative flex flex-col z-10 mx-auto py-8 px-4 2xl:px-8 md:ml-auto md:mt-0 bg-white shadow-md bg-opacity-90 h-full"
     >
-      <h2 className="text-gray-900 text-lg mb-2 font-medium title-font">
-        Escríbenos, te respondemos
+      <h2 className="text-gray-900 text-md 2xl:text-lg mb-2 font-medium title-font">
+        Escribinos, te respondemos
       </h2>
 
       {/*Nombre*/}
@@ -85,7 +85,7 @@ export default function ContactUs() {
             required: "Campo requerido",
             minLength: { value: 3, message: "Tres caracteres mínimos" },
           })}
-          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none text-gray-700 pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         />
         <span className="leading-7 text-xs text-red-800">
           {errors.user_name?.message}
@@ -104,7 +104,7 @@ export default function ContactUs() {
             required: "Campo requerido",
             minLength: { value: 7, message: "Siete caracteres mínimos" },
           })}
-          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none text-gray-700 pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         />
         <span className="leading-7 text-xs text-red-800">
           {errors.user_email?.message}
@@ -122,7 +122,7 @@ export default function ContactUs() {
             required: "Campo requerido",
             minLength: { value: 10, message: "Diez caracteres mínimos" },
           })}
-          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 pt-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+          className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-sm outline-none text-gray-700 pt-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
         ></textarea>
         {/* Contador de caracteres de message*/}
         <span className="block text-xs text-gray-500 text-right">
@@ -134,7 +134,7 @@ export default function ContactUs() {
       </div>
       <button
         type="submit"
-        className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+        className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-md"
       >
         Enviar
       </button>
