@@ -16,6 +16,7 @@ export default async function layout({ children }) {
     console.error("Error al obtener las categorías de la BDD: ", error);
     categories = [];
   }
+  console.log(categories);
 
   return (
     <div>

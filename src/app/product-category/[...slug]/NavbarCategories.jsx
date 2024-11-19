@@ -42,7 +42,9 @@ const NavbarCategories = ({ categories }) => {
               categories.map((category) => (
                 <Link
                   key={category.docID}
-                  href={`/product-category/${category.docID}/${category.docData.subcategorias[0]}`}
+                  href={`/product-category/${category.docID}/${
+                    category.docData.subcategorias?.[0] || "NoData"
+                  }`}
                 >
                   <div className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
                     {category.docData.id}

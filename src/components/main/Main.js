@@ -1,4 +1,5 @@
 import ButtonGeneric from "../generic/ButtonGeneric";
+import Link from "next/link";
 
 export default function Main({ main }) {
   //valores por defecto si no se recibe main
@@ -24,8 +25,11 @@ export default function Main({ main }) {
         <p className="text-xl text-gray-100 my-2">{texto3}</p>
         <div className="w-3/5 columns-2 my-6">
           <div>
-            <ButtonGeneric textButton={"botón"} fill={true} />
+            <Link href={"/categories"}>
+              <ButtonGeneric textButton={"botón"} fill={true} />
+            </Link>
           </div>
+
           {/* <div>
             <ButtonGeneric textButton={"botón"} fill={false} />
           </div> */}

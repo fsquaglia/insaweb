@@ -1,8 +1,17 @@
-import { getCategoriesLandingFirestore } from "../../utils/firebase/fetchFirebase";
+// import { getCategoriesLandingFirestore } from "../../utils/firebase/fetchFirebase";
 import CardCategory from "./CardCategory";
 
 export default async function Categories() {
-  const dataCategories = await getCategoriesLandingFirestore();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+  let dataCategories;
+  try {
+    const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`);
+    dataCategories = await response.json();
+  } catch (error) {
+    console.error("Error al obtener las categorías:", error);
+    dataCategories = [];
+  }
 
   const colorCard = (data) => {
     switch (data) {
@@ -24,13 +33,13 @@ export default async function Categories() {
         {dataCategories && dataCategories.length > 0 ? (
           dataCategories.map((cat) => (
             <CardCategory
-              key={cat.id}
-              id={cat.id}
-              title={cat.tituloCard}
-              text={cat.descripcion}
-              imageSrc={cat.imagen}
-              bgColorTailwind={colorCard(cat.id)}
-              subcategories={cat.subcategorias}
+              key={cat.docID}
+              id={cat.docID}
+              title={cat.docData.tituloCard}
+              text={cat.docData.descripcion}
+              imageSrc={cat.docData.imagen}
+              bgColorTailwind={colorCard(cat.docID)}
+              subcategories={cat.docData.subcategorias}
             />
           ))
         ) : (
