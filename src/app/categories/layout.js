@@ -2,10 +2,9 @@ import React from "react";
 
 function layout({ children }) {
   return (
-    <>
-      soy layout
+    <div className="bg-neutral-100">
       <div>{children}</div>
-    </>
+    </div>
   );
 }
 
