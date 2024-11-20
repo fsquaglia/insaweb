@@ -26,7 +26,7 @@ export default function Main({ main }) {
         <div className="w-3/5 columns-2 my-6">
           <div>
             <Link href={"/categories"}>
-              <ButtonGeneric textButton={"botón"} fill={true} />
+              <ButtonGeneric textButton={"Accede"} fill={true} />
             </Link>
           </div>
 
