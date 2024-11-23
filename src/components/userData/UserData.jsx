@@ -98,16 +98,6 @@ function UserData() {
               </Link>
             </div>
           )}
-
-          {/*Logout para admin*/}
-          {dataUser?.role === "admin" && (
-            <div>
-              <GrLogout
-                className="text-red-600 text-xl cursor-pointer"
-                onClick={() => onClickSignOut()}
-              />
-            </div>
-          )}
         </div>
       ) : (
         <div className="mx-center text-sm text-slate-200 my-4">

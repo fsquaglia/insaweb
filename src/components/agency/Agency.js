@@ -9,16 +9,19 @@ export default function Agency() {
       href: "https://www.instagram.com/dadonediego/",
       icon: <FaCamera size={18} />,
       text: "Diego Dadone",
+      title: "Fotografías",
     },
     {
       href: "https://www.instagram.com/fenixmodelss/",
       icon: <GiHeartWings size={24} />,
       text: "Fénix models",
+      title: "Modelos",
     },
     {
       href: "https://www.linkedin.com/in/fersquaglia/",
       icon: <TbWorldWww size={20} />,
       text: "Desarrollado por Fernando Squaglia",
+      title: "Desarrollador",
     },
   ];
 
@@ -32,8 +35,10 @@ export default function Agency() {
           target="_blank" // Abre en una nueva pestaña
           rel="noopener noreferrer" // Buenas prácticas de seguridad
         >
-          {link.icon}
-          <span>{link.text}</span>
+          <span title={link.title}>{link.icon}</span>
+          <span className="hidden sm:block text-sm md:text-base">
+            {link.text}
+          </span>
         </Link>
       ))}
     </div>

@@ -9,7 +9,6 @@ import About from "../components/about/About";
 import SocialMedia from "../components/socialMedia/SocialMedia";
 import Contact from "../components/contact/Contact";
 import Slogan from "../components/slogan/Slogan";
-import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import MessageComponent from "@/ui/MessageComponent";
 
@@ -112,9 +111,9 @@ export default async function Home() {
 
   return (
     <div>
-      <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-20">
+      {/* <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-20">
         <Navbar configurations={configurations} />
-      </div>
+      </div> */}
       <main className="w-full flex flex-col items-center justify-center">
         {sections
           .filter((section) => section.condition)

@@ -72,7 +72,7 @@ function PageProductDetail({ params }) {
   }
 
   return (
-    <div className="min-w-screen min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex items-center p-5 lg:p-10 overflow-hidden ">
+    <div className="min-w-screen flex items-center p-5 lg:p-10 overflow-hidden ">
       <div className="w-full max-w-6xl rounded bg-white shadow-xl  mx-auto text-gray-800  md:text-left">
         <div className="flex flex-col md:flex-row md:flex-wrap ">
           {/*--- div de las imágenes---- */}

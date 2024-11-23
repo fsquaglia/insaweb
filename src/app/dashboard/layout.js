@@ -6,13 +6,13 @@ export default function Layout({ children }) {
   return (
     <div className="flex flex-col md:flex-row md:flex-wrap min-h-screen">
       {/* Sidenav fijo a la izquierda */}
-      <div className="md:flex-none flex flex-row items-center justify-center text-white w-full md:w-64 bg-blue-300 md:fixed md:top-0 z-20">
+      <div className="md:flex-none flex flex-row items-center justify-center text-white w-full md:w-64 bg-blue-300 md:fixed md:top-24 z-20">
         <Sidenav />
       </div>
 
       {/* Contenido a la derecha del Sidenav */}
       <div className="md:flex-grow md:ml-64">
-        <div className="sticky top-0 z-50">
+        <div className="sticky top-24 z-50">
           {/* HeaderDashboard y UserData en la parte superior derecha */}
           <div className="bg-blue-400 bg-opacity-100 flex justify-center">
             <UserData />

@@ -17,7 +17,6 @@ export default function CardCategory({
   const subcategoriesArrayZero = subcategories
     ? subcategories[0]
     : "noSubcategoria";
-  console.log(subcategoriesArrayZero);
   const handleClickButton = () => {
     router.push(`/product-category/${id}/${subcategoriesArrayZero}`);
   };

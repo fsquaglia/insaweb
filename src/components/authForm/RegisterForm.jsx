@@ -67,12 +67,12 @@ function RegisterForm() {
   };
 
   return (
-    <div className="container flex flex-col mx-auto bg-white pt-12 my-5">
-      <div className="flex justify-center w-full h-full my-auto xl:gap-14 lg:justify-normal md:gap-5 draggable">
-        <div className="flex items-center justify-center w-full lg:p-12">
+    <div className="container flex flex-col mx-auto bg-white pt-2 my-5">
+      <div className="flex justify-center w-full h-full my-auto xl:gap-14 lg:justify-normal md:gap-5">
+        <div className="flex items-center justify-center w-full">
           <div className="flex items-center xl:p-10 p-4 border rounded-3xl">
             <form
-              className="flex flex-col w-full h-full pb-6 text-center bg-white rounded-3xl"
+              className="flex flex-col w-full h-full pb-6 text-center bg-white rounded-3xl min-w-96"
               onSubmit={handleSubmit}
             >
               <h3 className="mb-3 text-4xl font-extrabold text-dark-grey-900">

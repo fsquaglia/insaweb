@@ -1,62 +1,42 @@
 "use client";
-import { UserIcon } from "@heroicons/react/24/outline";
-import SmoothScrollLink from "../../utils/SmoothScrollLink";
+import { usePathname } from "next/navigation";
+import SessionComponent from "./SessionComponent";
+import NavLinks from "./NavLinks";
+import Image from "next/image";
 import Link from "next/link";
+import NavbarCategories from "./NavbarCategories";
 
 export default function Navbar({ configurations }) {
-  const menuItems = [
-    { href: "#main", label: "Inicio", condition: true },
-    { href: "#categories", label: "Categorías", condition: true },
-    {
-      href: "#offers",
-      label: "Ofertas",
-      condition: configurations?.mostrarOfertasEnHome || false,
-    },
-    {
-      href: "#tips",
-      label: "Tips",
-      condition: configurations?.mostrarTipsEnHome || false,
-    },
-    {
-      href: "#history",
-      label: "Historia",
-      condition: configurations?.mostrarHistoriaEnHome || false,
-    },
-    {
-      href: "#about",
-      label: "About",
-      condition: configurations?.mostrarAboutEnHome || false,
-    },
-    {
-      href: "#social-media",
-      label: "Social Media",
-      condition: configurations?.mostrarSocialMediaEnHome || false,
-    },
-    { href: "#contact", label: "Contacto", condition: true },
-  ];
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const showMenuCategories =
+    pathname.startsWith("/product-category") ||
+    pathname.startsWith("/categories");
 
   return (
-    <div className="container mx-auto h-24 flex items-center justify-between px-4 scroll-smooth">
-      <nav>
-        <ul className="flex space-x-4">
-          {menuItems.map(
-            (item) =>
-              item.condition && (
-                <li key={item.href} className="cursor-pointer">
-                  <SmoothScrollLink href={item.href}>
-                    {item.label}
-                  </SmoothScrollLink>
-                </li>
-              )
-          )}
-        </ul>
-      </nav>
-      <Link href="/auth/login">
-        <UserIcon
-          className="w-6 h-6 text-gray-300 cursor-pointer"
-          aria-label="Login"
-        />
-      </Link>
+    <div className="container h-24 flex items-center justify-between px-4 scroll-smooth">
+      <div className="flex flex-row items-center gap-4 w-full">
+        <Link href="/">
+          <Image
+            src="/images/logo_blanco01.png"
+            alt="Logo Ihara & London"
+            width={64}
+            height={64}
+            className="size-12 sm:size-16"
+          />
+        </Link>
+        <div className="flex-grow">
+          <div className="hidden sm:block">
+            {isHome && <NavLinks configurations={configurations} />}
+          </div>
+          <div className="mr-4">
+            {showMenuCategories && <NavbarCategories />}
+          </div>
+        </div>
+      </div>
+      <div className="ml-auto">
+        <SessionComponent />
+      </div>
     </div>
   );
 }
