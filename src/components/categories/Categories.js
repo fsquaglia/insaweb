@@ -1,4 +1,3 @@
-// import { getCategoriesLandingFirestore } from "../../utils/firebase/fetchFirebase";
 import CardCategory from "./CardCategory";
 
 export default async function Categories() {
@@ -6,14 +5,14 @@ export default async function Categories() {
 
   let dataCategories;
   try {
-    const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`);
+    const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`, {
+      cache: "no-store",
+    });
 
     // Verifica si la respuesta es OK
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response:", errorText);
       throw new Error(
-        `HTTP error! status: ${response.status}, body: ${errorText}`
+        `Error al obtener las categorías: ${response.statusText}`
       );
     }
 

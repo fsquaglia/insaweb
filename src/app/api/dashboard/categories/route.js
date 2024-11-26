@@ -1,5 +1,7 @@
 import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
 
+export const revalidate = 0;
+
 export async function GET(req) {
   try {
     // Realiza la consulta a Firestore
