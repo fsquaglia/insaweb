@@ -5,9 +5,7 @@ export default async function Categories() {
 
   let dataCategories;
   try {
-    const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`, {
-      cache: "no-store",
-    });
+    const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`);
 
     // Verifica si la respuesta es OK
     if (!response.ok) {
