@@ -39,7 +39,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Providers>
-          <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-50">
+          <div className="bg-slate-900 text-gray-200 bg-opacity-100 md:bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-50">
             <Navbar configurations={configurations} />
           </div>
           <div className="flex-grow">{children}</div>

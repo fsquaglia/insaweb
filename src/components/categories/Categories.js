@@ -7,10 +7,20 @@ export default async function Categories() {
   let dataCategories;
   try {
     const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`);
+
+    // Verifica si la respuesta es OK
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(
+        `HTTP error! status: ${response.status}, body: ${errorText}`
+      );
+    }
+
+    // Intenta obtener el JSON
     dataCategories = await response.json();
   } catch (error) {
     console.error("Error al obtener las categorías:", error);
-    dataCategories = [];
   }
 
   const colorCard = (data) => {

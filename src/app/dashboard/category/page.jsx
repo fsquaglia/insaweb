@@ -12,7 +12,7 @@ export default function PageCategory() {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
       try {
-        const response = await fetch(`${apiUrl}/api/categories/categories`, {
+        const response = await fetch(`${apiUrl}/api/dashboard/categories`, {
           cache: "no-store",
         });
         if (!response.ok)

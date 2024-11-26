@@ -5,6 +5,7 @@ import NavLinks from "./NavLinks";
 import Image from "next/image";
 import Link from "next/link";
 import NavbarCategories from "./NavbarCategories";
+import Likes from "./Likes";
 
 export default function Navbar({ configurations }) {
   const pathname = usePathname();
@@ -16,15 +17,20 @@ export default function Navbar({ configurations }) {
   return (
     <div className="container h-24 flex items-center justify-between px-4 scroll-smooth">
       <div className="flex flex-row items-center gap-4 w-full">
-        <Link href="/">
-          <Image
-            src="/images/logo_blanco01.png"
-            alt="Logo Ihara & London"
-            width={64}
-            height={64}
-            className="size-12 sm:size-16"
-          />
-        </Link>
+        <div className="size-12 sm:size-16 shrink-0 relative">
+          <Link href="/">
+            <Image
+              src="/images/logo_blanco01.png"
+              alt="Logo Ihara & London"
+              width={64}
+              height={64}
+              className="size-12 sm:size-16"
+            />
+          </Link>
+          <div className="absolute -bottom-1 -right-1">
+            <Likes />
+          </div>
+        </div>
         <div className="flex-grow">
           <div className="hidden sm:block">
             {isHome && <NavLinks configurations={configurations} />}

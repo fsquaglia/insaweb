@@ -9,32 +9,49 @@ export async function GET(req) {
 
     // Verifica si se encontraron productos
     if (!categories || categories.length === 0) {
+      console.log("No se encontraron categorías");
       return new Response(
-        JSON.stringify({ error: "No se encontrarons las categorías" }),
-        { status: 404 }
+        JSON.stringify({ error: "No se encontraron las categorías" }),
+        {
+          status: 404,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
     }
-    //filtrar por las categorías marcadas como ver en Landing
-    //luego verificar si existen más o menos de tres para mostrar
+
+    // Filtrar por las categorías marcadas como ver en Landing
     let categoriesShowLanding = categories.filter(
       (cat) => cat.docData.showLanding === true
     );
+
     if (categoriesShowLanding.length > 3) {
       categoriesShowLanding = categoriesShowLanding.slice(0, 3);
     } else if (categoriesShowLanding.length < 3) {
       categoriesShowLanding = categories.slice(0, 3);
     }
 
-    //orden inverso, para nuestro caso de indumentari solamente
-    categoriesShowLanding.reverse();
-
-    return new Response(JSON.stringify(categoriesShowLanding), { status: 200 });
+    return new Response(JSON.stringify(categoriesShowLanding), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (error) {
     // Captura cualquier error ocurrido durante la consulta
-    console.error("Error al obtener las categorías:", error);
+    console.error("Error completo al obtener las categorías:", error);
     return new Response(
-      JSON.stringify({ error: "Error al obtener categorías" }),
-      { status: 500 }
+      JSON.stringify({
+        error: "Error al obtener categorías",
+        details: error.toString(),
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
   }
 }

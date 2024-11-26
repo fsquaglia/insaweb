@@ -1,29 +1,25 @@
 import Sidenav from "../../ui/sidenav";
 import HeaderDashboard from "@/ui/HeaderDashboard";
-import UserData from "@/components/userData/UserData";
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-col md:flex-row md:flex-wrap min-h-screen">
+    <div className="flex flex-col flex-grow md:flex-row min-h-screen">
       {/* Sidenav fijo a la izquierda */}
-      <div className="md:flex-none flex flex-row items-center justify-center text-white w-full md:w-64 bg-blue-300 md:fixed md:top-24 z-20">
+      <div className="md:flex-none flex flex-row items-center justify-center text-white w-full md:w-64 bg-blue-300 fixed top-24 md:bottom-0 md:left-0 z-20 md:py-2">
         <Sidenav />
       </div>
 
       {/* Contenido a la derecha del Sidenav */}
-      <div className="md:flex-grow md:ml-64">
-        <div className="sticky top-24 z-50">
-          {/* HeaderDashboard y UserData en la parte superior derecha */}
-          <div className="bg-blue-400 bg-opacity-100 flex justify-center">
-            <UserData />
-          </div>
-          <div className="bg-blue-200 bg-opacity-100 flex justify-center">
+      <div className="md:ml-64 w-full relative flex flex-col flex-grow grow">
+        <div className="h-24 flex flex-col justify-center items-center z-20 bg-blue-200 fixed top-32 md:top-24 left-0 md:left-64 right-0">
+          <div className="w-full h-full flex flex-col justify-center items-center">
             <HeaderDashboard />
           </div>
         </div>
-
         {/* Contenido desplazable */}
-        <div className="flex-grow overflow-auto z-0">{children}</div>
+        <div className="w-full overflow-auto z-0 mt-56 md:mt-48">
+          {children}
+        </div>
       </div>
     </div>
   );

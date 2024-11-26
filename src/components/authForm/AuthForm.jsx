@@ -17,9 +17,6 @@ function AuthForm() {
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   useEffect(() => {
-    console.log("soy la session");
-    console.log(session);
-
     // Si ya hay una sesión activa, redirigir según el rol
     if (session) {
       if (session.user.role === "admin") {
@@ -76,10 +73,6 @@ function AuthForm() {
               className="flex flex-col w-full h-full pb-6 text-center bg-white rounded-3xl min-w-96"
               onSubmit={handleSubmit}
             >
-              <Link href={"/"}>
-                <AiOutlineHome className="mx-auto text-2xl mb-2 cursor-pointer transform transition-transform duration-200 hover:scale-110 hover:text-blue-400" />
-              </Link>
-
               <h3 className="mb-3 text-4xl font-extrabold text-dark-grey-900">
                 Inicia sesión
               </h3>
