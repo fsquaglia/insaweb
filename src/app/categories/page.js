@@ -11,7 +11,14 @@ export default async function PageCategories() {
 
   let dataCategories = [];
   try {
-    const response = await fetch(`${apiUrl}/api/categories/categories`);
+    const response = await fetch(`${apiUrl}/api/categories/categories`, {
+      next: {
+        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Error al obtener las categorías");
+    }
     dataCategories = await response.json();
   } catch (error) {
     console.error("Error al obtener las categorías:", error);

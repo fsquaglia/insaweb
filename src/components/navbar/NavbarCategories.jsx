@@ -33,7 +33,11 @@ const NavbarCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`/api/categories/categories`);
+        const res = await fetch(`/api/categories/categories`, {
+          next: {
+            revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+          },
+        });
 
         if (!res.ok) {
           throw new Error("Error al obtener las categorías");

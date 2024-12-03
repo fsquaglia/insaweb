@@ -1,6 +1,6 @@
 import { getAllUsers } from "@/utils/firebase/fetchFirebase";
 
-export const revalidate = 0;
+export const revalidate = false;
 
 export async function GET() {
   try {

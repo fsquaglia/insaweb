@@ -1,6 +1,6 @@
 import { getDocConfig } from "@/utils/firebase/fetchFirebase";
 
-export const revalidate = 10800; // Cachea la respuesta por 3 horas
+export const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM);
 
 export async function GET(req) {
   try {

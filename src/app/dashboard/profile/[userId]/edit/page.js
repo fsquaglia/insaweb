@@ -8,6 +8,7 @@ async function page({ params }) {
   try {
     const response = await fetch(`${apiUrl}/api/users/userById/${userID}`, {
       cache: "no-store",
+      next: { revalidate: 0 },
     });
     if (!response.ok) throw new Error("Failed to fetch user");
     user = await response.json();

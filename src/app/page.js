@@ -17,27 +17,47 @@ export default async function Home() {
 
   let configurations, data;
 
+  // Primera petición: Datos de home
   try {
-    // Realizamos ambas peticiones de forma paralela
-    const [homeResponse, configResponse] = await Promise.all([
-      fetch(`${apiUrl}/api/home`),
-      fetch(`${apiUrl}/api/configurations`),
-    ]);
+    const homeResponse = await fetch(`${apiUrl}/api/home`, {
+      next: {
+        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+      },
+    });
 
-    // Validamos ambas respuestas
-    if (!homeResponse.ok) throw new Error("Error al cargar home");
-    if (!configResponse.ok) throw new Error("Error al cargar la configuración");
+    if (!homeResponse.ok) {
+      throw new Error("Error al cargar home");
+    }
 
-    // Obtenemos los datos de ambas respuestas
     data = await homeResponse.json();
+  } catch (error) {
+    console.error("Error en la solicitud de home:", error);
+  }
+
+  // Segunda petición: Configuraciones
+  try {
+    const configResponse = await fetch(`${apiUrl}/api/configurations`, {
+      next: {
+        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
+      },
+    });
+
+    if (!configResponse.ok) {
+      throw new Error("Error al cargar la configuración");
+    }
+
     configurations = await configResponse.json();
   } catch (error) {
-    console.error("Error en las solicitudes:", error);
+    console.error("Error en la solicitud de configuraciones:", error);
+  }
+
+  // Si ambas peticiones fallan, mostramos un mensaje de error
+  if (!data || !configurations) {
     return (
       <div className="flex mx-auto my-4">
         <MessageComponent
           message="Error al cargar los datos. Intenta recargar la página."
-          type={"error"}
+          type="error"
         />
       </div>
     );

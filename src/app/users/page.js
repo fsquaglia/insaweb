@@ -15,7 +15,9 @@ export default function PageUsers() {
 
   const fetchUser = async (userId) => {
     try {
-      const response = await fetch(`/api/users/userById/${userId}`, {});
+      const response = await fetch(`/api/users/userById/${userId}`, {
+        next: { revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE) },
+      });
       if (!response.ok) throw new Error("No encontramos el usuario");
       const data = await response.json();
       setUser(data);

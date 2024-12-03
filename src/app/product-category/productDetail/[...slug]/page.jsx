@@ -38,7 +38,12 @@ function PageProductDetail({ params }) {
         const config = await getConfig();
         setConfigurations(config);
         const res = await fetch(
-          `/api/products/productById/${category}/${subcategory}/${productId}`
+          `/api/products/productById/${category}/${subcategory}/${productId}`,
+          {
+            next: {
+              revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+            },
+          }
         );
 
         if (res.ok) {

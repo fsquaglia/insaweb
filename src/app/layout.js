@@ -18,7 +18,11 @@ export default async function RootLayout({ children }) {
   let configurations;
 
   try {
-    const configResponse = await fetch(`${apiUrl}/api/configurations`);
+    const configResponse = await fetch(`${apiUrl}/api/configurations`, {
+      next: {
+        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
+      },
+    });
 
     if (!configResponse.ok) throw new Error("Error al cargar la configuración");
 

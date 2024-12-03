@@ -1,7 +1,6 @@
 "use client";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { GiPowerButton } from "react-icons/gi";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -29,8 +28,7 @@ function UserImage({ image, name }) {
   );
 }
 
-function SessionComponent() {
-  const { data: session, status } = useSession();
+function SessionComponent({ session, status }) {
   const router = useRouter();
   const [showUser, setShowUser] = useState(false);
 

@@ -1,4 +1,3 @@
-// "use server";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 import {
@@ -79,31 +78,53 @@ export async function getAllUsers(onlyBalances = false) {
     let usersQuery;
 
     if (onlyBalances) {
-      // Filtra y ordena por `fechaVenceSaldo` cuando `onlyBalances` es true
+      // Filtra por saldo mayor a 0
       usersQuery = query(
         collection(firestoreDB, "contactos"),
-        where("saldo", "!=", 0),
-        orderBy("fechaVenceSaldo", "asc") // Ordena en base a los segundos de `fechaVenceSaldo`
+        where("saldo", ">", 0)
       );
     } else {
-      // Ordena por `rol` y luego por `email` cuando `onlyBalances` es false
-      usersQuery = query(
-        collection(firestoreDB, "contactos"),
-        orderBy("rol", "asc"),
-        orderBy("email", "asc")
-      );
+      // No se aplica ningún filtro, simplemente obtén todos los usuarios
+      usersQuery = query(collection(firestoreDB, "contactos"));
     }
 
     const querySnapshot = await getDocs(usersQuery);
-    const users = [];
-    querySnapshot.forEach((doc) => {
-      users.push({ id: doc.id, ...doc.data() });
-    });
+
+    // Verifica si la consulta devolvió datos
+    if (querySnapshot.empty) {
+      console.log("No se encontraron usuarios.");
+      return [];
+    }
+
+    // Recoge los datos de los usuarios
+    const users = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Ordena los usuarios en JavaScript después de obtenerlos
+    if (onlyBalances) {
+      // Ordena los usuarios por fecha de vencimiento del saldo (fechaVenceSaldo) en orden ascendente
+      users.sort((a, b) => {
+        if (a.fechaVenceSaldo < b.fechaVenceSaldo) return -1;
+        if (a.fechaVenceSaldo > b.fechaVenceSaldo) return 1;
+        return 0;
+      });
+    } else {
+      // Ordena los usuarios por rol y luego por email
+      users.sort((a, b) => {
+        if (a.rol < b.rol) return -1;
+        if (a.rol > b.rol) return 1;
+        if (a.email < b.email) return -1;
+        if (a.email > b.email) return 1;
+        return 0;
+      });
+    }
 
     return users;
   } catch (error) {
-    console.error("Error fetching users: ", error);
-    return []; // Retorna un array vacío en caso de error
+    console.error("Error en fetchFirebase al obtener los usuarios: ", error);
+    throw new Error("Error en fetchFirebase al obtener los usuarios.");
   }
 }
 
@@ -356,12 +377,19 @@ export const setIndexProduct = async (nameIndex, code, productData) => {
   }
 };
 
-//actualizar (update) un documento de una colección Firestore
 export async function updateDocInCollection(nameCollection, nameDoc, newData) {
   try {
     const docRef = doc(firestoreDB, nameCollection, nameDoc);
     await setDoc(docRef, newData, { merge: true });
-    // console.log("Documento actualizado correctamente.");
+
+    // Obtener el documento actualizado
+    const updatedDoc = await getDoc(docRef);
+
+    if (updatedDoc.exists()) {
+      return { id: updatedDoc.id, ...updatedDoc.data() }; // Devuelve los datos del documento
+    } else {
+      throw new Error("El documento no existe después de la actualización.");
+    }
   } catch (error) {
     console.error("Error al actualizar el documento: ", error);
     throw error;

@@ -6,9 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import NavbarCategories from "./NavbarCategories";
 import Likes from "./Likes";
+import { useSession } from "next-auth/react";
 
 export default function Navbar({ configurations }) {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+
   const isHome = pathname === "/";
   const showMenuCategories =
     pathname.startsWith("/product-category") ||
@@ -28,7 +31,7 @@ export default function Navbar({ configurations }) {
             />
           </Link>
           <div className="absolute -bottom-1 -right-1">
-            <Likes />
+            <Likes session={session} status={status} />
           </div>
         </div>
         <div className="flex-grow">
@@ -41,7 +44,7 @@ export default function Navbar({ configurations }) {
         </div>
       </div>
       <div className="ml-auto">
-        <SessionComponent />
+        <SessionComponent session={session} status={status} />
       </div>
     </div>
   );

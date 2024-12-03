@@ -1,9 +1,9 @@
 import { getDocumentById } from "@/utils/firebase/fetchFirebase";
-export const revalidate = 21600; // Cachea la respuesta por 6 horas
+export const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE);
 
 export async function GET(req, { params }) {
   const userId = params.slug;
-  console.log(userId);
+
   try {
     const user = await getDocumentById("contactos", userId);
 

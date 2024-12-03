@@ -1,5 +1,5 @@
 import { getAllUsers } from "@/utils/firebase/fetchFirebase";
-export const revalidate = 21600; // Cachea la respuesta por 6 horas
+export const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE); // Cachea la respuesta por 6 horas
 
 export async function GET() {
   try {

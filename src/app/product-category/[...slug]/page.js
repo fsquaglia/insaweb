@@ -31,7 +31,12 @@ function Page({ params }) {
         const res = await fetch(
           `/api/categories/categoryById?categoria=${decodeURIComponent(
             categoria
-          )}`
+          )}`,
+          {
+            next: {
+              revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+            },
+          }
         );
         const categ = await res.json();
 

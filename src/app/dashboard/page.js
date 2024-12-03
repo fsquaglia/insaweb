@@ -1,4 +1,7 @@
 "use client";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+
 import ButtonGeneric from "../../components/generic/ButtonGeneric";
 import {
   setProductsCategoryFirestore,
@@ -22,43 +25,47 @@ import {
   dataProductInitial,
   variationsInitialData1,
 } from "@/utils/SettingInitialData";
+import Swal from "sweetalert2";
 
 export default function Page() {
-  //cargamos algunos contactos en Firestore para inicializar
-  const loadInitialContacts = async () => {
-    try {
-      await Promise.all(
-        dataContactInitial.map(async (elem) => {
-          await addNewContactFirestore(elem);
-        })
-      );
-      console.log("Listo");
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  };
+  const [pointerEvent, setPointerEvent] = useState(true);
+  const { data: session } = useSession();
 
-  //cargamos algunos Productos y Ofertas en Firestore para inicializar
-  const loadInitialProd_Ofert = async (coleccion, categoria, subCategoria) => {
-    try {
-      await Promise.all(
-        dataProductInitial.map(async (elem) => {
-          await addNewProductFirestore(
-            coleccion,
-            categoria,
-            subCategoria,
-            elem
-          );
-        })
-      );
-      console.log("Listo");
-    } catch (error) {
-      console.error("Error: ", error);
+  const handlerClickEnabled = async () => {
+    const { value: email } = await Swal.fire({
+      title: "Autorización necesaria",
+      input: "email",
+      inputLabel: "Ingresa tu email para desbloquear",
+      inputPlaceholder: "nombre@servidor.com",
+    });
+    if (!email) {
+      Swal.fire("Operación cancelada");
+      return;
+    }
+
+    if (email === session?.user?.email) {
+      setPointerEvent(false);
+    } else {
+      Swal.fire("Email incorrecto");
     }
   };
 
   return (
-    <div className="m-10 flex flex-col gap-6">
+    <div
+      className={`relative m-10 flex flex-col gap-6 ${
+        pointerEvent ? "opacity-50" : "opacity-100"
+      }`}
+    >
+      {pointerEvent && (
+        <div
+          className="absolute inset-0 flex items-center justify-center bg-white/70"
+          onClick={handlerClickEnabled}
+        >
+          <p className="text-gray-700">
+            Acciones bloqueadas. Haz clic para desbloquear.
+          </p>
+        </div>
+      )}
       <div>
         <ButtonGeneric textButton={"Todos"} onClick={loadDataInitFirebase} />
       </div>

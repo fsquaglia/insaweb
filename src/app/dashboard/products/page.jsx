@@ -12,7 +12,7 @@ function PageProducts() {
     const fetchCategories = async () => {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${apiUrl}/api/categories/categories`, {
+        const response = await fetch(`${apiUrl}/api/dashboard/categories`, {
           cache: "no-store",
         });
         if (!response.ok)
