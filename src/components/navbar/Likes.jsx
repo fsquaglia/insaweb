@@ -13,6 +13,8 @@ function Likes({ session, status }) {
 
   //obtener listado de likes de comercio
   async function fetchLikes() {
+    console.log("pasando por fetchLikes");
+
     try {
       const response = await fetch("/api/likeCommerce", {
         // next: { revalidate: 0 },
