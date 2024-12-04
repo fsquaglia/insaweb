@@ -22,7 +22,8 @@ export async function GET(req, { params }) {
     // Configura encabezados dinámicos
     const headers = new Headers();
     if (noCache) {
-      headers.set("Cache-Control", "no-store"); // No cachear si se solicita
+      headers.set("Cache-Control", "no-store, max-age=0, must-revalidate");
+      headers.set("Content-Type", "application/json");
     } else {
       headers.set(
         "Cache-Control",

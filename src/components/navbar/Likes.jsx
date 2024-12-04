@@ -52,8 +52,10 @@ function Likes({ session, status }) {
   }
   useEffect(() => {
     fetchLikes();
-    session && fetchIsLikedUser();
   }, []);
+  useEffect(() => {
+    session && fetchIsLikedUser();
+  }, [session]);
 
   const handlerClickHeart = async () => {
     if (!session && status === "unauthenticated") {

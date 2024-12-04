@@ -299,7 +299,7 @@ export const newUserDataInitial = (
     password: passwordHash, // Guardamos el hash de la contraseña
     celTE: "",
     saldo: 0,
-    meGusta: false,
+    meGustaCommerce: false,
     rol: rolUser,
     fechaAlta: Timestamp.fromDate(new Date()),
     imagen: image
