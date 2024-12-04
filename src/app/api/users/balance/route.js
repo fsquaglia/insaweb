@@ -8,10 +8,10 @@ export async function GET() {
 
     // Verifica si se encontraron usuarios
     if (!users || users.length === 0) {
-      return new Response(
-        JSON.stringify({ error: "No se encontraron usuarios" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     return new Response(JSON.stringify(users), {

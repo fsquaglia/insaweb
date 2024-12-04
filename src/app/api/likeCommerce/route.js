@@ -1,6 +1,6 @@
 import { getDocumentById } from "@/utils/firebase/fetchFirebase";
 
-// export const revalidate = false;
+export const revalidate = 0;
 
 export async function GET(req) {
   try {
@@ -10,7 +10,8 @@ export async function GET(req) {
 
     // Configurar encabezados para evitar cualquier tipo de caché
     const headers = new Headers();
-    headers.set("Cache-Control", "no-store");
+    headers.set("Cache-Control", "no-store, max-age=0, must-revalidate");
+    headers.set("Content-Type", "application/json");
 
     return new Response(JSON.stringify(data), {
       status: 200,

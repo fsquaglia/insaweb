@@ -17,10 +17,6 @@ function Likes({ session, status }) {
 
     try {
       const response = await fetch("/api/likeCommerce", {
-        // next: { revalidate: 0 },
-        // headers: {
-        //   "Cache-Control": "no-store",
-        // },
         cache: "no-store",
       });
       if (!response.ok) {
@@ -36,6 +32,7 @@ function Likes({ session, status }) {
 
   //obtener el usuario logueado y comprobar si dio Like al comercio
   async function fetchIsLikedUser() {
+    console.log("pasando por fetchIsLikedUser");
     try {
       const response = await fetch(`/api/users/userById/${session?.user?.id}`, {
         cache: "no-store",
@@ -56,7 +53,7 @@ function Likes({ session, status }) {
   useEffect(() => {
     fetchLikes();
     session && fetchIsLikedUser();
-  }, [session]);
+  }, []);
 
   const handlerClickHeart = async () => {
     if (!session && status === "unauthenticated") {

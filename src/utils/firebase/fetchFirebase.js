@@ -92,7 +92,7 @@ export async function getAllUsers(onlyBalances = false) {
 
     // Verifica si la consulta devolvió datos
     if (querySnapshot.empty) {
-      console.log("No se encontraron usuarios.");
+      // console.log("No se encontraron usuarios.");
       return [];
     }
 
