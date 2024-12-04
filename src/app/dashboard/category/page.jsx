@@ -14,6 +14,7 @@ export default function PageCategory() {
       try {
         const response = await fetch(`${apiUrl}/api/dashboard/categories`, {
           cache: "no-store",
+          next: { revalidate: 0 },
         });
         if (!response.ok)
           throw new Error("Error al cargar las categorías de productos");

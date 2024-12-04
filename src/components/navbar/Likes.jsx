@@ -15,10 +15,10 @@ function Likes({ session, status }) {
   async function fetchLikes() {
     try {
       const response = await fetch("/api/likeCommerce", {
-        next: { revalidate: 0 },
-        headers: {
-          "Cache-Control": "no-store",
-        },
+        // next: { revalidate: 0 },
+        // headers: {
+        //   "Cache-Control": "no-store",
+        // },
         cache: "no-store",
       });
       if (!response.ok) {
@@ -37,10 +37,7 @@ function Likes({ session, status }) {
     try {
       const response = await fetch(`/api/users/userById/${session?.user?.id}`, {
         cache: "no-store",
-        next: { revalidate: 0 },
-        headers: {
-          "Cache-Control": "no-store",
-        },
+        headers: { "x-no-cache": "true" },
       });
 
       if (!response.ok) {
