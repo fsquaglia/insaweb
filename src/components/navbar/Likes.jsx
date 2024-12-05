@@ -33,6 +33,8 @@ function Likes({ session, status }) {
   //obtener el usuario logueado y comprobar si dio Like al comercio
   async function fetchIsLikedUser() {
     console.log("pasando por fetchIsLikedUser");
+    console.log("session id: ", session?.user);
+
     try {
       const response = await fetch(`/api/users/userById/${session?.user?.id}`, {
         cache: "no-store",

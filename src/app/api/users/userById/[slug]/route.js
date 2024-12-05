@@ -1,5 +1,4 @@
 import { getDocumentById } from "@/utils/firebase/fetchFirebase";
-export const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE);
 
 export async function GET(req, { params }) {
   const userId = params.slug;
