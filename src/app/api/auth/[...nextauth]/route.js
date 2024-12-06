@@ -6,7 +6,7 @@ import {
   getUserByEmail,
 } from "@/utils/firebase/fetchFirebase";
 import bcrypt from "bcryptjs";
-import { Timestamp } from "firebase/firestore";
+
 import { newUserDataInitial } from "@/utils/SettingInitialData";
 import Swal from "sweetalert2";
 
@@ -57,7 +57,6 @@ const handler = NextAuth({
               role: user.rol,
               image: user.imagen,
               email: user.email,
-              isCommerceLiked: user.meGusta || false,
             };
           }
 
@@ -101,7 +100,6 @@ const handler = NextAuth({
           token.email = foundUser.email;
           token.image = foundUser.imagen;
           token.name = foundUser.nombreContacto;
-          token.isCommerceLiked = foundUser.meGusta || false;
         } else {
           // Si no existe, crear un nuevo usuario en Firestore y asignar un rol por defecto
           const nameProfile = profile.name || profile.email.split("@")[0];
@@ -122,7 +120,6 @@ const handler = NextAuth({
             token.email = profile.email;
             token.image = imageProfile;
             token.name = nameProfile;
-            token.isCommerceLiked = false;
           } catch (error) {
             console.error("Error creando usuario: ", error);
 
@@ -138,7 +135,6 @@ const handler = NextAuth({
           token.email = user.email;
           token.image = user.image;
           token.name = user.name;
-          token.isCommerceLiked = user.isCommerceLiked || false;
         }
       }
 
@@ -158,7 +154,6 @@ const handler = NextAuth({
         session.user.email = token.email;
         session.user.image = token.image;
         session.user.name = token.name;
-        session.user.isCommerceLiked = token.isCommerceLiked || false;
       }
 
       return session;

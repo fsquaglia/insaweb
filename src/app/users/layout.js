@@ -3,7 +3,7 @@ import UserData from "@/components/userData/UserData";
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-row">
+    <div className="flex md:flex-row flex-col mt-24">
       <div className="font-poppins antialiased">
         <div
           id="view"

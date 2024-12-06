@@ -1,10 +1,13 @@
 "use client";
-import { updateDocInCollection } from "@/utils/firebase/fetchFirebase";
+import {
+  getDocumentById,
+  updateDocInCollection,
+} from "@/utils/firebase/fetchFirebase";
 import { Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa"; // Ícono relleno
-import { FaRegHeart } from "react-icons/fa"; // Ícono vacío
+import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Puff } from "react-loader-spinner";
 
 function Likes({ session, status }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -13,8 +16,6 @@ function Likes({ session, status }) {
 
   //obtener listado de likes de comercio
   async function fetchLikes() {
-    console.log("pasando por fetchLikes");
-
     try {
       const response = await fetch("/api/likeCommerce", {
         cache: "no-store",
@@ -30,34 +31,45 @@ function Likes({ session, status }) {
     }
   }
 
-  //obtener el usuario logueado y comprobar si dio Like al comercio
-  async function fetchIsLikedUser() {
-    console.log("pasando por fetchIsLikedUser");
-    console.log("session id: ", session?.user);
-
-    try {
-      const response = await fetch(`/api/users/userById/${session?.user?.id}`, {
-        cache: "no-store",
-        headers: { "x-no-cache": "true" },
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al obtener el userLike");
-      }
-      const data = await response.json();
-
-      setIsLiked(data?.meGustaCommerce || false);
-    } catch (error) {
-      console.error("Error en componente: ", error);
-      setLikesCommerce(false);
-    }
-  }
   useEffect(() => {
     fetchLikes();
   }, []);
   useEffect(() => {
-    session && fetchIsLikedUser();
-  }, [session]);
+    const fetchUser = async () => {
+      const cachedUser = localStorage.getItem("userData");
+
+      if (cachedUser) {
+        setIsLiked(JSON.parse(cachedUser)?.meGustaCommerce || false);
+      } else {
+        try {
+          const user = await getDocumentById("contactos", session?.user?.id);
+          localStorage.setItem("userData", JSON.stringify(user));
+          setIsLiked(user?.meGustaCommerce || false);
+        } catch (error) {
+          console.error("Error obteniendo likes usuario: ", error);
+          setIsLiked(false);
+        }
+      }
+    };
+
+    session && status === "authenticated" && fetchUser();
+  }, [session, status]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center size-4">
+        <Puff
+          height="30"
+          width="30"
+          color="#4fa94d"
+          ariaLabel="puff-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      </div>
+    );
+  }
 
   const handlerClickHeart = async () => {
     if (!session && status === "unauthenticated") {
@@ -98,6 +110,11 @@ function Likes({ session, status }) {
 
       setLikesCommerce(response);
       setIsLiked(true);
+      const updatedUser = {
+        ...session?.user,
+        meGustaCommerce: true,
+      };
+      localStorage.setItem("userData", JSON.stringify(updatedUser));
     } catch (error) {
       console.error("Error en Like: ", error);
       Swal.fire({
@@ -160,8 +177,11 @@ function Likes({ session, status }) {
                       .map((user, index) => (
                         <img
                           key={index}
-                          src={user?.image}
-                          alt={`Avatar ${user?.name}`}
+                          src={
+                            user?.image ||
+                            "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj4KICA8Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNSIgZmlsbD0iI2NjYyIgLz4KICA8Y2lyY2xlIGN4PSIyNSIgY3k9IjE4IiByPSIxMCIgZmlsbD0iI2ZmZiIgLz4KICA8ZWxsaXBzZSBjeD0iMjUiIGN5PSI0MCIgcng9IjE1IiByeT0iMTAiIGZpbGw9IiNmZmYiIC8+Cjwvc3ZnPg=="
+                          }
+                          alt={`Avatar ${user?.name || "Usuario"}`}
                           className="size-6 rounded-full border border-slate-100"
                         />
                       ))}

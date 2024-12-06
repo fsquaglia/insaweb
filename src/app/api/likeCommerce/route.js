@@ -6,7 +6,6 @@ export async function GET(req) {
   try {
     // Obtener los datos desde Firebase
     const data = await getDocumentById("commerce", "likesCommerce");
-    console.log("data en route: ", data);
 
     // Configurar encabezados para evitar cualquier tipo de caché
     const headers = new Headers();
