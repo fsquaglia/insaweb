@@ -36,14 +36,20 @@ function Likes({ session, status }) {
   }, []);
   useEffect(() => {
     const fetchUser = async () => {
-      const cachedUser = localStorage.getItem("userData");
+      const cachedUser = sessionStorage.getItem("userData");
 
       if (cachedUser) {
         setIsLiked(JSON.parse(cachedUser)?.meGustaCommerce || false);
       } else {
         try {
           const user = await getDocumentById("contactos", session?.user?.id);
-          localStorage.setItem("userData", JSON.stringify(user));
+          if (!user) {
+            throw new Error("Usuario no encontrado");
+          }
+          // Excluir propiedades sensibles
+          const { password, rol, ...safeUser } = user;
+
+          sessionStorage.setItem("userData", JSON.stringify(safeUser));
           setIsLiked(user?.meGustaCommerce || false);
         } catch (error) {
           console.error("Error obteniendo likes usuario: ", error);
@@ -110,11 +116,12 @@ function Likes({ session, status }) {
 
       setLikesCommerce(response);
       setIsLiked(true);
-      const updatedUser = {
-        ...session?.user,
-        meGustaCommerce: true,
-      };
-      localStorage.setItem("userData", JSON.stringify(updatedUser));
+
+      const cachedUser = JSON.parse(sessionStorage.getItem("userData"));
+      if (cachedUser) {
+        cachedUser.meGustaCommerce = true;
+        sessionStorage.setItem("userData", JSON.stringify(cachedUser));
+      }
     } catch (error) {
       console.error("Error en Like: ", error);
       Swal.fire({

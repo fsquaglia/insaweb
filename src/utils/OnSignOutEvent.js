@@ -9,5 +9,6 @@ export const onClickSignOut = () => {
   sessionStorage.removeItem("variations");
   sessionStorage.removeItem("codeProduct");
   sessionStorage.removeItem("configurations");
+  sessionStorage.removeItem("userData");
   signOut();
 };

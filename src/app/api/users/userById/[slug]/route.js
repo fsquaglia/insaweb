@@ -18,6 +18,9 @@ export async function GET(req, { params }) {
       );
     }
 
+    // Excluir propiedades sensibles
+    const { password, rol, ...safeUser } = user;
+
     // Configura encabezados dinámicos
     const headers = new Headers();
     if (noCache) {
@@ -30,7 +33,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    return new Response(JSON.stringify(user), {
+    return new Response(JSON.stringify(safeUser), {
       status: 200,
       headers,
     });

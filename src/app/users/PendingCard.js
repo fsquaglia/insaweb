@@ -31,23 +31,21 @@ export default function PendingCard({ amount, dataExpire }) {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center h-fit gap-2 p-4 w-full ${
+      className={`flex flex-col justify-center items-center h-fit gap-2 p-2 w-full ${
         isPositive ? "bg-purple-50" : "bg-sky-50"
       }`}
     >
       <div className="flex flex-col items-center">
         <span className="text-gray-600">{textoSaldo}</span>
         <span
-          className={`text-3xl font-bold ${
+          className={`text-xl font-bold ${
             isPositive ? "text-red-500" : "text-green-500"
           }`}
         >
           {`$ ${formattedAmount}`}
         </span>
       </div>
-      {isPositive && (
-        <span className="text-md text-gray-500">{venceTexto}</span>
-      )}
+      {isPositive && <span className="text-gray-500">{venceTexto}</span>}
       <span className="text-xs text-gray-400">
         Los saldos en cuenta deben cancelarse en efectivo.
       </span>
