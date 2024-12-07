@@ -194,7 +194,7 @@ function UserEditForm({ userData }) {
   };
 
   return (
-    <div className="h-full bg-gray-200 p-8">
+    <div className="container h-full bg-gray-200 p-2 md:p-8">
       {/*SECCION PRINCIPAL DE IMAGEN Y NOMBRE*/}
       <div className="bg-white rounded-lg shadow-xl pb-8">
         {/*imagen de fondo */}
@@ -300,10 +300,8 @@ function UserEditForm({ userData }) {
             </h4>
             <ul className="mt-2 text-gray-700">
               <li className="flex border-y py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">
-                    Nombre y apellido: *
-                  </span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Nombre y apellido: *</span>
                   <InputCustom
                     labelText=""
                     name={"nombreContacto"}
@@ -314,8 +312,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">Celular: *</span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Celular: *</span>
                   <InputCustom
                     labelText=""
                     name={"celTE"}
@@ -329,8 +327,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">Dirección: *</span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Dirección: *</span>
                   <InputCustom
                     labelText=""
                     name={"direccion"}
@@ -342,8 +340,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">Localidad: *</span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Localidad: *</span>
                   <InputCustom
                     labelText=""
                     name={"localidad"}
@@ -355,8 +353,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">Provincia: *</span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Provincia: *</span>
                   <InputCustom
                     labelText=""
                     name={"provincia"}
@@ -368,10 +366,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">
-                    Fecha de nacimiento:
-                  </span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Fecha de nacimiento:</span>
                   <InputCustom
                     labelText={""}
                     name={"fechaNacimiento"}
@@ -383,8 +379,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               <li className="flex border-b py-2">
-                <div className="flex flex-row gap-2 items-end">
-                  <span className="font-semibold w-40">Apodo:</span>
+                <div className="flex flex-row flex-wrap gap-2 items-end">
+                  <span className="font-light w-40">Apodo:</span>
                   <InputCustom
                     labelText=""
                     name={"sobrenombre"}
@@ -398,7 +394,7 @@ function UserEditForm({ userData }) {
               {session?.user?.role === "admin" && (
                 <li className="flex border-b py-2">
                   <div className="flex flex-row gap-2 items-end">
-                    <span className="font-semibold w-40">Rol del usuario:</span>
+                    <span className="font-light w-40">Rol del usuario:</span>
                     <div className="ms-4 w-48">
                       <SwitchText
                         text1={"user"}
@@ -471,7 +467,9 @@ function UserEditForm({ userData }) {
                 onclick={handleSubmit}
               />
             </div>
-            <span className="mx-auto my-2">* Indica campos obligatorios</span>
+            <span className="text-sm mx-auto my-2">
+              * Indica campos obligatorios
+            </span>
           </div>
           {/*seccion Actividad */}
           <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">

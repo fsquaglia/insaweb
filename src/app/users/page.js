@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import PendingCard from "./PendingCard";
 import { useSession } from "next-auth/react";
@@ -8,7 +7,6 @@ import MessageComponent from "@/ui/MessageComponent";
 
 export default function PageUsers() {
   const { data: session, status } = useSession();
-  // const [dataSession, setDataSession] = useState({});
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,7 +40,7 @@ export default function PageUsers() {
     }
   }, [session?.user?.email]);
 
-  if (status === "loading") {
+  if (status === "loading" || loading) {
     return <LoadingDiv />;
   }
 
@@ -50,16 +48,15 @@ export default function PageUsers() {
     return <MessageComponent message={error} type={"error"} />;
   }
 
-  if (loading) {
-    return <LoadingDiv />;
-  }
-
   return (
-    <div>
-      <PendingCard
-        amount={user?.saldo || 0}
-        dataExpire={user?.fechaVenceSaldo || null}
-      />
+    <div className="flex flex-col  w-full">
+      <div className="border-b">
+        <PendingCard
+          amount={user?.saldo || 0}
+          dataExpire={user?.fechaVenceSaldo || null}
+        />
+      </div>
+      <div></div>
     </div>
   );
 }

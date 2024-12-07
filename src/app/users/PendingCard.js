@@ -31,7 +31,7 @@ export default function PendingCard({ amount, dataExpire }) {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-2 p-4 border rounded-xl shadow-md bg-white max-w-sm ${
+      className={`flex flex-col justify-center items-center h-fit gap-2 p-4 w-full ${
         isPositive ? "bg-purple-50" : "bg-sky-50"
       }`}
     >

@@ -57,5 +57,9 @@ export default function PageUserEdit({ params }) {
     );
   }
 
-  return <UserEditForm userData={user} />;
+  return (
+    <div className="flex justify-center items-center w-full">
+      <UserEditForm userData={user} />;
+    </div>
+  );
 }
