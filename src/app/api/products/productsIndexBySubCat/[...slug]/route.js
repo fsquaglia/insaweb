@@ -21,10 +21,10 @@ export async function GET(req, { params }) {
     const allProducts = await getDocumentById("indices", "indicePorIdProducto");
 
     if (!allProducts || allProducts.length === 0) {
-      return new Response(
-        JSON.stringify({ error: "No se encontraron productos" }),
-        { status: 404 }
-      );
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
     //refactorizar en un array de objetos
     const productsArray = Object.entries(allProducts)

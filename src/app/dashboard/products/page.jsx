@@ -1,33 +1,33 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import CategorySelect from "./CategorySelect";
 import MessageComponent from "@/ui/MessageComponent";
+import { getAllDocsColection } from "@/utils/firebase/fetchFirebase";
+import LoadingDiv from "@/ui/LoadingDiv";
 
 function PageProducts() {
   const [categoriesProducts, setCategoriesProducts] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${apiUrl}/api/dashboard/categories`, {
-          cache: "no-store",
-        });
-        if (!response.ok)
-          throw new Error("Error al cargar las categorías de productos");
-
-        const data = await response.json();
+        const data = await getAllDocsColection("productos");
         setCategoriesProducts(data);
       } catch (error) {
         console.error("Error al cargar las categorías de productos:", error);
         setError("Error al cargar las categorías. Intenta recargar la página.");
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchCategories();
   }, []);
+
+  if (loading) {
+    return <LoadingDiv />;
+  }
 
   if (error) {
     return (
