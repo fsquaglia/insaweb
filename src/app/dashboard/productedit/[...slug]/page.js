@@ -20,6 +20,7 @@ import {
   updateDocInCollection,
   updateProductByID,
 } from "@/utils/firebase/fetchFirebase";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -589,10 +590,12 @@ function ProductPage({ params }) {
       //actualiza el producto en la colección items (esto es experimental para manejar en un futuro de otra forma los productos)
       await updateDocInCollection("items", productID, values);
 
+      await revalidateSomePath(`/product-category/${category}/${subcategory}`);
+
       Swal.fire({
         position: "center",
         icon: "success",
-        title: showMessage || "Error Ingresando datos",
+        title: showMessage || "Algo está mal por aquí...",
         showConfirmButton: false,
         timer: 2000,
       });

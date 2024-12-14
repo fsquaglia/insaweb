@@ -43,6 +43,8 @@ function Page({ params }) {
         if (categ && !categ.hasOwnProperty("error")) {
           setCategoryData(categ);
           const subCategoriesList = categ.docData.subcategorias || [];
+          //ordenar alfabéticamente
+          subCategoriesList.sort((a, b) => a.localeCompare(b));
           setSubCategories(subCategoriesList);
           // setSubcategorySelected(categ.docData.subcategorias?.[0] || "");
           const subCatExist = subCategoriesList.some(
@@ -101,22 +103,22 @@ function Page({ params }) {
 
   return (
     <div
-      className={`${bgColor} px-20 2xl:px-60 py-20 flex flex-col md:flex-row gap-12`}
+      className={`${bgColor} px-2 lg:px-8 xl:px-20 2xl:px-60 py-6 md:py-20 flex flex-col md:flex-row gap-2 lg:gap-12`}
     >
       {/*--------SideNav----------*/}
       <div className="w-full md:w-1/4">
         {/*SideNav -> Buscador*/}
-        <div className="border rounded flex items-center p-2 w-full max-w-sm">
+        <div className="border rounded flex justify-between items-center p-2 w-full sm:max-w-sm">
           <input
             className="border-0 bg-transparent flex-grow m-1 focus:outline-none w-full max-w-sm"
-            placeholder="Buscar..."
+            placeholder="Próximamente disponible..."
           />
           <FaSearch className="text-gray-600 cursor-pointer w-5 h-5" />
         </div>
         {/*SideNav -> SubCategorias*/}
-        <div className="flex flex-col gap-4 my-12 text-slate-800">
-          <span className="text-xl mb-6">
-            SubCategorías {categoryData?.docData?.id}
+        <div className="flex flex-col gap-4 my-4 md:my-12 text-slate-800">
+          <span className="text-lg md:text-xl md:mb-6 mb-2">
+            SubCategorías de {categoryData?.docData?.id}
           </span>
           {subCategories.length > 0 &&
             subCategories.map((item, index) => (
@@ -135,14 +137,14 @@ function Page({ params }) {
         </div>
       </div>
       {/*--------Contenido----------*/}
-      <div className="w-full md:w-3/4 min-h-screen bg-white rounded p-12 flex flex-col">
+      <div className="w-full md:w-3/4 min-h-screen bg-white rounded p-6 md:p-12 flex flex-col">
         {/*BreadCrumb*/}
         <p className="text-slate-400">
           <Link href="/">Home</Link>
           {` / ${categoryData?.docData?.id} / ${subCategorySelected} `}
         </p>
         {/*Titulo*/}
-        <span className="text-5xl font-bold my-10 capitalize">
+        <span className="text-3xl md:text-5xl font-bold my-6 md:my-10 capitalize">
           {categoryData?.docData?.id}
         </span>
         {/*Descripcion*/}

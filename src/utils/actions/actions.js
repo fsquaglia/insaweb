@@ -1,5 +1,5 @@
 "use server";
-
+import { revalidatePath } from "next/cache";
 import { signIn } from "next-auth/react";
 
 export async function authenticate(formData) {
@@ -20,4 +20,8 @@ export async function authenticate(formData) {
 
   // Si el login es exitoso
   return null; // No hay error
+}
+
+export async function revalidateSomePath(path) {
+  revalidatePath(path);
 }

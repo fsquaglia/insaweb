@@ -32,8 +32,7 @@ function CategorySelect({ data }) {
           cache: "no-store",
         }
       );
-      if (!response.ok)
-        throw new Error("Error al cargar las categorías de productos");
+      if (!response.ok) throw new Error("Error al cargar los productos");
 
       const products = await response.json();
 

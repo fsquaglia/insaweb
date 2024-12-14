@@ -5,19 +5,16 @@ import InputCustom from "@/ui/InputCustom";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { createSubcollection } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 function SubCategory({ categoryObject, reloadData }) {
   const [newSubCat, setNewSubCat] = useState("");
-  const [subCatArray, setSubCatArray] = useState(
-    categoryObject.docData.subcategorias
-      ? categoryObject.docData.subcategorias
-      : []
-  );
+  const [subCatArray, setSubCatArray] = useState([]);
 
   useEffect(() => {
     setSubCatArray(
-      categoryObject.docData.subcategorias
-        ? categoryObject.docData.subcategorias
+      categoryObject?.docData?.subcategorias
+        ? [...categoryObject.docData.subcategorias].sort()
         : []
     );
   }, [categoryObject]);
@@ -32,6 +29,7 @@ function SubCategory({ categoryObject, reloadData }) {
         setSubCatArray([...subCatArray, newSubCat]);
         setNewSubCat(""); // Limpiar el input después de agregar
         reloadData(); //recargar la lista de categorías y demás
+        await revalidateSomePath("/categories");
       }
     } catch (error) {
       console.error("Error! ", error);
