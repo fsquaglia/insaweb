@@ -4,7 +4,7 @@ import VariationsPage from "./Variations";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 
 async function PageVariations() {
-  let variations = undefined;
+  let variations = null;
   try {
     variations = await getNodoRealtime("variaciones");
   } catch (error) {
@@ -13,10 +13,10 @@ async function PageVariations() {
 
   return (
     <div className="container">
-      {variations === undefined ? (
-        <SkeletonLoader />
-      ) : (
+      {variations ? (
         <VariationsPage variations={variations} />
+      ) : (
+        <SkeletonLoader />
       )}
     </div>
   );
