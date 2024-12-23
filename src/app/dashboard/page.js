@@ -38,10 +38,7 @@ export default function Page() {
       inputLabel: "Ingresa tu email para desbloquear",
       inputPlaceholder: "nombre@servidor.com",
     });
-    if (!email) {
-      Swal.fire("Operación cancelada");
-      return;
-    }
+    if (!email) return;
 
     if (email === session?.user?.email) {
       setPointerEvent(false);

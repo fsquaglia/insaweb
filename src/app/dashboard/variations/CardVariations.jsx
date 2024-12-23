@@ -1,9 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ButtonDashboard from "@/ui/ButtonDashboard";
 import InputCustom from "@/ui/InputCustom";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
+import { FaArrowUpAZ } from "react-icons/fa6";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { FaSave } from "react-icons/fa";
+import { FaRegTimesCircle } from "react-icons/fa";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 function CardVariations({
   idVariation,
@@ -14,18 +18,38 @@ function CardVariations({
   dataVariation,
 }) {
   const [variationState, setVariationState] = useState([]);
-  const [newVariant, setNewVariant] = useState("");
   const [isError, setIsError] = useState(false);
-  const [newVariantMultiple, setNewVariantMultiple] = useState({
-    precioLista: 0,
-    descEfectPorc: 0,
-    [idVariation]: "",
-  });
   const [order, setOrder] = useState(true);
 
   useEffect(() => {
     setVariationState(dataVariation || []);
   }, [dataVariation]);
+
+  console.log("isObjectMultiple: ", isObjectMultiple);
+
+  const addInputNewVariation = () => {
+    setVariationState([...variationState, { [idVariation]: "" }]);
+  };
+  const addInputNewVariationMultiple = () => {
+    //buscar el valor más alto en el array de variaciones/IDgrupoDeValores
+    if (isObjectMultiple) {
+      const maxID = variationState.reduce(
+        (max, item) =>
+          item[`ID${idVariation}`] > max ? item[`ID${idVariation}`] : max,
+        0
+      );
+
+      setVariationState([
+        ...variationState,
+        {
+          precioLista: 0,
+          descEfectPorc: 0,
+          [idVariation]: "",
+          [`ID${idVariation}`]: maxID + 1,
+        },
+      ]);
+    }
+  };
 
   const onChangeValue = (index, newValue) => {
     // Si es hashtag asegurarse de que el valor comience con "#"
@@ -38,10 +62,7 @@ function CardVariations({
     );
     setVariationState(updatedVariations);
     dataVariation.length > 0 &&
-      setIsError(
-        variationState.some((item) => item[idVariation] === newValue) ||
-          newValue.trim() === ""
-      );
+      setIsError(variationState.some((item) => item[idVariation] === newValue));
   };
 
   const onChangeMultiple = (index, field, newValue) => {
@@ -61,36 +82,9 @@ function CardVariations({
     setIsError(
       updatedVariations.some(
         (item) =>
-          item[field] === "" || // validar campos vacíos
           updatedVariations.filter((v) => v[field] === newValue).length > 1 // evitar duplicados
       )
     );
-  };
-
-  const onChangeNew = (newValue) => {
-    setNewVariant(newValue);
-    dataVariation.length > 0 &&
-      setIsError(
-        variationState.some(
-          (item) => item[idVariation].toLowerCase() === newValue.toLowerCase()
-        )
-      );
-  };
-
-  const onChangeNewMultiple = (field, newValue) => {
-    setNewVariantMultiple((prev) => ({
-      ...prev,
-      [field]: newValue,
-    }));
-
-    //verificar ingreso duplicado
-    dataVariation.length > 0 &&
-      field === idVariation &&
-      setIsError(
-        variationState.some(
-          (item) => item[idVariation].toLowerCase() === newValue.toLowerCase()
-        )
-      );
   };
 
   const sortVariations = () => {
@@ -112,43 +106,66 @@ function CardVariations({
     setVariationState(sortedArray);
   };
 
-  const onSubmit = async () => {
-    try {
-      if (newVariant.trim() !== "") {
-        //hay un nuevo valor de variación
-        const addValue =
-          idVariation === "hashtag" && !newVariant.startsWith("#")
-            ? `#${newVariant}`
-            : newVariant;
-
-        const updateVariation = [
-          ...variationState,
-          { [idVariation]: addValue },
-        ];
-
-        //verificar si hay duplicados y eliminarlos
-        const uniqueValues = new Set();
-
-        for (let index = 0; index < updateVariation.length; index++) {
-          uniqueValues.add(updateVariation[index][idVariation]);
-        }
-
-        const uniqueArray = Array.from(uniqueValues, (elem) => ({
-          [idVariation]: elem,
-        }));
-
-        await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
-        setNewVariant("");
-        setVariationState(uniqueArray);
-      } else {
-        //actualizamos los valores existentes de variaciones
-        await setNodoRealtime(
-          `variaciones/${idVariation}/data`,
-          variationState
-        );
-      }
+  const deleteVariation = (index) => {
+    if (
+      variationState.length === 1 ||
+      variationState[index][idVariation] === "Genérico" ||
+      variationState[index][idVariation] === "Grupo Genérico"
+    ) {
       Swal.fire({
-        position: "top-end",
+        position: "center",
+        icon: "error",
+        title: "No puedes eliminar Genérico ni todas las variaciones.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+      return;
+    }
+    const updatedVariations = variationState.filter((_, i) => i !== index);
+    setVariationState(updatedVariations);
+    setIsError(false);
+  };
+
+  const onSubmit = async () => {
+    //eliminar elementos vacíos del array
+    const cleanArray = variationState.filter(
+      (item) => item[idVariation] !== ""
+    );
+    //verificar si existe Genérico y si no agregarlo
+    const hasGeneric = cleanArray.some(
+      (item) => item[idVariation] === "Genérico"
+    );
+    if (!hasGeneric) {
+      cleanArray.push({ [idVariation]: "Genérico" });
+    }
+    //ordenar alfabéticamente
+    const sortedArray = cleanArray.sort((a, b) => {
+      const valueA = a[idVariation]?.toLowerCase() || "";
+      const valueB = b[idVariation]?.toLowerCase() || "";
+
+      if (valueA < valueB) return -1;
+      if (valueA > valueB) return 1;
+      return 0;
+    });
+
+    //eliminar los duplicados
+    const uniqueValues = new Set();
+    for (let index = 0; index < sortedArray.length; index++) {
+      uniqueValues.add(sortedArray[index][idVariation]);
+    }
+
+    const uniqueArray = Array.from(uniqueValues, (elem) => ({
+      [idVariation]: elem,
+    }));
+
+    setVariationState(uniqueArray);
+
+    try {
+      //actualizamos los valores existentes de variaciones
+      await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
+      await revalidateSomePath("dashboard/variations");
+      Swal.fire({
+        position: "center",
         icon: "success",
         title: "Listo!",
         showConfirmButton: false,
@@ -157,7 +174,7 @@ function CardVariations({
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "error",
         title: "Algo está mal...",
         showConfirmButton: false,
@@ -167,81 +184,58 @@ function CardVariations({
   };
 
   const onSubmitMultiple = async () => {
-    // console.log(variationState);
-    // console.log(newVariantMultiple);
-    // console.log(maxID);
-
-    //fn para verificar duplicados en el array
-    function hasDuplicates(array) {
-      const seenValues = new Set();
-      return array.some((item) => {
-        const lowerCaseValue = item[idVariation].toLowerCase(); // Acceso dinámico
-        if (seenValues.has(lowerCaseValue)) {
-          return true; // Si se encuentra un duplicado, se retorna true
-        }
-        seenValues.add(lowerCaseValue); // Si no es duplicado, se agrega al Set
-        return false; // Si no hay duplicado, se sigue verificando
+    //eliminar elementos vacíos del array
+    const cleanArray = variationState.filter(
+      (item) => item[idVariation] !== ""
+    );
+    //verificar si existe Genérico y si no agregarlo
+    const hasGeneric = cleanArray.some(
+      (item) => item[idVariation] === "Grupo Genérico"
+    );
+    if (!hasGeneric) {
+      const maxID = variationState.reduce(
+        (max, item) =>
+          item[`ID${idVariation}`] > max ? item[`ID${idVariation}`] : max,
+        0
+      );
+      cleanArray.push({
+        precioLista: 0,
+        descEfectPorc: 0,
+        [idVariation]: "Grupo Genérico",
+        [`ID${idVariation}`]: maxID + 1,
       });
     }
 
-    try {
-      if (newVariantMultiple[idVariation]?.trim() !== "") {
-        //se está agregando un nuevo grupoDeValores
+    //ordenar alfabéticamente
+    const sortedArray = cleanArray.sort((a, b) => {
+      const valueA = a[idVariation]?.toLowerCase() || "";
+      const valueB = b[idVariation]?.toLowerCase() || "";
 
-        //obtener el último id de grupoDeValores
-        const maxID = variationState
-          ? variationState.reduce((max, item) => {
-              return item.IDgrupoDeValores > max ? item.IDgrupoDeValores : max;
-            }, 0)
-          : 0;
-        const newID = parseInt(maxID) + 1;
+      if (valueA < valueB) return -1;
+      if (valueA > valueB) return 1;
+      return 0;
+    });
 
-        //armar el array con lo existente y lo nuevo
-        const { precioLista, grupoDeValores, descEfectPorc } =
-          newVariantMultiple;
-        const updateVariation = [
-          ...variationState,
-          {
-            [`ID${idVariation}`]: newID,
-            precioLista,
-            grupoDeValores,
-            descEfectPorc,
-          },
-        ];
-
-        //verificar si hay duplicados
-        if (hasDuplicates(updateVariation)) {
-          //hay duplicados, avisar y detener
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "Hay grupos duplicados, revisa por favor.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          return;
-        } else {
-          //no hay duplicados, continuar
-          await setNodoRealtime(
-            `variaciones/${idVariation}/data`,
-            updateVariation
-          );
-          setNewVariantMultiple({
-            precioLista: 0,
-            descEfectPorc: 0,
-            [idVariation]: "",
-          });
-          setVariationState(updateVariation);
-        }
-      } else {
-        //no hay nuevo valor agregado, sólo modificar
-        await setNodoRealtime(
-          `variaciones/${idVariation}/data`,
-          variationState
-        );
+    //eliminar los duplicados
+    let uniqueArray = [];
+    for (let index = 0; index < sortedArray.length; index++) {
+      const item = sortedArray[index];
+      const isDuplicate = uniqueArray.some(
+        (uniqueItem) => uniqueItem[idVariation] === item[idVariation]
+      );
+      if (!isDuplicate) {
+        uniqueArray.push(item);
       }
+    }
+
+    setVariationState(uniqueArray);
+
+    try {
+      //actualizamos los valores existentes de variaciones
+      await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
+      await revalidateSomePath("/dashboard/variations");
       Swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Listo!",
         showConfirmButton: false,
@@ -250,7 +244,7 @@ function CardVariations({
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "error",
         title: "Algo está mal...",
         showConfirmButton: false,
@@ -261,38 +255,43 @@ function CardVariations({
 
   return (
     <div className="flex flex-col m-2 p-2 w-96 bg-gray-100 hover:bg-gray-200">
-      {/* Contenedor de contenido que toma el espacio disponible */}
-      <div className="flex-grow h-80">
-        <h3 className="text-blue-700 font-semibold underline underline-offset-2">
+      {/* DIV de contenido que toma el espacio disponible */}
+      <div className="flex-grow text-center">
+        <h3 className="text-blue-700 font-semibold underline underline-offset-2 underline-blue-500">
           {titleVariation}
         </h3>
-        <p className="h-16">{textVariation}</p>
+        <p className="h-16 text-slate-700 text-sm">{textVariation}</p>
         {urlImage ? <img src={urlImage} alt={urlImage || "Imagen"} /> : null}
         {/*Variaciones de objeto múltiple */}
         {isObjectMultiple && variationState ? (
           <div className="block flex flex-col border h-60 overflow-y-auto p-2">
             {variationState.length > 0 && (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-hidden">
                 <table className="min-w-full bg-white border border-gray-300">
                   <thead>
                     <tr>
                       <th className="px-1 py-2 border-b text-xs">Id</th>
                       <th className="px-1 py-2 border-b text-xs">Grupo</th>
                       <th className="px-1 py-2 border-b text-xs">
-                        Precio Lista
+                        Precio Lista ($)
                       </th>
                       <th className="px-1 py-2 border-b text-xs">
                         Descto. (%)
+                      </th>
+                      <th className="px-1 py-2 border-b text-xs">
+                        <FaRegTimesCircle />
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {variationState.map((item, index) => (
                       <tr key={index} className="hover:bg-gray-100">
-                        <td className="px-1 py-2 border-b text-xs text-end">
+                        {/*id numérico */}
+                        <td className="py-2 border-b text-xs text-end">
                           {item[`ID${idVariation}`]}
                         </td>
-                        <td className="px-1 py-2 border-b  text-xs">
+                        {/*Grupo de valores*/}
+                        <td className="py-2 border-b  text-xs">
                           <input
                             className="p-1"
                             type="text"
@@ -300,6 +299,7 @@ function CardVariations({
                             id={`${index}-${item[idVariation]}`}
                             value={item[idVariation]}
                             maxLength={30}
+                            placeholder={"Agregar variación"}
                             onChange={(e) =>
                               onChangeMultiple(
                                 index,
@@ -309,113 +309,59 @@ function CardVariations({
                             }
                           />
                         </td>
-                        <td className="px-1 py-2 border-b text-center text-xs">
-                          <div className="flex items-center justify-center">
-                            <span>$</span>
-                            <input
-                              onChange={(e) =>
-                                onChangeMultiple(
-                                  index,
-                                  "precioLista",
-                                  e.target.value
-                                )
-                              }
-                              className="ml-1 w-16 text-end p-1"
-                              type="number"
-                              name={`${index}-${item.precioLista}`}
-                              id={`${index}-${item.precioLista}`}
-                              value={item.precioLista}
-                              style={{
-                                WebkitAppearance: "none",
-                                MozAppearance: "textfield",
-                              }}
-                            />
-                          </div>
-                        </td>
-
-                        <td className="px-1 py-2 border-b text-center text-xs">
-                          <div className="flex items-center justify-center">
-                            <input
-                              onChange={(e) =>
-                                onChangeMultiple(
-                                  index,
-                                  "descEfectPorc",
-                                  e.target.value
-                                )
-                              }
-                              className="ml-1 w-10 text-end p-1"
-                              type="number"
-                              name={`${index}-${item.descEfectPorc}`}
-                              id={`${index}-${item.descEfectPorc}`}
-                              value={item.descEfectPorc}
-                              style={{
-                                WebkitAppearance: "none",
-                                MozAppearance: "textfield",
-                              }}
-                            />
-                            <span>%</span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    {/*input para agregar datos */}
-                    <tr className="hover:bg-gray-100">
-                      <td className="px-1 py-2 border-b text-xs text-end">#</td>
-                      <td className="px-1 py-2 border-b text-xs">
-                        <input
-                          className="p-1"
-                          type="text"
-                          name="grupoDeValores"
-                          id="newGrupoDeValores"
-                          maxLength={30}
-                          value={newVariantMultiple.grupoDeValores || ""}
-                          onChange={(e) =>
-                            onChangeNewMultiple(idVariation, e.target.value)
-                          }
-                        />
-                      </td>
-                      <td className="px-1 py-2 border-b text-xs text-end">
-                        <div className="flex items-center justify-center">
-                          <span>$</span>
+                        {/*Precio de lista*/}
+                        <td className="py-2 border-b text-center text-xs">
                           <input
-                            className="ml-1 w-16 text-end p-1"
-                            type="number"
-                            name="precioLista"
-                            id="newPrecioLista"
-                            value={newVariantMultiple.precioLista || 0}
                             onChange={(e) =>
-                              onChangeNewMultiple("precioLista", e.target.value)
+                              onChangeMultiple(
+                                index,
+                                "precioLista",
+                                e.target.value
+                              )
                             }
+                            className="w-16 text-end p-1"
+                            type="number"
+                            name={`${index}-${item.precioLista}`}
+                            id={`${index}-${item.precioLista}`}
+                            value={item.precioLista}
                             style={{
                               WebkitAppearance: "none",
                               MozAppearance: "textfield",
                             }}
                           />
-                        </div>
-                      </td>
-                      <td className="px-1 py-2 border-b text-xs text-end">
-                        <div className="flex items-center justify-center">
+                        </td>
+                        {/*Descuento efectivo*/}
+                        <td className="py-2 border-b text-center text-xs">
                           <input
-                            className="ml-1 w-10 text-end p-1"
-                            type="number"
-                            name="descEfectPorc"
-                            id="newDescEfectPorc"
-                            value={newVariantMultiple.descEfectPorc || 0}
                             onChange={(e) =>
-                              onChangeNewMultiple(
+                              onChangeMultiple(
+                                index,
                                 "descEfectPorc",
                                 e.target.value
                               )
                             }
+                            className="w-10 text-end p-1"
+                            type="number"
+                            name={`${index}-${item.descEfectPorc}`}
+                            id={`${index}-${item.descEfectPorc}`}
+                            value={item.descEfectPorc}
                             style={{
                               WebkitAppearance: "none",
                               MozAppearance: "textfield",
                             }}
                           />
-                          <span>%</span>
-                        </div>
-                      </td>
-                    </tr>
+                        </td>
+                        {/*Eliminar variación*/}
+                        <td className="py-2 border-b text-center text-xs">
+                          <FaRegTimesCircle
+                            color="red"
+                            title="Eliminar"
+                            className="cursor-pointer"
+                            onClick={() => deleteVariation(index)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -427,40 +373,63 @@ function CardVariations({
           <div className="block flex flex-col border h-60 overflow-y-auto p-2">
             {variationState.length > 0 &&
               variationState.map((item, index) => (
-                <InputCustom
+                <div
+                  className="w-full gap-2 flex flex-row items-center"
                   key={index}
-                  labelText={""}
-                  name={`variation-${idVariation}-${index}`}
-                  inputValue={item[idVariation]}
-                  charLimit={30}
-                  onChange={(e) => onChangeValue(index, e.target.value)}
-                />
+                >
+                  <div className="w-full flex flex-col">
+                    <InputCustom
+                      labelText={""}
+                      name={`variation-${idVariation}-${index}`}
+                      inputValue={item[idVariation]}
+                      charLimit={30}
+                      onChange={(e) => onChangeValue(index, e.target.value)}
+                      placeholder={"Agregar variación"}
+                    />
+                  </div>
+                  <span
+                    className="border"
+                    onClick={() => deleteVariation(index)}
+                  >
+                    <FaRegTimesCircle color="red" size={18} />
+                  </span>
+                </div>
               ))}
-            <InputCustom
-              labelText={""}
-              name={`${idVariation}-newVariation`}
-              charLimit={30}
-              placeHolder={"Agregar variación"}
-              onChange={(e) => onChangeNew(e.target.value)}
-              inputValue={newVariant}
-            />
           </div>
         ) : null}
       </div>
 
       {/* Botón fijo en la parte inferior */}
       <div className="mt-auto">
-        <div className="w-full flex flex-row gap-2">
-          <div className="flex-1">
-            <ButtonDashboard textButton={"Ordenar"} onclick={sortVariations} />
-          </div>
-          <div className="flex-1">
-            <ButtonDashboard
-              textButton={"Actualizar"}
-              disabled={isError}
-              onclick={isObjectMultiple ? onSubmitMultiple : onSubmit}
-            />
-          </div>
+        <div className="w-full flex flex-row items-center justify-around pt-4">
+          <button
+            className="flex items-center justify-center bg-blue-500 text-white rounded w-20 hover:bg-blue-400"
+            onClick={sortVariations}
+            title="Ordenar"
+          >
+            <FaArrowUpAZ className="font-light m-2" size={20} />
+          </button>
+          <button
+            className="flex items-center justify-center bg-blue-500 text-white rounded w-20 hover:bg-blue-400"
+            onClick={
+              isObjectMultiple
+                ? addInputNewVariationMultiple
+                : addInputNewVariation
+            }
+            title="Agregar nuevo..."
+          >
+            <MdOutlinePlaylistAdd className="font-light m-2" size={20} />
+          </button>
+          <button
+            className={`flex items-center justify-center bg-blue-500 text-white rounded w-20 hover:bg-blue-400 ${
+              isError ? "opacity-50" : ""
+            }`}
+            onClick={isObjectMultiple ? onSubmitMultiple : onSubmit}
+            disabled={isError}
+            title="Guardar"
+          >
+            <FaSave className="font-light m-2" size={20} />
+          </button>
         </div>
       </div>
     </div>

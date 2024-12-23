@@ -1,7 +1,7 @@
-import React from "react";
 import { getNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import VariationsPage from "./Variations";
 import SkeletonLoader from "@/ui/SkeletonLoader";
+import { Suspense } from "react";
 
 async function PageVariations() {
   let variations = null;
@@ -13,11 +13,9 @@ async function PageVariations() {
 
   return (
     <div className="container">
-      {variations ? (
+      <Suspense fallback={<SkeletonLoader />}>
         <VariationsPage variations={variations} />
-      ) : (
-        <SkeletonLoader />
-      )}
+      </Suspense>
     </div>
   );
 }
