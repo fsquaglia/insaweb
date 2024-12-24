@@ -2,8 +2,6 @@ import React from "react";
 import CardVariations from "./CardVariations";
 
 function VariationsPage({ variations }) {
-  console.log("VariationsPage -> variations", variations?.grupoDeValores?.data);
-
   return (
     <div className="container flex flex-row flex-wrap justify-center">
       {variations && Object.keys(variations).length > 0 ? (
