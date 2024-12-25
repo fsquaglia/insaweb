@@ -4,13 +4,19 @@ import SkeletonLoader from "@/ui/SkeletonLoader";
 import { Suspense } from "react";
 import MessageComponent from "@/ui/MessageComponent";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 async function PageVariations() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   let variations = null;
   try {
-    const variationsResp = await fetch(`${apiUrl}/api/variations`);
+    const variationsResp = await fetch(`${apiUrl}/api/variations`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 0 },
+    });
     if (variationsResp.ok) {
       variations = await variationsResp.json();
     } else {
