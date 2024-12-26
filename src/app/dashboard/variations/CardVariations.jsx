@@ -25,8 +25,6 @@ function CardVariations({
     setVariationState(dataVariation || []);
   }, [dataVariation]);
 
-  console.log("isObjectMultiple: ", isObjectMultiple);
-
   const addInputNewVariation = () => {
     setVariationState([...variationState, { [idVariation]: "" }]);
   };

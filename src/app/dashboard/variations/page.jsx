@@ -1,4 +1,4 @@
-// import { getNodoRealtime } from "@/utils/firebase/fetchFirebase";
+"use client";
 import VariationsPage from "./Variations";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import { Suspense } from "react";
