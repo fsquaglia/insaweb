@@ -58,7 +58,7 @@ export async function createDocConfig() {
   try {
     const docRef = doc(firestoreDB, "configuraciones", "configuraciones");
     await setDoc(docRef, dataConfigInitial);
-    console.log("Documento de configuraciones creado correctamente.");
+    // console.log("Documento de configuraciones creado correctamente.");
     Swal.fire({
       icon: "success",
       title: "Documento de configuraciones creado correctamente.",
@@ -136,7 +136,7 @@ export async function getDocumentById(collectionPath, docId) {
   if (docSnap.exists()) {
     return { id: docSnap.id, ...docSnap.data() };
   } else {
-    console.log("No such document!");
+    // console.log("No such document!");
     return null;
   }
 }
@@ -177,7 +177,7 @@ export async function getProductFirestore(
   startAfterDoc = null,
   includeProductsWithoutStock
 ) {
-  console.log("startAfterDoc", startAfterDoc);
+  // console.log("startAfterDoc", startAfterDoc);
   try {
     const collectionRef = collection(firestoreDB, collectionPath);
 
@@ -249,7 +249,7 @@ export async function getDocConfig() {
     } else {
       //si el doc de configuraciones no existe, crearlo
       await createDocConfig();
-      console.log("Se creó el doc de configuraciones porque no existía");
+      // console.log("Se creó el doc de configuraciones porque no existía");
       return dataConfigInitial;
     }
   } catch (error) {
@@ -278,7 +278,7 @@ export async function getProductByID(category, subcategory, idDocument) {
     if (docSnap.exists()) {
       return { docID: docSnap.id, ...docSnap.data() };
     } else {
-      console.log("No such document!");
+      // console.log("No such document!");
       throw new Error("No encontramos el documento");
     }
   } catch (error) {
@@ -325,7 +325,7 @@ export const getUpdateCodeProd = async () => {
       sfDoc = await transaction.get(configDocRef);
 
       if (!sfDoc.exists()) {
-        console.log("Document does not exist!");
+        // console.log("Document does not exist!");
         // Crear el documento si no existe
         await setDoc(configDocRef, dataConfigInitial);
         // Volver a obtener el documento después de crearlo
@@ -337,7 +337,7 @@ export const getUpdateCodeProd = async () => {
       transaction.update(configDocRef, { codProdEnUso: newProdInUse });
     });
 
-    console.log("Transaction successfully committed!");
+    // console.log("Transaction successfully committed!");
     return sfDoc.data();
   } catch (e) {
     console.error("Transaction failed: ", e);
@@ -354,7 +354,7 @@ export const setIndexProduct = async (nameIndex, code, productData) => {
       const sfDoc = await transaction.get(indexRef);
 
       if (!sfDoc.exists()) {
-        console.log("Document does not exist, creating it!");
+        // console.log("Document does not exist, creating it!");
         // Crear el documento vacío si no existe
         await transaction.set(indexRef, { [code]: productData });
       } else {
@@ -400,7 +400,7 @@ export async function updateDocInCollection(nameCollection, nameDoc, newData) {
 export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
   try {
     await setDoc(doc(firestoreDB, nameCollection, nameDoc), dataDoc);
-    console.log("Documento guardado correctamente.");
+    // console.log("Documento guardado correctamente.");
   } catch (error) {
     console.error("Error al guardar el documento: ", error);
     throw error;
@@ -474,7 +474,7 @@ export async function getCategoryProduct(categoryID) {
     if (docSnap.exists()) {
       return { docID: docSnap.id, docData: docSnap.data() };
     } else {
-      console.log("No such document!");
+      // console.log("No such document!");
       return null;
     }
   } catch (error) {
@@ -540,9 +540,9 @@ export async function setProductsCategoryFirestore() {
     });
     // Use Promise.all to run all setDoc operations in parallel
     await Promise.all(promises);
-    console.log("Categorías de productos creadas");
+    // console.log("Categorías de productos creadas");
   } catch (error) {
-    console.log("Error al crear categorías de productos: ", error);
+    // console.log("Error al crear categorías de productos: ", error);
     throw error;
   }
 }
@@ -557,7 +557,7 @@ export async function setTipsCategoryFirestore() {
         addDoc(collection(firestoreDB, "tipsCategoria"), category)
       )
     );
-    console.log("Categorías de tips creadas");
+    // console.log("Categorías de tips creadas");
   } catch (e) {
     console.error("Error agregando categorías: ", e);
     throw e;
@@ -574,7 +574,7 @@ export async function setTipsFirestore() {
         addDoc(collection(firestoreDB, "tips"), elem)
       )
     );
-    console.log("Tips creados");
+    // console.log("Tips creados");
   } catch (e) {
     console.error("Error agregando Tips: ", e);
     throw e;
@@ -662,7 +662,7 @@ export async function setNodoRealtime(nodo, dataNodo) {
   try {
     const refNodo = realtimeRef(realtimeDB, nodo);
     await set(refNodo, dataNodo);
-    console.log(`Información almacenada en ${nodo}`);
+    // console.log(`Información almacenada en ${nodo}`);
   } catch (e) {
     console.error(`Error almacenando en ${nodo}. `, e);
     throw e;
