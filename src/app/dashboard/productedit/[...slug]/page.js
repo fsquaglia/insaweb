@@ -590,7 +590,11 @@ function ProductPage({ params }) {
       //actualiza el producto en la colección items (esto es experimental para manejar en un futuro de otra forma los productos)
       await updateDocInCollection("items", productID, values);
 
-      await revalidateSomePath(`/product-category/${category}/${subcategory}`);
+      await revalidateSomePath(
+        `/product-category/${encodeURIComponent(category)}/${encodeURIComponent(
+          subcategory
+        )}`
+      );
 
       Swal.fire({
         position: "center",

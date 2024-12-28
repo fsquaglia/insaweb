@@ -52,7 +52,7 @@ function PageProductDetail({ params }) {
           setCurrentImage(data?.imagen?.[0] || null); // *** Asignar la primera imagen como predeterminada ***
         } else {
           console.error("Error:", response.statusText);
-          setError(response.statusText);
+          setError("Producto no encontrado");
         }
       } catch (error) {
         console.error("Error al obtener el producto de la BDD: ", error);

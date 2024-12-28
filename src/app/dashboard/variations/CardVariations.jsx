@@ -161,7 +161,7 @@ function CardVariations({
     try {
       //actualizamos los valores existentes de variaciones
       await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
-      await revalidateSomePath("dashboard/variations");
+      await revalidateSomePath("/dashboard/variations");
       Swal.fire({
         position: "center",
         icon: "success",
@@ -231,7 +231,13 @@ function CardVariations({
     try {
       //actualizamos los valores existentes de variaciones
       await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
+      //revalidamos la página para mostrar los cambios
       await revalidateSomePath("/dashboard/variations");
+      //si los datos están en sessionStorage o localStorage, también los eliminamos
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("variations");
+        localStorage.removeItem("variations");
+      }
       Swal.fire({
         position: "center",
         icon: "success",
@@ -258,7 +264,9 @@ function CardVariations({
         <h3 className="text-blue-700 font-semibold underline underline-offset-2 underline-blue-500">
           {titleVariation}
         </h3>
-        <p className="h-16 text-slate-700 text-sm">{textVariation}</p>
+        <p className="h-12 text-slate-700 text-sm font-light">
+          {textVariation}
+        </p>
         {urlImage ? <img src={urlImage} alt={urlImage || "Imagen"} /> : null}
         {/*Variaciones de objeto múltiple */}
         {isObjectMultiple && variationState ? (
@@ -395,6 +403,15 @@ function CardVariations({
               ))}
           </div>
         ) : null}
+      </div>
+
+      {/*conteo de elementos de cada variación */}
+      <div className="flex flex-row items-center justify-end gap-2 py-2">
+        <p className="text-xs text-slate-500 font-light">Total:</p>
+
+        <p className="text-xs text-slate-500 font-light">
+          {variationState.length} {titleVariation}
+        </p>
       </div>
 
       {/* Botón fijo en la parte inferior */}

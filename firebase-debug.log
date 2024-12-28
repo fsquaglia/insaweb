@@ -1,0 +1,12 @@
+[debug] [2024-12-28T23:16:24.307Z] ----------------------------------------------------------------------
+[debug] [2024-12-28T23:16:24.324Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --import=emulators --export-on-exit=emulators
+[debug] [2024-12-28T23:16:24.325Z] CLI Version:   13.23.0
+[debug] [2024-12-28T23:16:24.325Z] Platform:      win32
+[debug] [2024-12-28T23:16:24.325Z] Node Version:  v20.12.1
+[debug] [2024-12-28T23:16:24.325Z] Time:          Sat Dec 28 2024 20:16:24 GMT-0300 (hora estándar de Argentina)
+[debug] [2024-12-28T23:16:24.325Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-28T23:16:24.331Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-12-28T23:16:24.466Z] Object ".emulators" in "firebase.json" has unknown property: {"additionalProperty":"export-on-exit"}
+[debug] [2024-12-28T23:16:24.474Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-28T23:16:24.474Z] > authorizing via signed-in user (fernandosquaglia@gmail.com)
