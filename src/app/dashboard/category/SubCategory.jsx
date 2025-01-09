@@ -12,11 +12,17 @@ function SubCategory({ categoryObject, reloadData }) {
   const [subCatArray, setSubCatArray] = useState([]);
 
   useEffect(() => {
-    setSubCatArray(
-      categoryObject?.docData?.subcategorias
-        ? [...categoryObject.docData.subcategorias].sort()
-        : []
-    );
+    if (categoryObject?.docData?.subcategorias) {
+      // Si hay subcategorías, ordenar alfabéticamente sin distinguir mayúsculas y minúsculas
+      setSubCatArray(
+        [...categoryObject.docData.subcategorias].sort((a, b) =>
+          a.toLowerCase().localeCompare(b.toLowerCase())
+        )
+      );
+    } else {
+      // Si no hay subcategorías, establecer el array como vacío
+      setSubCatArray([]);
+    }
   }, [categoryObject]);
 
   const handleAddSubCategory = async () => {

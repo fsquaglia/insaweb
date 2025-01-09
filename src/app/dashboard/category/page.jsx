@@ -14,6 +14,10 @@ export default function PageCategory() {
     const fetchCategories = async () => {
       try {
         const data = await getAllDocsColection("productos");
+        console.log("data", data);
+
+        data.sort((a, b) => a.docID.localeCompare(b.docID));
+
         setCategoriesProducts(data);
       } catch (error) {
         console.error("Error al cargar las categorías de productos:", error);

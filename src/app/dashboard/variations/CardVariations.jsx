@@ -77,12 +77,15 @@ function CardVariations({
     setVariationState(updatedVariations);
 
     // Si es necesario, puedes agregar lógica para validar los cambios
-    setIsError(
-      updatedVariations.some(
-        (item) =>
-          updatedVariations.filter((v) => v[field] === newValue).length > 1 // evitar duplicados
-      )
-    );
+
+    if (field === "grupoDeValores") {
+      setIsError(
+        updatedVariations.some(
+          (item) =>
+            updatedVariations.filter((v) => v[field] === newValue).length > 1 // evitar duplicados
+        )
+      );
+    }
   };
 
   const sortVariations = () => {

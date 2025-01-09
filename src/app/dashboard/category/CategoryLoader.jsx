@@ -39,6 +39,8 @@ function CategoryLoader({ data }) {
     try {
       // Obtener categorías de productos
       const categoriesProducts = await getAllDocsColection("productos");
+      // ordenar alfabéticamente
+      categoriesProducts.sort((a, b) => a.docID.localeCompare(b.docID));
       setValues([...categoriesProducts, newCategory]);
     } catch (error) {
       console.error("Error! ", error);
@@ -131,6 +133,7 @@ function CategoryLoader({ data }) {
         valuesEdit.docData
       );
       const categoriesProducts = await getAllDocsColection("productos");
+      categoriesProducts.sort((a, b) => a.docID.localeCompare(b.docID));
       const newLoaderCategories = [...categoriesProducts, newCategory];
       setValues(newLoaderCategories);
 

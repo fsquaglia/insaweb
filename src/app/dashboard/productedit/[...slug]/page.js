@@ -1,5 +1,6 @@
 "use client";
 import { Timestamp } from "firebase/firestore";
+import { Hourglass } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import InputCustom from "@/ui/InputCustom";
 import SwitchVisible from "@/ui/SwitchVisible";
@@ -354,6 +355,7 @@ function ProductPage({ params }) {
   const [openTab, setOpenTab] = useState(1);
   const [variations, setVariations] = useState({});
   const [configurations, setConfigurations] = useState({});
+  const [saving, setSaving] = useState(false);
   const [values, setValues] = useState({
     codigoNro: "",
     codigoAnterior: "",
@@ -581,6 +583,7 @@ function ProductPage({ params }) {
       : "Producto GUARDADO, no publicado";
 
     try {
+      setSaving(true);
       //actualiza el producto en la colección productos/categ.../subcat..
       await updateProductByID(category, subcategory, productID, values);
       //actualiza el producto en el índice por ARTICULO (para búsqueda de producto por artículo)
@@ -611,6 +614,8 @@ function ProductPage({ params }) {
         title: "Hubo un error",
         showConfirmButton: true,
       });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -680,6 +685,26 @@ function ProductPage({ params }) {
         <div className="mx-auto my-4">
           Buscando el producto, si no lo encontramos deberás volver a
           intentarlo...
+        </div>
+      )}
+      {saving && (
+        <div
+          className="fixed top-0 left-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-50"
+          style={{ zIndex: 9999 }}
+        >
+          <div className="flex items-center justify-center min-h-screen ">
+            <div className="bg-slate-200 p-4 rounded shadow-lg mx-auto mt-28">
+              <Hourglass
+                visible={true}
+                height="52"
+                width="52"
+                ariaLabel="hourglass-loading"
+                wrapperStyle={{}}
+                wrapperClass="mx-auto"
+                colors={["#306cce", "#72a1ed"]}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -55,8 +55,12 @@ function PageProductDetail({ params }) {
           setError("Producto no encontrado");
         }
       } catch (error) {
-        console.error("Error al obtener el producto de la BDD: ", error);
-        setError(error.message);
+        console.error(
+          "Error al obtener el producto de la BDD: ",
+          error,
+          error.message
+        );
+        setError("Error al obtener el producto");
       } finally {
         setLoading(false);
       }
@@ -280,11 +284,14 @@ const LoadingDiv = () => {
 };
 
 const AdminDiv = ({ product, variations, configurations }) => {
-  // console.log(variations);
-
+  const idGrupo = Number(product?.IDgrupoDeValores);
   const grupoDeValores = variations?.grupoDeValores?.find(
-    (varItem) => varItem.IDgrupoDeValores === product?.IDgrupoDeValores
+    (varItem) => Number(varItem.IDgrupoDeValores) === idGrupo
   ) ?? { grupoDeValores: "No disponible", precioLista: 0, descEfectPorc: 0 };
+
+  // const grupoDeValores = variations?.grupoDeValores?.find(
+  //   (varItem) => varItem.IDgrupoDeValores === product?.IDgrupoDeValores
+  // ) ?? { grupoDeValores: "No disponible", precioLista: 0, descEfectPorc: 0 };
 
   return (
     <div className="flex flex-col justify-center p-2">
@@ -373,7 +380,7 @@ const AdminDiv = ({ product, variations, configurations }) => {
 
       {/* -- Stock total -- */}
       <hr className="border border-gray-100 my-2" />
-      <span className="">{`Stock total en todos las tallas: ${product?.stockTotal} un`}</span>
+      <span className="">{`Stock total en todas las tallas: ${product?.stockTotal} un`}</span>
       <hr className="border border-gray-100 my-2" />
 
       {/*--- Botones --- */}
