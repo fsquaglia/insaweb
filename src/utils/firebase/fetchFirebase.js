@@ -238,6 +238,78 @@ export async function getProductFirestore(
   }
 }
 
+export async function getProductItemsFirestore(
+  collectionPath,
+  category,
+  subcategory,
+  limitNumber,
+  startAfterDoc = null,
+  includeProductsWithoutStock
+) {
+  // console.log("startAfterDoc", startAfterDoc);
+  try {
+    const collectionRef = collection(firestoreDB, "items");
+    const allVisible = includeProductsWithoutStock ? ">=" : ">";
+    // Crear la query base
+    let q = query(
+      collectionRef,
+      where("publicado", "==", true),
+      where("categoria", "==", category),
+      where("subcategoria", "==", subcategory),
+      where("stockTotal", allVisible, 0),
+      orderBy("nombre"),
+      limit(limitNumber)
+    );
+
+    // Filtro para excluir productos sin stock
+    // if (!includeProductsWithoutStock) {
+    //   q = query(q, where("stockTotal", ">", 0));
+    // }
+
+    // Agregar paginación
+    if (startAfterDoc) {
+      q = query(q, startAfter(startAfterDoc));
+    }
+
+    // Ejecutar la query para obtener documentos
+    const snapshot = await getDocs(q);
+
+    // Consultar el total de documentos solo en la primera consulta
+    let totalDocs = null;
+    if (!startAfterDoc) {
+      const totalQuery = [where("publicado", "==", true)];
+      if (!includeProductsWithoutStock) {
+        totalQuery.push(where("stockTotal", ">", 0));
+      }
+
+      // Obtener el conteo total de documentos sin limit ni startAfter
+      const totalDocsInQuery = await getCountFromServer(
+        query(collectionRef, ...totalQuery)
+      );
+      totalDocs = totalDocsInQuery.data().count;
+    }
+
+    // Mapeo de resultados
+    const products = snapshot.docs.map((doc) => ({
+      docID: doc.id,
+      docData: doc.data(),
+    }));
+
+    const lastVisible =
+      products.length > 0 ? products[products.length - 1].docData.nombre : null;
+
+    return {
+      products,
+      lastVisible,
+      // lastVisible: snapshot.docs[snapshot.docs.length - 1],
+      totalDocs, // Solo contiene el total en la primera consulta
+    };
+  } catch (error) {
+    console.error("Error al obtener productos de Firestore:", error);
+    throw error;
+  }
+}
+
 //obtener documento de configuraciones
 export async function getDocConfig() {
   try {

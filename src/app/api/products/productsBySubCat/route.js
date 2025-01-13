@@ -1,4 +1,4 @@
-import { getProductFirestore } from "@/utils/firebase/fetchFirebase";
+import { getProductItemsFirestore } from "@/utils/firebase/fetchFirebase";
 
 //!ver si podemos usar params en lugar de search params para usar revalidate y rutas estáticas
 // export const revalidate = 21600;
@@ -21,8 +21,10 @@ export async function GET(req) {
 
   try {
     const collectionPath = `productos/${categoria}/${subcategoria}`;
-    const { products, lastVisible, totalDocs } = await getProductFirestore(
+    const { products, lastVisible, totalDocs } = await getProductItemsFirestore(
       collectionPath,
+      categoria,
+      subcategoria,
       limit,
       startAfter,
       includeProductsWithoutStock
