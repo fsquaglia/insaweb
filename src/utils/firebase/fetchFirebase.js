@@ -19,6 +19,9 @@ import {
   runTransaction,
   startAfter,
   getCountFromServer,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 
 import {
@@ -26,6 +29,7 @@ import {
   set,
   get as realtimeGet,
   child,
+  update,
 } from "firebase/database";
 
 import {
@@ -53,6 +57,45 @@ import {
 } from "../SettingInitialData";
 
 //!FIRESTORE
+//Agregar un LikeProduct a los likes de productos del usuario
+export async function addLikeProductToUser(
+  userID,
+  productID,
+  nameProduct,
+  category,
+  subcategory,
+  image
+) {
+  if (!userID || !productID || !nameProduct || !category || !subcategory) {
+    throw new Error(
+      "Todos los argumentos (userID, productID, nameProduct, category, subcategory) son requeridos"
+    );
+  }
+  const docRef = doc(
+    firestoreDB,
+    `contactos/${userID}/LikesProduct/documentoDeLikes`
+  );
+  const newLike = {
+    productID: productID,
+    name: nameProduct,
+    category: category,
+    subcategory: subcategory,
+    image: image || "",
+  };
+  try {
+    // Crear el documento si no existe
+    await setDoc(docRef, { likes: [] }, { merge: true });
+    // Agregar el like al usuario
+    await updateDoc(docRef, {
+      likes: arrayUnion(newLike),
+    });
+    console.log("Like agregado con éxito.");
+  } catch (error) {
+    console.error("Error al agregar el like al usuario: ", error);
+    throw error;
+  }
+}
+
 //crear documento de Configuraciones
 export async function createDocConfig() {
   try {
@@ -360,6 +403,7 @@ export async function getProductByID(category, subcategory, idDocument) {
 }
 
 //actualizar datos de un producto según ID
+//lo actualizamos también en colección items
 export async function updateProductByID(
   category,
   subcategory,
@@ -380,7 +424,10 @@ export async function updateProductByID(
       subcategory,
       idDocument
     );
+    const docItemsRef = doc(firestoreDB, "items", idDocument);
+
     await setDoc(docRef, newData, { merge: true });
+    await setDoc(docItemsRef, newData, { merge: true });
     // console.log("Producto actualizado correctamente.");
   } catch (error) {
     console.error("Error al actualizar el producto: ", error);

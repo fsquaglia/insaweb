@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaArrowRight } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import Swal from "sweetalert2";
+import {
+  addLikeProductToUser,
+  updateProductByID,
+} from "@/utils/firebase/fetchFirebase";
 
 function CardProduct({ product, category, subCategory }) {
   const { data: session, status } = useSession();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [likesCount, setLikesCount] = useState(
+    product?.docData?.likesCount || 0
+  );
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    setLikesCount(product?.docData?.likesCount || 0);
+    setIsLiked(
+      product?.docData?.likedList?.includes(session?.user?.id) || false
+    );
+  }, [product]);
 
   // Función para cambiar la imagen al hacer clic en el botón
   const handleNextImage = () => {
@@ -15,28 +31,90 @@ function CardProduct({ product, category, subCategory }) {
     );
   };
 
-  //handle click corazzón de Like en producto
-  const handleLikeProduct = () => {
-    if (!session) {
-      alert("Debes iniciar sesión para marcar un producto como favorito");
+  //handle click corazón de Like en producto
+  const handleLikeProduct = async () => {
+    if (!session && status === "unauthenticated") {
+      Swal.fire({
+        position: "center",
+        icon: "question",
+        title: "Loguéate para interactuar con nosotros",
+        showConfirmButton: true,
+        timer: 3000,
+      });
       return;
     }
-    //!continuar con la lógica para saber si ya marcó este producto como favorito
+    if (isLiked) return;
+
+    try {
+      setIsLiked(true);
+      setLikesCount(likesCount + 1);
+
+      // Actualizar el producto con el nuevo like
+      const updatedLikesCount = likesCount + 1;
+      const updatedLikedList = [
+        ...(product?.docData?.likedList || []),
+        session?.user?.id,
+      ];
+
+      await updateProductByID(category, subCategory, product.docID, {
+        likesCount: updatedLikesCount,
+        likedList: updatedLikedList,
+      });
+      //! agregar el favorito a la lista de favoritos del usuario y al historial de sus acciones
+      await addLikeProductToUser(
+        session?.user?.id,
+        product.docID,
+        product.docData.nombre,
+        category,
+        subCategory,
+        product.docData.imagen[0] || ""
+      );
+    } catch (error) {
+      console.error("Error al actualizar los likes del producto:", error);
+
+      // Revertir los cambios en caso de error
+      setIsLiked(false);
+      setLikesCount(likesCount);
+
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error. Por favor, intenta de nuevo.",
+        showConfirmButton: true,
+      });
+    }
   };
 
   return (
     <div className="container w-72  flex justify-center h-fit">
-      <div className="bg-white  shadow-lg  rounded transform hover:scale-105 duration-300 ease-in-out">
+      <div className="bg-white  shadow-lg  rounded transform hover:drop-shadow-xl hover:shadow-emerald-200  duration-500 ease-in-out">
         {/*Imágenes del producto y LIKE */}
         <div className="relative">
           {/* <span className="absolute top-0 left-0 bg-yellow-500 text-white text-xs font-semibold py-1 px-2 rounded-br">
             New
           </span> */}
 
-          <FaRegHeart
-            className="absolute top-0 right-0 m-2 cursor-pointer text-gray-500"
-            size={25}
-          />
+          {likesCount > 0 && (
+            <div className="absolute top-0 left-0 text-sm font-semibold m-2 flex flex-row items-center h-8 gap-1">
+              <span className="text-slate-500">{likesCount}</span>
+              <FaHeart className="text-red-500" />
+            </div>
+          )}
+          <div className="absolute top-0 right-0 m-2 flex flex-row items-center h-8">
+            {isLiked ? (
+              <FaHeart
+                className="cursor-pointer text-red-500"
+                size={25}
+                onClick={handleLikeProduct}
+              />
+            ) : (
+              <FaRegHeart
+                className="cursor-pointer text-gray-500"
+                size={25}
+                onClick={handleLikeProduct}
+              />
+            )}
+          </div>
 
           {product && product?.docData.imagen.length > 0 && (
             <Image
