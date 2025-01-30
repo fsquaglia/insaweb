@@ -4,7 +4,13 @@ import CardProduct from "@/components/cards/CardProduct";
 import { getConfig } from "@/utils/local_session_storage.js/local_session_storage";
 import LoadingDiv from "@/ui/LoadingDiv";
 import MessageComponent from "@/ui/MessageComponent";
-
+import { useSession } from "next-auth/react";
+import {
+  likeProductToUser,
+  getUserByEmail,
+  addEventToHistory,
+} from "@/utils/firebase/fetchFirebase";
+import Swal from "sweetalert2";
 const defaultProductsByPage = 2;
 
 function Products({ category, subCategory }) {
@@ -14,6 +20,8 @@ function Products({ category, subCategory }) {
   const [lastVisible, setLastVisible] = useState(null);
   const [totalProducts, setTotalProducts] = useState(0);
   const [updateTotalPages, setUpdateTotalPages] = useState(false);
+  const [myListIdProducts, setMyListIdProducts] = useState([]);
+  const { data: session, status } = useSession();
 
   const fetchProducts = async (startAfter = null, reset = false) => {
     try {
@@ -66,14 +74,124 @@ function Products({ category, subCategory }) {
       setLoading(false);
     }
   };
+  const fetchLikesUser = async () => {
+    try {
+      if (!session) {
+        setMyListIdProducts([]); // No hay sesión, limpiar la lista
+        return;
+      }
+      const data = await getUserByEmail(session.user.email);
+      if (data.length > 0) {
+        const foundUser = data[0];
+        setMyListIdProducts(foundUser.likesIDproductos || []);
+      } else {
+        setMyListIdProducts([]);
+      }
+    } catch (error) {
+      console.error("Error al obtener los likes del usuario:", error);
+      setMyListIdProducts([]); // Limpiar lista en caso de error
+    }
+  };
 
   useEffect(() => {
     setProducts([]); // Limpiar productos cuando cambia la categoría o subcategoría
     fetchProducts(null, true);
+    fetchLikesUser(); // Siempre intenta obtener likes del usuario
   }, [category, subCategory]);
 
+  // Manejar la carga de más productos
   const handleLoadMore = () => {
     fetchProducts(lastVisible);
+  };
+
+  // Manejar el like de un producto
+  const toggleLike = async (idProduct, nameProduct, imageProduct) => {
+    if (!session && status === "unauthenticated") {
+      Swal.fire({
+        position: "center",
+        icon: "question",
+        title: "Inicia sesión para interactuar con nosotros",
+        showConfirmButton: true,
+        timer: 3000,
+      });
+      return;
+    }
+
+    //sumar o restar un like al producto en mi lista en el estado local
+    setMyListIdProducts(
+      (prev) =>
+        prev.includes(idProduct)
+          ? prev.filter((id) => id !== idProduct) // Eliminar del array
+          : [...prev, idProduct] // Agregar al array
+    );
+
+    //verificar si estoy agregando o eliminando un like
+    const action = myListIdProducts.includes(idProduct) ? "remove" : "add";
+
+    if (action === "add") {
+      //sumar un like al producto en el estado local
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.docID === idProduct
+            ? {
+                ...product,
+                docData: {
+                  ...product.docData,
+                  likesCount: (product.docData.likesCount || 0) + 1,
+                },
+              }
+            : product
+        )
+      );
+    } else {
+      //eliminar el like del producto en el estado local
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.docID === idProduct
+            ? {
+                ...product,
+                docData: {
+                  ...product.docData,
+                  likesCount: Math.max(
+                    (product.docData.likesCount || 0) - 1,
+                    0
+                  ),
+                },
+              }
+            : product
+        )
+      );
+    }
+
+    try {
+      await likeProductToUser(
+        action,
+        session.user?.id,
+        idProduct,
+        nameProduct,
+        category,
+        subCategory,
+        imageProduct
+      );
+      await addEventToHistory(
+        session.user?.id,
+        `${session.user?.name || "Anónimo"} - (${session.user?.email})`,
+        "like",
+        action === "add"
+          ? `Le gusta el producto ${nameProduct}`
+          : `Ya no le gusta el producto ${nameProduct}`,
+        idProduct
+      );
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error al agregar/quitar like",
+        showConfirmButton: true,
+        timer: 3000,
+      });
+      console.error("Error al agregar/quitar like: ", error);
+    }
   };
 
   if (loading) {
@@ -100,6 +218,9 @@ function Products({ category, subCategory }) {
             product={product}
             category={category}
             subCategory={subCategory}
+            isLiked={myListIdProducts.includes(product.docID)}
+            onToggleLike={toggleLike}
+            likesCount={product?.docData?.likesCount || 0}
           />
         ))}
       </div>

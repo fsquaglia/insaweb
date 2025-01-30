@@ -12,6 +12,8 @@ import {
   addNewProductFirestore,
   setNodoRealtime,
   createDocConfig,
+  createDocHistory,
+  actualizarUsuarios,
 } from "../../utils/firebase/fetchFirebase";
 import {
   aboutInitialData,
@@ -179,6 +181,21 @@ export default function Page() {
         <ButtonGeneric
           textButton={"Configuraciones"}
           onClick={() => createDocConfig()}
+          fill={false}
+        />
+      </div>
+      <div>
+        <ButtonGeneric
+          textButton={"Crear doc Historial"}
+          onClick={() => createDocHistory()}
+          fill={false}
+        />
+      </div>
+
+      <div>
+        <ButtonGeneric
+          textButton={"Actualizar Usuarios"}
+          onClick={() => actualizarUsuarios()}
           fill={false}
         />
       </div>

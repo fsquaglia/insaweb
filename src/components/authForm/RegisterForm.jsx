@@ -51,8 +51,6 @@ function RegisterForm() {
         email,
         password, // Usamos la contraseña sin hash para el login
       });
-      console.log("logueando...");
-      console.log(res);
 
       if (res.error) {
         setError(res.error);

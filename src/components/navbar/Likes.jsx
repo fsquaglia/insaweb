@@ -2,6 +2,7 @@
 import {
   getDocumentById,
   updateDocInCollection,
+  addEventToHistory,
 } from "@/utils/firebase/fetchFirebase";
 import { Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -82,7 +83,7 @@ function Likes({ session, status }) {
       Swal.fire({
         position: "center",
         icon: "question",
-        title: "Loguéate para interactuar con nosotros",
+        title: "Inicia sesión para interactuar con nosotros",
         showConfirmButton: true,
         timer: 3000,
       });
@@ -113,6 +114,15 @@ function Likes({ session, status }) {
       await updateDocInCollection("contactos", session?.user?.id, {
         meGustaCommerce: true,
       });
+
+      //actualizar eventos del historial
+      await addEventToHistory(
+        session?.user?.id,
+        `${session?.user?.name || "Anónimo"} - (${session?.user?.email})`,
+        "like",
+        `Le gusta el comercio`,
+        session?.user?.id
+      );
 
       setLikesCommerce(response);
       setIsLiked(true);

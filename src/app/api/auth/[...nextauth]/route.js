@@ -57,6 +57,7 @@ const handler = NextAuth({
               role: user.rol,
               image: user.imagen,
               email: user.email,
+              likesIDproductos: user.likesIDproductos || [],
             };
           }
 
@@ -100,6 +101,7 @@ const handler = NextAuth({
           token.email = foundUser.email;
           token.image = foundUser.imagen;
           token.name = foundUser.nombreContacto;
+          token.likesIDproductos = foundUser.likesIDproductos || [];
         } else {
           // Si no existe, crear un nuevo usuario en Firestore y asignar un rol por defecto
           const nameProfile = profile.name || profile.email.split("@")[0];
@@ -120,6 +122,7 @@ const handler = NextAuth({
             token.email = profile.email;
             token.image = imageProfile;
             token.name = nameProfile;
+            token.likesIDproductos = [];
           } catch (error) {
             console.error("Error creando usuario: ", error);
 
@@ -135,6 +138,7 @@ const handler = NextAuth({
           token.email = user.email;
           token.image = user.image;
           token.name = user.name;
+          token.likesIDproductos = user.likesIDproductos || [];
         }
       }
 
@@ -154,6 +158,7 @@ const handler = NextAuth({
         session.user.email = token.email;
         session.user.image = token.image;
         session.user.name = token.name;
+        session.user.likesIDproductos = token.likesIDproductos || [];
       }
 
       return session;

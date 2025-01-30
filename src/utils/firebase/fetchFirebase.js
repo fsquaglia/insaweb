@@ -22,6 +22,8 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  increment,
+  writeBatch,
 } from "firebase/firestore";
 
 import {
@@ -29,7 +31,6 @@ import {
   set,
   get as realtimeGet,
   child,
-  update,
 } from "firebase/database";
 
 import {
@@ -58,7 +59,8 @@ import {
 
 //!FIRESTORE
 //Agregar un LikeProduct a los likes de productos del usuario
-export async function addLikeProductToUser(
+export async function likeProductToUser(
+  action = "add",
   userID,
   productID,
   nameProduct,
@@ -71,30 +73,139 @@ export async function addLikeProductToUser(
       "Todos los argumentos (userID, productID, nameProduct, category, subcategory) son requeridos"
     );
   }
-  const docRef = doc(
-    firestoreDB,
-    `contactos/${userID}/LikesProduct/documentoDeLikes`
-  );
-  const newLike = {
-    productID: productID,
-    name: nameProduct,
-    category: category,
-    subcategory: subcategory,
-    image: image || "",
-  };
+
+  const isAddAction = action === "add";
+  const arrayOperation = isAddAction ? arrayUnion : arrayRemove;
+  const likeIncrement = isAddAction ? 1 : -1;
+
   try {
-    // Crear el documento si no existe
-    await setDoc(docRef, { likes: [] }, { merge: true });
-    // Agregar el like al usuario
-    await updateDoc(docRef, {
-      likes: arrayUnion(newLike),
+    // Referencias a los documentos
+    const docRefLikesIdProductUser = doc(firestoreDB, `contactos/${userID}`);
+    const docRefLikeProductUser = doc(
+      firestoreDB,
+      `contactos/${userID}/LikesProduct/documentoDeLikes`
+    );
+    const docRefProduct = doc(firestoreDB, "items", productID);
+
+    // Detalle del nuevo like
+    const newLike = {
+      productID,
+      name: nameProduct,
+      category,
+      subcategory,
+      image: image || "",
+    };
+
+    // Actualizar lista de likes por ID
+    await updateDoc(docRefLikesIdProductUser, {
+      likesIDproductos: arrayOperation(productID),
     });
-    console.log("Like agregado con éxito.");
+
+    // Actualizar lista de productos con detalles mínimos
+    await updateDoc(docRefLikeProductUser, {
+      likes: arrayOperation(newLike),
+    });
+
+    // Actualizar contador de likes del producto
+    await updateDoc(docRefProduct, {
+      likesCount: increment(likeIncrement),
+    });
+
+    console.log(
+      isAddAction ? "Like agregado con éxito." : "Like quitado con éxito."
+    );
   } catch (error) {
-    console.error("Error al agregar el like al usuario: ", error);
+    console.error("Error al procesar el like del usuario: ", error);
     throw error;
   }
 }
+
+//agregar un evento al historial general de la tienda
+
+// Función para obtener la fecha en la zona horaria del usuario
+const getFechaLocal = () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Ajusta a la zona horaria local
+  return now.toISOString().split("T")[0]; // "2025-01-28"
+};
+
+// Función para obtener la hora en la zona horaria del usuario
+const getHoraLocal = () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Ajusta a la zona horaria local
+  return now.toISOString(); // "2025-01-28T15:30:00.123Z"
+};
+
+export const addEventToHistory = async (
+  usuarioID,
+  nameEmail,
+  tipo,
+  detalles,
+  refID
+) => {
+  const fechaHoy = getFechaLocal(); // Fecha local del usuario
+  const horaLocal = getHoraLocal(); // Hora local del usuario
+
+  const accion = {
+    nameEmail,
+    tipo,
+    fecha: horaLocal,
+    detalles,
+    refID,
+  };
+
+  try {
+    const docRef = doc(firestoreDB, "historial", fechaHoy);
+    // Usamos setDoc con merge: true para agregar el campo si no existe o actualizarlo si ya está.
+    await setDoc(
+      docRef,
+      {
+        [usuarioID]: arrayUnion(accion),
+      },
+      { merge: true } // Garantiza que no se sobrescriba el documento existente.
+    );
+  } catch (error) {
+    console.error("Error al registrar la acción:", error);
+  }
+};
+
+//?crear un batch de escritura para actualizar varios documentos en Firestore, en este caso para actualizar campos nuevos en los contactos ya dados de alta en la BDD FIrestore
+export const actualizarUsuarios = async () => {
+  try {
+    // Obtener todos los documentos de la colección "contactos"
+    const contactosSnapshot = await getDocs(
+      collection(firestoreDB, "contactos")
+    );
+
+    if (contactosSnapshot.empty) {
+      console.log("No se encontraron usuarios en la colección 'contactos'.");
+      return;
+    }
+
+    // Crear un batch para realizar las operaciones
+    const batch = writeBatch(firestoreDB);
+
+    contactosSnapshot.forEach((docSnapshot) => {
+      const userRef = doc(firestoreDB, "contactos", docSnapshot.id);
+
+      // Agregar el campo "usuarioVerificado"
+      batch.update(userRef, { usuarioVerificado: false });
+
+      // Crear la subcolección "historialAcciones/documentoDeAcciones"
+      const historialRef = doc(
+        firestoreDB,
+        `contactos/${docSnapshot.id}/historialAcciones/documentoDeAcciones`
+      );
+      batch.set(historialRef, { historialUsuario: [] });
+    });
+
+    // Confirmar el batch
+    await batch.commit();
+    console.log("Usuarios actualizados con éxito.");
+  } catch (error) {
+    console.error("Error al actualizar los usuarios:", error);
+  }
+};
 
 //crear documento de Configuraciones
 export async function createDocConfig() {
@@ -115,6 +226,24 @@ export async function createDocConfig() {
   }
 }
 
+//crear documento de historial de acciones
+export async function createDocHistory() {
+  try {
+    const docRef = doc(firestoreDB, "historial", "historial");
+    await setDoc(docRef, { acciones: [] });
+    // console.log("Documento de historial creado correctamente.");
+    Swal.fire({
+      icon: "success",
+      title: "Documento de historial creado correctamente.",
+      showConfirmButton: false,
+      position: "center",
+      timer: 2000,
+    });
+  } catch (error) {
+    console.error("Error al crear el documento de historial: ", error);
+    throw error;
+  }
+}
 //obtener todos los usuarios
 export async function getAllUsers(onlyBalances = false) {
   try {
@@ -701,7 +830,7 @@ export async function setTipsFirestore() {
 }
 
 //?ESCRIBIR DATOS EN FIRESTORE
-//Agregar un nuevo CONTACTO/CLIENTE
+//Agregar un nuevo CONTACTO/CLIENTE/USUARIO
 export async function addNewContactFirestore(dataObject) {
   /*dataObject debe ser
   {nombreContacto:"Nombre Apellido",
@@ -712,7 +841,7 @@ export async function addNewContactFirestore(dataObject) {
   email:"",
   password:"",
   celTE:"",
-  saldo: 0,
+  saldo: 0,...
   }
   */
   try {
@@ -721,7 +850,21 @@ export async function addNewContactFirestore(dataObject) {
       collection(firestoreDB, "contactos"),
       dataObject
     );
-    // console.log("Contacto agregado: ", docRef.id);
+    //Agregar también la colección de likes inicializada en [], de aquí podremos mostrar los productos que le gustan al usuario
+    await setDoc(
+      doc(firestoreDB, `contactos/${docRef.id}/LikesProduct/documentoDeLikes`),
+      { likesProductos: [], misLikesCount: 0, likes: [] }
+    );
+
+    //agregar evento de registro en el historial
+    await addEventToHistory(
+      docRef.id,
+      `${dataObject.nombreContacto || "Anónimo"} - (${dataObject.email})`,
+      "Registro",
+      "Se registró en la página",
+      docRef.id
+    );
+    console.log("Contacto agregado: ", docRef.id);
     return docRef.id;
   } catch (error) {
     console.error("Error al agregar contacto: ", error);
