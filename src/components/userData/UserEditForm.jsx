@@ -14,6 +14,7 @@ import { imgSizing } from "@/utils/SettingSizing";
 import validateImage from "@/utils/ImageValidator";
 import Image from "next/image";
 import MessageComponent from "@/ui/MessageComponent";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 // Convertir la fecha de Timestamp al formato deseado
 const formatDate = (date) => {
@@ -122,6 +123,8 @@ function UserEditForm({ userData }) {
         fechaNacimiento: date,
       });
 
+      revalidateSomePath("/dashboard/userManagement");
+
       Swal.fire({
         icon: "success",
         title: "Bien!",
@@ -204,11 +207,11 @@ function UserEditForm({ userData }) {
             alt="Profile background"
             width={1000}
             height={250}
-            style={{ width: "auto", height: "100%" }}
             className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover"
-            priority={true}
+            priority
           />
         </div>
+
         {/*sección datos Imagen, nombre... */}
         <div className="flex flex-col items-center -mt-20">
           {user?.imagen && (
@@ -392,8 +395,8 @@ function UserEditForm({ userData }) {
                 </div>
               </li>
               {session?.user?.role === "admin" && (
-                <li className="flex border-b py-2">
-                  <div className="flex flex-row gap-2 items-end">
+                <li className="flex flex-col gap-2 border-b py-2">
+                  <div className="flex flex-col sm:flex-row gap-2 items-end">
                     <span className="font-light w-40">Rol del usuario:</span>
                     <div className="ms-4 w-48">
                       <SwitchText
@@ -403,6 +406,17 @@ function UserEditForm({ userData }) {
                         onClick={onSwitchChange}
                       />
                     </div>
+                  </div>
+                  <div className="flex flex-row flex-wrap gap-2 items-end">
+                    <span className="font-light w-40">Info privada:</span>
+                    <InputCustom
+                      labelText=""
+                      name={"privateInfo"}
+                      inputValue={user?.privateInfo || ""}
+                      charLimit={30}
+                      placeHolder={"Info Privada"}
+                      onChange={onChangeValue}
+                    />
                   </div>
                 </li>
               )}

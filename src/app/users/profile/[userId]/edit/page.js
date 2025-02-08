@@ -14,7 +14,6 @@ export default function PageUserEdit({ params }) {
   const fetchUser = async () => {
     try {
       const response = await fetch(`/api/users/userById/${params.userId}`, {
-        cache: "no-store",
         next: { revalidate: 0 },
       });
       if (!response.ok) throw new Error("Failed to fetch user");

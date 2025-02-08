@@ -1,11 +1,13 @@
 import { getDocumentById } from "@/utils/firebase/fetchFirebase";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req, { params }) {
   const userId = params.slug;
-
   try {
     // Obtener el encabezado personalizado
     const noCache = req.headers.get("x-no-cache") === "true";
+    const fullData = req.headers.get("x-full-data") === "true"; // Nuevo header para controlar la visibilidad
 
     // Obtener el documento del usuario desde Firebase
     const user = await getDocumentById("contactos", userId);
@@ -18,14 +20,17 @@ export async function GET(req, { params }) {
       );
     }
 
-    // Excluir propiedades sensibles
-    const { password, rol, ...safeUser } = user;
+    // Determinar qué datos devolver
+    const safeUser = fullData
+      ? user
+      : (({ password, rol, ...rest }) => rest)(user);
 
     // Configura encabezados dinámicos
     const headers = new Headers();
+    headers.set("Content-Type", "application/json");
+
     if (noCache) {
       headers.set("Cache-Control", "no-store, max-age=0, must-revalidate");
-      headers.set("Content-Type", "application/json");
     } else {
       headers.set(
         "Cache-Control",

@@ -7,9 +7,15 @@ async function page({ params }) {
   let user = null;
   try {
     const response = await fetch(`${apiUrl}/api/users/userById/${userID}`, {
+      method: "GET",
+      headers: {
+        "x-full-data": "true",
+        "x-no-cache": "true",
+        "Content-Type": "application/json",
+      },
       cache: "no-store",
-      next: { revalidate: 0 },
     });
+
     if (!response.ok) throw new Error("Failed to fetch user");
     user = await response.json();
   } catch (error) {
