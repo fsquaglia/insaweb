@@ -283,12 +283,12 @@ export async function getAllUsers(onlyBalances = false) {
         return 0;
       });
     } else {
-      // Ordena los usuarios por rol y luego por email
+      // Ordena los usuarios por rol y luego por nombre
       users.sort((a, b) => {
         if (a.rol < b.rol) return -1;
         if (a.rol > b.rol) return 1;
-        if (a.email < b.email) return -1;
-        if (a.email > b.email) return 1;
+        if (a.nombreContacto < b.nombreContacto) return -1;
+        if (a.nombreContacto > b.nombreContacto) return 1;
         return 0;
       });
     }

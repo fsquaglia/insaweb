@@ -12,7 +12,6 @@ export async function GET() {
         { status: 404 }
       );
     }
-
     return new Response(JSON.stringify(users), {
       status: 200,
     });
