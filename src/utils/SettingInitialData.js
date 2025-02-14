@@ -287,7 +287,8 @@ export const newUserDataInitial = (
   email,
   passwordHash,
   rolUser,
-  image
+  image,
+  usuarioVerificado = false
 ) => {
   return {
     nombreContacto: nombreContacto,
@@ -308,7 +309,7 @@ export const newUserDataInitial = (
     fechaVenceSaldo: Timestamp.fromDate(new Date("1900-01-01")),
     fechaNacimiento: null,
     likesIDproductos: [],
-    usuarioVerificado: false,
+    usuarioVerificado: usuarioVerificado,
   };
 };
 

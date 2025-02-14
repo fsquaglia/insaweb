@@ -5,7 +5,11 @@ import SwitchText from "@/ui/SwitchText";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
-import { updateDocInCollection } from "@/utils/firebase/fetchFirebase";
+import {
+  addEmailPromotional,
+  addEventToHistory,
+  updateDocInCollection,
+} from "@/utils/firebase/fetchFirebase";
 import { Timestamp } from "firebase/firestore";
 import LoadingDiv from "@/ui/LoadingDiv";
 import { BsQuestionCircleFill, BsFillCheckCircleFill } from "react-icons/bs";
@@ -87,6 +91,15 @@ function UserEditForm({ userData }) {
       });
       return;
     }
+    //Nombre debe tener más de 3 caracteres
+    if (user.nombreContacto.length < 3) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "El nombre debe tener al menos 3 caracteres.",
+      });
+      return;
+    }
 
     //comprobar formato celular
     if (!/^\d{12}$/.test(user.celTE)) {
@@ -122,6 +135,17 @@ function UserEditForm({ userData }) {
         ...user,
         fechaNacimiento: date,
       });
+
+      //actualizar nombre en emailPromocionales
+      await addEmailPromotional(user.email, user.nombreContacto);
+      //agregar evento de actualización al historial
+      await addEventToHistory(
+        user.id,
+        user.email,
+        "Actualización",
+        "Actualizó sus datos",
+        user.id
+      );
 
       revalidateSomePath("/dashboard/userManagement");
 
@@ -241,13 +265,19 @@ function UserEditForm({ userData }) {
             </div>
           )}
           <div className="flex items-center space-x-2 mt-2">
-            <p className="text-2xl">
-              {user?.nombreContacto || "Nombre y Apellido"}
-            </p>
-            {user?.nombreContacto.length < 3 ? (
-              <BsQuestionCircleFill size={20} className="text-blue-400" />
+            <p className="text-2xl">{user?.nombreContacto || "Anónimo"}</p>
+            {user?.nombreContacto.length < 3 || !user?.usuarioVerificado ? (
+              <BsQuestionCircleFill
+                size={20}
+                className="text-blue-400"
+                title="Quizás debas verificar tu email"
+              />
             ) : (
-              <BsFillCheckCircleFill size={20} className="text-green-600" />
+              <BsFillCheckCircleFill
+                size={20}
+                className="text-green-600"
+                title="Usuario verificado"
+              />
             )}
           </div>
           {/* <p className="text-gray-700">

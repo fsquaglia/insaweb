@@ -57,8 +57,29 @@ import {
   variationsInitialData1,
 } from "../SettingInitialData";
 
+import { revalidateSomePath } from "../actions/actions";
+
 //!FIRESTORE
-//Agregar un LikeProduct a los likes de productos del usuario
+
+// Agregar un nuevo usuario al listado de emailsPromocionales
+export async function addEmailPromotional(email, nombre) {
+  try {
+    const docRef = doc(firestoreDB, "emailsPromocionales", "emailsActive");
+
+    // Construimos el objeto de actualización manualmente
+    const updateData = {};
+    updateData["users"] = {};
+    updateData["users"][email] = nombre;
+
+    await setDoc(docRef, updateData, { merge: true });
+    console.log("Email agregado con éxito.");
+  } catch (error) {
+    console.error("Error al agregar el email: ", error);
+    throw error;
+  }
+}
+
+// Agregar un LikeProduct a los likes de productos del usuario
 export async function likeProductToUser(
   action = "add",
   userID,
@@ -120,15 +141,13 @@ export async function likeProductToUser(
   }
 }
 
-//agregar un evento al historial general de la tienda
-
+// Agregar un evento al historial general de la tienda
 // Función para obtener la fecha en la zona horaria del usuario
 const getFechaLocal = () => {
   const now = new Date();
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Ajusta a la zona horaria local
   return now.toISOString().split("T")[0]; // "2025-01-28"
 };
-
 // Función para obtener la hora en la zona horaria del usuario
 const getHoraLocal = () => {
   const now = new Date();
@@ -855,8 +874,7 @@ export async function addNewContactFirestore(dataObject) {
       doc(firestoreDB, `contactos/${docRef.id}/LikesProduct/documentoDeLikes`),
       { likesProductos: [], misLikesCount: 0, likes: [] }
     );
-
-    //agregar evento de registro en el historial
+    //Agregar evento de registro en el historial
     await addEventToHistory(
       docRef.id,
       `${dataObject.nombreContacto || "Anónimo"} - (${dataObject.email})`,
@@ -864,6 +882,12 @@ export async function addNewContactFirestore(dataObject) {
       "Se registró en la página",
       docRef.id
     );
+    //Agregar el nuevo email a la lista de emailsPromocionales
+    await addEmailPromotional(dataObject.email, dataObject.nombreContacto);
+
+    //revalidar la ruta de userManagement para que se revaliden los cambios
+    revalidateSomePath("/dashboard/userManagement");
+
     console.log("Contacto agregado: ", docRef.id);
     return docRef.id;
   } catch (error) {

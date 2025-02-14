@@ -18,15 +18,43 @@ function RegisterForm() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  // Fn validación de passwords
+  const validatePassword = (password, confirmPassword) => {
+    if (!password.trim() || !confirmPassword.trim()) {
+      setError("Las contraseñas no pueden estar vacías");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return false;
+    }
+    return true;
+  };
+
+  // Fn validación de nombre de usuario
+  const validateName = (name) => {
+    if (!name.trim()) {
+      setError("El nombre de usuario no puede estar vacío");
+      return false;
+    }
+    if (name.length < 3) {
+      setError("El nombre de usuario debe tener al menos 3 caracteres");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); // Limpiar errores anteriores
 
-    // Verificar si las contraseñas coinciden
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
+    // Validaciones, si hay un error la Fn retorna false
+    if (!validateName(name)) return;
+    if (!validatePassword(password, confirmPassword)) return;
 
     try {
       // Verificar si el email ya está registrado
@@ -40,10 +68,16 @@ function RegisterForm() {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear nuevo usuario en Firestore
+      const newUser = newUserDataInitial(
+        name,
+        email,
+        hashedPassword,
+        "user",
+        "",
+        false
+      );
 
-      const newUser = newUserDataInitial(name, email, hashedPassword, "user");
-
-      const userAdd = await addNewContactFirestore(newUser);
+      await addNewContactFirestore(newUser);
 
       // Intentar loguear al usuario automáticamente después del registro
       const res = await signIn("credentials", {
@@ -152,11 +186,11 @@ function RegisterForm() {
                 value={confirmPassword}
                 className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-grey-700 text-dark-gray-900 rounded-2xl border hover:bg-gray-100"
               />
-              <div className="flex flex-row flex-wrap justify-end mb-8 text-sm font-medium text-purple-blue-500 gap-1">
+              <div className="flex flex-row flex-wrap justify-end mb-4 text-sm font-medium text-purple-blue-500 gap-1">
                 <span>¿Ya estás registrado? </span>
                 <Link href={"/auth/login"}>Inicia sesión</Link>
               </div>
-              {error && <p className="text-red-500">{error}</p>}
+              {error && <p className="text-red-500 my-2 text-sm">{error}</p>}
               <button
                 className="border w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 bg-blue-500"
                 type="submit"

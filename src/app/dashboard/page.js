@@ -23,8 +23,6 @@ import {
   teamInitialData,
   footerInitialData,
   contactInitialData,
-  dataContactInitial,
-  dataProductInitial,
   variationsInitialData1,
 } from "@/utils/SettingInitialData";
 import Swal from "sweetalert2";

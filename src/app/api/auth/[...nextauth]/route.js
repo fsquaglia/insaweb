@@ -111,7 +111,8 @@ const handler = NextAuth({
             profile.email,
             "",
             "user",
-            imageProfile
+            imageProfile,
+            true
           );
           try {
             //función para agregar nuevo usuario

@@ -10,8 +10,6 @@ export async function authenticate(formData) {
   });
 
   if (result.error) {
-    console.log("aca 2");
-
     // Maneja los posibles errores que devuelve NextAuth
     return result.error === "CredentialsSignin"
       ? "Credenciales incorrectas."
