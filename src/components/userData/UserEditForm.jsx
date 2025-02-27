@@ -221,7 +221,7 @@ function UserEditForm({ userData }) {
   };
 
   return (
-    <div className="container h-full bg-gray-200 p-2 md:p-8">
+    <div className="container h-full w-full bg-gray-200 p-2 md:p-8">
       {/*SECCION PRINCIPAL DE IMAGEN Y NOMBRE*/}
       <div className="bg-white rounded-lg shadow-xl pb-8">
         {/*imagen de fondo */}
@@ -270,7 +270,7 @@ function UserEditForm({ userData }) {
               <BsQuestionCircleFill
                 size={20}
                 className="text-blue-400"
-                title="Quizás debas verificar tu email"
+                title="Quizás debas validar tu email"
               />
             ) : (
               <BsFillCheckCircleFill

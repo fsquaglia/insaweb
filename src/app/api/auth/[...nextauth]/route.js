@@ -51,14 +51,18 @@ const handler = NextAuth({
             }
 
             // Retorna los datos que deseas incluir en el token JWT
-            return {
+            const userReturn = {
               id: user.id,
               name: user.nombreContacto,
               role: user.rol,
               image: user.imagen,
               email: user.email,
-              likesIDproductos: user.likesIDproductos || [],
+              verifiedUser: user.usuarioVerificado || false,
+              hasPhone: user.celTE?.trim() !== "",
+              hasBalance: user.saldo > 0,
             };
+
+            return userReturn;
           }
 
           //si no hay usuario devuelve null
@@ -101,7 +105,9 @@ const handler = NextAuth({
           token.email = foundUser.email;
           token.image = foundUser.imagen;
           token.name = foundUser.nombreContacto;
-          token.likesIDproductos = foundUser.likesIDproductos || [];
+          token.verifiedUser = foundUser.usuarioVerificado || false;
+          token.hasPhone = foundUser.celTE?.trim() !== "";
+          token.hasBalance = foundUser.saldo > 0;
         } else {
           // Si no existe, crear un nuevo usuario en Firestore y asignar un rol por defecto
           const nameProfile = profile.name || profile.email.split("@")[0];
@@ -123,7 +129,9 @@ const handler = NextAuth({
             token.email = profile.email;
             token.image = imageProfile;
             token.name = nameProfile;
-            token.likesIDproductos = [];
+            token.verifiedUser = true;
+            token.hasPhone = false;
+            token.hasBalance = false;
           } catch (error) {
             console.error("Error creando usuario: ", error);
 
@@ -139,7 +147,9 @@ const handler = NextAuth({
           token.email = user.email;
           token.image = user.image;
           token.name = user.name;
-          token.likesIDproductos = user.likesIDproductos || [];
+          token.verifiedUser = user.verifiedUser || false;
+          token.hasPhone = user.hasPhone;
+          token.hasBalance = user.hasBalance;
         }
       }
 
@@ -153,13 +163,14 @@ const handler = NextAuth({
           // Si session.user no está definido, lo inicializamos
           session.user = {};
         }
-
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.email = token.email;
         session.user.image = token.image;
         session.user.name = token.name;
-        session.user.likesIDproductos = token.likesIDproductos || [];
+        session.user.verifiedUser = token.verifiedUser || false;
+        session.user.hasPhone = token.hasPhone || false;
+        session.user.hasBalance = token.hasBalance || false;
       }
 
       return session;

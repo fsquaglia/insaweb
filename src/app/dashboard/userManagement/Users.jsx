@@ -3,7 +3,7 @@ import MessageComponent from "@/ui/MessageComponent";
 import UserCard from "./UserCard";
 import { useState, useCallback } from "react";
 import { IoIosSearch } from "react-icons/io";
-import { debounce, set } from "lodash";
+import { debounce } from "lodash";
 
 export default function Users({ allUsers }) {
   const [users, setUsers] = useState(allUsers); // Usuarios visibles en la UI

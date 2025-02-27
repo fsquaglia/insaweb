@@ -16,6 +16,7 @@ export default function Layout({ children }) {
           {/*Search bar */}
           {false && <SidebarUserSearchbar />}
 
+          {/*Menú */}
           <div
             id="menu"
             className="flex flex-row justify-center md:flex-col md:space-y-2 "

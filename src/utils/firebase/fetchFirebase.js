@@ -24,6 +24,7 @@ import {
   arrayRemove,
   increment,
   writeBatch,
+  Timestamp,
 } from "firebase/firestore";
 
 import {
@@ -644,6 +645,7 @@ export const setIndexProduct = async (nameIndex, code, productData) => {
   }
 };
 
+// actualizar información de un documento en una colección
 export async function updateDocInCollection(nameCollection, nameDoc, newData) {
   try {
     const docRef = doc(firestoreDB, nameCollection, nameDoc);

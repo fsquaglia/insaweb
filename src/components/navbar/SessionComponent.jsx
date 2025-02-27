@@ -4,33 +4,45 @@ import Link from "next/link";
 import { GiPowerButton } from "react-icons/gi";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { onClickSignOut } from "@/utils/OnSignOutEvent";
 import LoadingThree from "@/ui/LoadingThree";
-import { HiUser } from "react-icons/hi2";
-import { useState } from "react";
-
-function UserImage({ image, name }) {
-  return image ? (
-    <Image
-      src={image}
-      alt={`Avatar ${name || "usuario"}`}
-      width={36}
-      height={36}
-      className="size-9 rounded-full"
-      title={name || "usuario"}
-    />
-  ) : (
-    <div className="bg-gray-100 flex items-center justify-center">
-      <HiUser className="text-gray-500 text-3xl" />
-    </div>
-  );
-}
+import { useEffect, useState } from "react";
+import { MdNotificationsActive } from "react-icons/md";
+import DivCircle from "./DivCircle";
+import UserImage from "./UserImage";
 
 function SessionComponent({ session, status }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [showNotification, setShowNotification] = useState(
+    session?.user?.hasBalance ||
+      !session?.user?.hasPhone ||
+      !session?.user?.verifiedUser
+  );
   const [showUser, setShowUser] = useState(false);
+
+  const isDashboard =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/users");
+  const isNotifications =
+    pathname.startsWith("/users/notifications") ||
+    pathname.startsWith("/dashboard/notifications");
+
+  useEffect(() => {
+    setShowNotification(
+      session?.user?.hasBalance ||
+        !session?.user?.hasPhone ||
+        !session?.user?.verifiedUser
+    );
+  }, [session]);
+
+  const handleClickNotifications = () => {
+    if (session?.user?.role === "user") {
+      router.push("/users/notifications");
+    } else {
+      alert("falta hacer esto");
+    }
+  };
 
   const onClickPanel = () => {
     if (session?.user?.role === "admin") {
@@ -40,6 +52,12 @@ function SessionComponent({ session, status }) {
     }
   };
 
+  const handleClickEditUser = () => {
+    session?.user?.role === "admin"
+      ? router.push(`/dashboard/profile/${session?.user?.id}/edit`)
+      : router.push(`/users/profile/${session?.user?.id}/edit`);
+  };
+
   if (status === "loading") {
     return (
       <div className="text-sm">
@@ -47,12 +65,6 @@ function SessionComponent({ session, status }) {
       </div>
     );
   }
-
-  const handleClickEditUser = () => {
-    session?.user?.role === "admin"
-      ? router.push(`/dashboard/profile/${session?.user?.id}/edit`)
-      : router.push(`/users/profile/${session?.user?.id}/edit`);
-  };
 
   return (
     <div>
@@ -104,34 +116,47 @@ function SessionComponent({ session, status }) {
             )}
           </div>
           {/*Ícono Dashboard */}
-          <div className="flex items-center justify-center size-9 border rounded-full shrink-0 cursor-pointer hover:border-sky-600 hover:bg-sky-600">
-            <MdOutlineSpaceDashboard
-              title="Ir al Panel"
-              className="size-6 text-gray-300"
-              onClick={() => onClickPanel()}
-              size={32}
-            />
-          </div>
+          {!isDashboard && (
+            <DivCircle className="bg-cyan-600 hover:bg-cyan-500">
+              <MdOutlineSpaceDashboard
+                title="Ir al Panel"
+                className="size-6"
+                onClick={() => onClickPanel()}
+                size={32}
+              />
+            </DivCircle>
+          )}
+          {/*Ícono de notificaciones */}
+          {!isNotifications && showNotification && (
+            <DivCircle className="animate-pulse bg-rose-600 hover:bg-rose-500">
+              <MdNotificationsActive
+                className="size-6"
+                title="Tienes notificaciones"
+                onClick={() => handleClickNotifications()}
+                size={32}
+              />
+            </DivCircle>
+          )}
           {/*Ícono de cerrar sesión */}
-          <div className="flex items-center justify-center size-9 border rounded-full shrink-0 cursor-pointer  hover:border-red-600 hover:bg-red-600">
+          <DivCircle className="bg-red-600 hover:bg-red-500">
             <GiPowerButton
-              title="Logout"
-              className="size-6 text-gray-300"
+              title="Cerrar sesión"
+              className="size-6"
               onClick={() => onClickSignOut()}
               size={32}
             />
-          </div>
+          </DivCircle>
         </div>
       ) : (
-        <div className="flex justify-end">
+        <DivCircle className="hover:border hover:rounded-full">
           <Link href="/auth/login">
             <UserIcon
-              className="size-6 text-gray-300 cursor-pointer"
+              className="size-6 animate-pulse"
               aria-label="Login"
               title="Login"
             />
           </Link>
-        </div>
+        </DivCircle>
       )}
     </div>
   );

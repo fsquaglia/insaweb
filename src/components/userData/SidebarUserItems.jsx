@@ -1,37 +1,32 @@
-import { RxDashboard } from "react-icons/rx";
-import { BsFillBookmarkStarFill } from "react-icons/bs";
-import { TbReportAnalytics } from "react-icons/tb";
-import { CiViewTable } from "react-icons/ci";
-
 export const listItemsUser = [
   {
     name: "dashboard",
-    icon: RxDashboard,
+    icon: "iconDashboard",
     href: "/users",
     label: "Panel",
   },
   {
-    name: "menu2",
-    icon: BsFillBookmarkStarFill,
-    href: "/users",
-    label: "Destacados",
+    name: "notifications",
+    icon: "iconNotifications",
+    href: "/users/notifications",
+    label: "Notificaciones",
   },
   {
     name: "menu3",
-    icon: TbReportAnalytics,
-    href: "/users",
-    label: "Reportes",
+    icon: "iconReport",
+    href: "/users/report",
+    label: "Menu",
   },
   {
     name: "menu4",
-    icon: CiViewTable,
-    href: "/users",
+    icon: "iconTable",
+    href: "/users/table",
     label: "Movimientos",
   },
   {
     name: "menu5",
-    icon: CiViewTable,
-    href: "/users",
+    icon: "iconTableTwo",
+    href: "/users/tableTwo",
     label: "Menu 5",
   },
 ];

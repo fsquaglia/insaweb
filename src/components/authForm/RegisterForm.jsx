@@ -7,14 +7,19 @@ import Link from "next/link";
 import {
   addNewContactFirestore,
   getUserByEmail,
-} from "@/utils/firebase/fetchFirebase"; // Asegúrate de tener estas funciones
+} from "@/utils/firebase/fetchFirebase";
 import { newUserDataInitial } from "@/utils/SettingInitialData";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 
 function RegisterForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -48,46 +53,79 @@ function RegisterForm() {
     return true;
   };
 
+  const validateEmail = (email) => {
+    if (!email.trim()) {
+      setError("El email no puede estar vacío");
+      return false;
+    }
+    // Expresión regular para validar email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Por favor ingresa un email válido");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); // Limpiar errores anteriores
 
     // Validaciones, si hay un error la Fn retorna false
-    if (!validateName(name)) return;
-    if (!validatePassword(password, confirmPassword)) return;
+    if (!validateName(values.name)) return;
+    if (!validateEmail(values.email)) return;
+    if (!validatePassword(values.password, values.confirmPassword)) return;
 
     try {
       // Verificar si el email ya está registrado
-      const existingUser = await getUserByEmail(email);
+      const existingUser = await getUserByEmail(values.email);
       if (existingUser.length > 0) {
         setError("Este email ya está registrado");
         return;
       }
 
       // Hashear la contraseña
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(values.password, 10);
 
       // Crear nuevo usuario en Firestore
       const newUser = newUserDataInitial(
-        name,
-        email,
+        values.name,
+        values.email,
         hashedPassword,
         "user",
         "",
         false
       );
 
-      await addNewContactFirestore(newUser);
+      //! OJO descomentar
+      //await addNewContactFirestore(newUser);
 
+      // enviamos el email de validación
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: values.email }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Correo enviado:", data.message);
+        console.log("Correo enviado:", data.message);
+      } else {
+        setError(data.error);
+      }
+
+      //! OJO eliminar return siguiente
+      return;
       // Intentar loguear al usuario automáticamente después del registro
       const res = await signIn("credentials", {
         redirect: false,
-        email,
-        password, // Usamos la contraseña sin hash para el login
+        email: values.email,
+        password: values.password, // Usamos la contraseña sin hash para el login
       });
 
       if (res.error) {
-        setError(res.error);
+        setError("Error logueando usuario: ", res.error);
       } else {
         // Redirigir al users si el registro y login son exitosos
         router.push("/users");
@@ -96,6 +134,14 @@ function RegisterForm() {
       console.error("Error durante el registro:", error);
       setError("Ocurrió un error durante el registro. Inténtalo más tarde.");
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   return (
@@ -126,66 +172,46 @@ function RegisterForm() {
                 <p className="mx-4 text-grey-600">o con tus credenciales</p>
                 <hr className="h-0 border-b border-solid border-grey-500 grow" />
               </div>
-              <label
-                htmlFor="name"
-                className="mb-2 text-sm text-start text-grey-900"
-              >
-                Nombre y apellido*
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Juan Perez"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-grey-700 text-dark-gray-900 rounded-2xl border hover:bg-gray-100"
+              {/*NOMBRE Y APELLIDO*/}
+              <InputSection
+                label={"Nombre y Apellido"}
+                name={"name"}
+                value={values.name}
+                showEye={false}
+                placeholder={"Juan Perez"}
+                onChange={handleChange}
               />
-              <label
-                htmlFor="email"
-                className="mb-2 text-sm text-start text-grey-900"
-              >
-                Email*
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="mail@loopple.com"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-grey-700 text-dark-gray-900 rounded-2xl border hover:bg-gray-100"
+
+              {/*EMAIL*/}
+              <InputSection
+                label={"Email"}
+                name={"email"}
+                value={values.email}
+                showEye={false}
+                placeholder={"mail@loopple.com"}
+                onChange={handleChange}
               />
-              <label
-                htmlFor="password"
-                className="mb-2 text-sm text-start text-grey-900"
-              >
-                Contraseña*
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Ingresa una contraseña"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-grey-700 text-dark-gray-900 rounded-2xl border hover:bg-gray-100"
+
+              {/*CONTRASEÑA*/}
+              <InputSection
+                label={"Contraseña"}
+                name={"password"}
+                value={values.password}
+                showEye={true}
+                placeholder={"Ingresa una contraseña"}
+                onChange={handleChange}
               />
-              <label
-                htmlFor="password_confirmation"
-                className="mb-2 text-sm text-start text-grey-900"
-              >
-                Repite la contraseña*
-              </label>
-              <input
-                id="password_confirmation"
-                name="password_confirmation"
-                type="password"
-                placeholder="Repite la contraseña"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                value={confirmPassword}
-                className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-grey-700 text-dark-gray-900 rounded-2xl border hover:bg-gray-100"
+
+              {/*Confirmar CONTRASEÑA */}
+              <InputSection
+                label={"Repite la contraseña"}
+                name={"confirmPassword"}
+                value={values.confirmPassword}
+                showEye={true}
+                placeholder={"Repite la contraseña"}
+                onChange={handleChange}
               />
+
               <div className="flex flex-row flex-wrap justify-end mb-4 text-sm font-medium text-purple-blue-500 gap-1">
                 <span>¿Ya estás registrado? </span>
                 <Link href={"/auth/login"}>Inicia sesión</Link>
@@ -206,3 +232,41 @@ function RegisterForm() {
 }
 
 export default RegisterForm;
+
+function InputSection({
+  label,
+  name,
+  value,
+  showEye = false,
+  placeholder,
+  onChange,
+}) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="relative w-full flex flex-col gap-2">
+      <label htmlFor={name} className="ms-2 text-sm text-start text-gray-600">
+        {label} *
+      </label>
+      <input
+        id={name}
+        name={name}
+        type={showEye && !showPassword ? "password" : "text"}
+        placeholder={placeholder}
+        onChange={onChange}
+        value={value}
+        className="flex items-center w-full px-2 py-2 mr-2 text-sm font-medium outline-none focus:bg-gray-200 mb-7 placeholder:text-gray-400 text-dark-gray-900 rounded-xl border hover:bg-gray-100"
+      />
+      {/* Botón para mostrar/ocultar contraseña */}
+      {showEye && (
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-700"
+        >
+          {showPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />}
+        </button>
+      )}
+    </div>
+  );
+}

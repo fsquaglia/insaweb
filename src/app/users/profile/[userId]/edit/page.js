@@ -58,7 +58,7 @@ export default function PageUserEdit({ params }) {
 
   return (
     <div className="flex justify-center items-center w-full">
-      <UserEditForm userData={user} />;
+      <UserEditForm userData={user} />
     </div>
   );
 }
