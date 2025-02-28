@@ -37,42 +37,36 @@ const handler = NextAuth({
           //llamar a fetch de usuario en firestore
           const users = await getUserByEmail(email);
           //getUserByEmail devuelve un array de usuarios encontrados
-          if (users.length > 0) {
-            const user = users[0];
 
-            // Comparar la contraseña ingresada con la almacenada en la base de datos
-            const isValidPassword = await bcrypt.compare(
-              password,
-              user.password
-            );
-
-            if (!isValidPassword) {
-              return null; // Contraseña incorrecta
-            }
-
-            // Retorna los datos que deseas incluir en el token JWT
-            const userReturn = {
-              id: user.id,
-              name: user.nombreContacto,
-              role: user.rol,
-              image: user.imagen,
-              email: user.email,
-              verifiedUser: user.usuarioVerificado || false,
-              hasPhone: user.celTE?.trim() !== "",
-              hasBalance: user.saldo > 0,
-            };
-
-            return userReturn;
+          if (users.length === 0) {
+            throw new Error("El email no está registrado");
           }
 
-          //si no hay usuario devuelve null
-          return null;
+          const user = users[0];
+
+          // Comparar la contraseña ingresada con la almacenada en la base de datos
+          const isValidPassword = await bcrypt.compare(password, user.password);
+
+          if (!isValidPassword) {
+            throw new Error("La contraseña es incorrecta");
+          }
+
+          // Retorna los datos que deseas incluir en el token JWT
+          const userReturn = {
+            id: user.id,
+            name: user.nombreContacto,
+            role: user.rol,
+            image: user.imagen,
+            email: user.email,
+            verifiedUser: user.usuarioVerificado || false,
+            hasPhone: user.celTE?.trim() !== "",
+            hasBalance: user.saldo > 0,
+          };
+
+          return userReturn;
         } catch (error) {
-          console.error(
-            "Error durante la autenticación (Credenciales):",
-            error
-          );
-          return null;
+          console.error("Error en la autenticación:", error.message);
+          throw new Error(error.message); // Enviar mensaje de error a la UI
         }
       },
     }),
