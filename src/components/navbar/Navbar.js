@@ -21,6 +21,7 @@ export default function Navbar({ configurations }) {
     <div className="container h-24 flex items-center justify-between px-4 scroll-smooth">
       <div className="flex flex-row items-center gap-4 w-full">
         <div className="size-12 sm:size-16 shrink-0 relative">
+          {/* Logo del comercio */}
           <Link href="/">
             <Image
               src="/images/logo_blanco01.png"

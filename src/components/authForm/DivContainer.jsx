@@ -1,5 +1,4 @@
 import { signIn } from "next-auth/react";
-import InputSection from "./InputSection";
 import Link from "next/link";
 
 function DivContainer({ children, typeForm, handleSubmit, error }) {
@@ -23,12 +22,19 @@ function DivContainer({ children, typeForm, handleSubmit, error }) {
       break;
     case "forgot":
       title = "Recupera tu contraseña";
-      dataLine = "tus datos";
-      textButton = "Recuperar";
-    case "reset":
+      dataLine = "Ingresa tu email";
+      textButton = "Enviar";
+      break;
+    case "resetPass":
       title = "Restablece tu contraseña";
-      dataLine = "tus datos";
+      dataLine = "Ingresa tu nueva contraseña";
       textButton = "Restablecer";
+      break;
+    case "changePass":
+      title = "Cambia tu contraseña";
+      dataLine = "Ingresa los datos";
+      textButton = "Cambiar";
+      break;
     default:
       break;
   }
@@ -45,17 +51,11 @@ function DivContainer({ children, typeForm, handleSubmit, error }) {
             {title || ""}
           </h3>
           {/* Botón de Google */}
-          <div
-            className="flex items-center justify-center w-full py-2 sm:py-4 my-4 text-sm font-medium transition duration-300 rounded-full sm:rounded-2xl bg-gray-100 hover:bg-blue-600 focus:ring-4 focus:ring-gray-300 border cursor-pointer hover:text-white"
-            onClick={() => signIn("google")}
-          >
-            <img
-              className="h-5 mr-2"
-              src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
-              alt="Google logo"
-            />
-            {textGoogle || "Google"}
-          </div>
+          {(typeForm === "login" || typeForm === "register") && (
+            <DivGoogle textGoogle={textGoogle} />
+          )}
+
+          {typeForm === "forgot" && <DivForgotPass element={"up"} />}
           {/* Línea horizontal con texto */}
           <div className="flex items-center my-2">
             <hr className="h-0 border-b border-solid grow" />
@@ -65,8 +65,13 @@ function DivContainer({ children, typeForm, handleSubmit, error }) {
           {/* Contenido variable */}
           <div>{children}</div>
 
-          {typeForm === "login" && <DivLogin />}
-          {typeForm === "register" && <DivRegister />}
+          {/* Textos de registro, inicio de sesión, etc */}
+          <div className="mx-2">
+            {typeForm === "login" && <DivLogin />}
+            {typeForm === "register" && <DivRegister />}
+            {typeForm === "resetPass" && <DivForgotPassReceiver />}
+            {typeForm === "forgot" && <DivForgotPass element={"down"} />}
+          </div>
 
           {/* Errores */}
           <div>
@@ -74,7 +79,7 @@ function DivContainer({ children, typeForm, handleSubmit, error }) {
               <p className="text-red-500 my-2 text-xs sm:text-sm">{error}</p>
             )}
           </div>
-          {}
+          {/* Botón inferior */}
           <button
             className="border w-full px-6 py-4 sm:py-5 sm:mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-full sm:rounded-2xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 bg-blue-500"
             type="submit"
@@ -93,16 +98,59 @@ function DivLogin() {
   return (
     <div className="flex flex-row flex-wrap justify-between mb-4 text-xs sm:text-sm font-medium">
       <Link href={"/auth/register"}>¿Eres nuevo? Regístrate</Link>
-      <a href="#">¿Olvidaste tu contraseña?</a>
+      <Link href={"/auth/resetPass"}>¿Olvidaste tu contraseña?</Link>
     </div>
   );
 }
 
 function DivRegister() {
   return (
-    <div className="flex flex-row flex-wrap justify-end mb-4 text-xs sm:text-sm font-medium text-purple-blue-500 gap-1">
+    <div className="flex flex-row flex-wrap justify-end mb-4 text-xs sm:text-sm font-medium gap-1">
       <span>¿Ya estás registrado? </span>
       <Link href={"/auth/login"}>Inicia sesión</Link>
+    </div>
+  );
+}
+
+function DivGoogle({ textGoogle }) {
+  return (
+    <div
+      className="flex items-center justify-center w-full py-2 sm:py-4 my-4 text-sm font-medium transition duration-300 rounded-full sm:rounded-2xl bg-gray-100 hover:bg-blue-600 focus:ring-4 focus:ring-gray-300 border cursor-pointer hover:text-white"
+      onClick={() => signIn("google")}
+    >
+      <img
+        className="h-5 mr-2"
+        src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
+        alt="Google logo"
+      />
+      {textGoogle || "Google"}
+    </div>
+  );
+}
+
+function DivForgotPass({ element }) {
+  return (
+    <div className="flex flex-row flex-wrap justify-between my-4 text-xs sm:text-sm font-medium">
+      {element === "up" && (
+        <p>
+          Si el correo ingresado está registrado te enviaremos un enlace para
+          restablecer tu contraseña. Recuerda revisar tu bandeja de spam.
+        </p>
+      )}
+      {element === "down" && (
+        <>
+          <Link href={"/auth/login"}>Inicia sesión</Link>
+          <Link href={"/auth/register"}>Regístrate</Link>
+        </>
+      )}
+    </div>
+  );
+}
+
+function DivForgotPassReceiver() {
+  return (
+    <div className="flex flex-row flex-wrap justify-between my-4 text-xs sm:text-sm font-medium">
+      <p>Seis caracteres como mínimo, distingue mayúsculas de minúsculas.</p>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
+import bcrypt from "bcryptjs";
 import {
   firestoreDB,
   realtimeDB,
@@ -644,6 +645,45 @@ export const setIndexProduct = async (nameIndex, code, productData) => {
     throw new Error("Transaction failed: " + e.message);
   }
 };
+
+// transacción de Firestore para cambiar la contraseña actual del usuario
+export async function changePassword(userId, currentPassword, newPassword) {
+  const userDocRef = doc(firestoreDB, "contactos", userId);
+
+  try {
+    // Inicia una transacción
+    await runTransaction(firestoreDB, async (transaction) => {
+      const userDoc = await transaction.get(userDocRef);
+      if (!userDoc.exists()) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      const storedHashedPassword = userDoc.data().password;
+
+      // Comparar la contraseña proporcionada con la almacenada (hasheada)
+      const isMatch = await bcrypt.compare(
+        currentPassword,
+        storedHashedPassword
+      );
+      if (!isMatch) {
+        throw new Error("La contraseña actual es incorrecta");
+      }
+
+      // Si la contraseña actual es correcta, actualizamos la contraseña
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10); // Hashear la nueva contraseña
+
+      // Realizar la actualización
+      transaction.update(userDocRef, {
+        password: hashedNewPassword,
+      });
+    });
+
+    // console.log("Contraseña actualizada correctamente");
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error);
+    throw error;
+  }
+}
 
 // actualizar información de un documento en una colección
 export async function updateDocInCollection(nameCollection, nameDoc, newData) {

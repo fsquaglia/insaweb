@@ -35,15 +35,18 @@ export default function Users({ allUsers }) {
         return saldoA - saldoB;
       });
     } else if (filter === "expired") {
+      // Filtramos primero los usuarios con saldo vencido
       const filteredWithoutOrder = allUsers.filter((user) => {
         if (!user.fechaVenceSaldo || !user.saldo) return false;
         const fechaVence = new Date(user.fechaVenceSaldo.seconds * 1000);
-        filtered = filteredWithoutOrder.sort((a, b) => {
-          const saldoA = a.fechaVenceSaldo.seconds || 0;
-          const saldoB = b.fechaVenceSaldo.seconds || 0;
-          return saldoA - saldoB;
-        });
         return fechaVence < today;
+      });
+
+      // Luego ordenamos
+      filtered = filteredWithoutOrder.sort((a, b) => {
+        const saldoA = a.fechaVenceSaldo?.seconds || 0;
+        const saldoB = b.fechaVenceSaldo?.seconds || 0;
+        return saldoA - saldoB;
       });
     }
 

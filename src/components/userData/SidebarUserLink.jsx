@@ -5,13 +5,14 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { CiViewTable } from "react-icons/ci";
 import { MdNotificationsActive } from "react-icons/md";
 import { MdSpaceDashboard } from "react-icons/md";
+import { PiPassword } from "react-icons/pi";
 
 const icons = {
   iconDashboard: MdSpaceDashboard,
   iconNotifications: MdNotificationsActive,
   iconReport: TbReportAnalytics,
   iconTable: CiViewTable,
-  iconTableTwo: CiViewTable,
+  iconChangePass: PiPassword,
 };
 
 function SidebarUserLink({ href, icon, label }) {

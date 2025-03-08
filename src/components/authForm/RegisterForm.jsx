@@ -90,6 +90,7 @@ function RegisterForm() {
 
       const data = await response.json();
       if (response.ok) {
+        //! OJO eliminar el log y simplificar el if ...
         console.log("Correo enviado:", data.message);
       } else {
         setError(data.error);

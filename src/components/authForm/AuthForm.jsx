@@ -51,8 +51,6 @@ function AuthForm() {
     });
 
     if (res.error) {
-      console.log(res);
-
       setError(res.error);
     } else {
       // Si hay un callbackUrl, redirigir allí

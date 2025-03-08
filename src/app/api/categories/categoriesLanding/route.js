@@ -9,7 +9,7 @@ export async function GET(req) {
 
     // Verifica si se encontraron productos
     if (!categories || categories.length === 0) {
-      console.log("No se encontraron categorías");
+      // console.log("No se encontraron categorías");
       return new Response(
         JSON.stringify({ error: "No se encontraron las categorías" }),
         {

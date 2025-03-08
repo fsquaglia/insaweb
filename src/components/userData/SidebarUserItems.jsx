@@ -24,9 +24,9 @@ export const listItemsUser = [
     label: "Movimientos",
   },
   {
-    name: "menu5",
-    icon: "iconTableTwo",
-    href: "/users/tableTwo",
-    label: "Menu 5",
+    name: "changePass",
+    icon: "iconChangePass",
+    href: "/users/changePass",
+    label: "Cambiar contraseña",
   },
 ];

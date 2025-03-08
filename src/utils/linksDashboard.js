@@ -9,6 +9,7 @@ import { AiFillProduct } from "react-icons/ai"; //Productos
 import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
 import { FaGear } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
+import { PiPassword } from "react-icons/pi";
 
 export const links = [
   {
@@ -136,6 +137,16 @@ export const links = [
       title: "Sección de Control de usuarios",
       description:
         "Aquí podrás gestionar los permisos a los usuarios y administrar otros datos.",
+    },
+  },
+  {
+    name: "Cambia tu contraseña",
+    href: "/dashboard/changePass",
+    icon: PiPassword,
+    head: {
+      title: "Aquí podrás cambiar tu contraseña",
+      description:
+        "Ten en cuenta que si iniciaste sesión con proveedores externos, como Google, posiblemente no puedas realizar este cambio.",
     },
   },
 ];

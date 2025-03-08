@@ -14,12 +14,14 @@ export default function InputSection({
 
   return (
     <div className="relative w-full flex flex-col gap-2">
-      <label
-        htmlFor={name}
-        className="ms-2 text-xs sm:text-sm text-start text-gray-600"
-      >
-        {label} *
-      </label>
+      {label && (
+        <label
+          htmlFor={name}
+          className="ms-2 text-xs sm:text-sm text-start text-gray-600"
+        >
+          {label} *
+        </label>
+      )}
       <input
         id={name}
         name={name}

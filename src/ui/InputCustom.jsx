@@ -17,7 +17,7 @@ function TypeShow({
     case "input":
       return (
         <input
-          className="rounded-md border font-sans font-normal text-blue-gray-700 p-1"
+          className="rounded-md border font-sans font-normal text-slate-700 p-1 text-sm sm:text-base"
           name={name}
           placeholder={placeHolder}
           value={inputValue}

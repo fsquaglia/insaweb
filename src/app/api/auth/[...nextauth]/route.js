@@ -30,7 +30,7 @@ const handler = NextAuth({
           placeholder: "******",
         },
       },
-      //authorize retorna el usuario logueado, o null
+      //authorize retorna el usuario logueado, o un error
       async authorize(credentials, req) {
         const { email, password } = credentials;
         try {
@@ -102,6 +102,7 @@ const handler = NextAuth({
           token.verifiedUser = foundUser.usuarioVerificado || false;
           token.hasPhone = foundUser.celTE?.trim() !== "";
           token.hasBalance = foundUser.saldo > 0;
+          token.provider = "google";
         } else {
           // Si no existe, crear un nuevo usuario en Firestore y asignar un rol por defecto
           const nameProfile = profile.name || profile.email.split("@")[0];
@@ -126,6 +127,7 @@ const handler = NextAuth({
             token.verifiedUser = true;
             token.hasPhone = false;
             token.hasBalance = false;
+            token.provider = "google";
           } catch (error) {
             console.error("Error creando usuario: ", error);
 
@@ -144,6 +146,7 @@ const handler = NextAuth({
           token.verifiedUser = user.verifiedUser || false;
           token.hasPhone = user.hasPhone;
           token.hasBalance = user.hasBalance;
+          token.provider = "credentials";
         }
       }
 
@@ -165,6 +168,7 @@ const handler = NextAuth({
         session.user.verifiedUser = token.verifiedUser || false;
         session.user.hasPhone = token.hasPhone || false;
         session.user.hasBalance = token.hasBalance || false;
+        session.user.provider = token.provider;
       }
 
       return session;

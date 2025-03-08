@@ -71,7 +71,7 @@ function SessionComponent({ session, status }) {
       {session && status === "authenticated" ? (
         <div className="flex flex-row items-center justify-center gap-2 w-full min-w-36">
           <div
-            className="size-9 rounded-full shrink-0 cursor-pointer relative z-40"
+            className="relative size-9 rounded-full shrink-0 cursor-pointer z-40"
             onClick={() => setShowUser(!showUser)}
           >
             <UserImage

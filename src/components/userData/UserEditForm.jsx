@@ -225,7 +225,7 @@ function UserEditForm({ userData }) {
       {/*SECCION PRINCIPAL DE IMAGEN Y NOMBRE*/}
       <div className="bg-white rounded-lg shadow-xl pb-8">
         {/*imagen de fondo */}
-        <div className="w-full h-[250px]">
+        <div className="w-full h-40 sm:h-[250px]">
           <Image
             src="https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/images%2Fprofile-background.jpg?alt=media&token=c97b083a-6396-4967-99d1-998a33a98db5"
             alt="Profile background"
@@ -265,7 +265,9 @@ function UserEditForm({ userData }) {
             </div>
           )}
           <div className="flex items-center space-x-2 mt-2">
-            <p className="text-2xl">{user?.nombreContacto || "Anónimo"}</p>
+            <p className="text-base sm:text-2xl">
+              {user?.nombreContacto || "Anónimo"}
+            </p>
             {user?.nombreContacto.length < 3 || !user?.usuarioVerificado ? (
               <BsQuestionCircleFill
                 size={20}
@@ -332,98 +334,79 @@ function UserEditForm({ userData }) {
               Información Personal
             </h4>
             <ul className="mt-2 text-gray-700">
-              <li className="flex border-y py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Nombre y apellido: *</span>
-                  <InputCustom
-                    labelText=""
-                    name={"nombreContacto"}
-                    inputValue={user?.nombreContacto}
-                    charLimit={25}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Celular: *</span>
-                  <InputCustom
-                    labelText=""
-                    name={"celTE"}
-                    inputValue={user?.celTE}
-                    charLimit={12}
-                    showCharLimits={false}
-                    placeHolder={"543408XXXXXX"}
-                    onChange={onChangeValue}
-                    inputType={"number"}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Dirección: *</span>
-                  <InputCustom
-                    labelText=""
-                    name={"direccion"}
-                    inputValue={user?.direccion}
-                    charLimit={30}
-                    placeHolder={"Calle y número"}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Localidad: *</span>
-                  <InputCustom
-                    labelText=""
-                    name={"localidad"}
-                    inputValue={user?.localidad}
-                    charLimit={30}
-                    placeHolder={"Tu localidad"}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Provincia: *</span>
-                  <InputCustom
-                    labelText=""
-                    name={"provincia"}
-                    inputValue={user?.provincia}
-                    charLimit={20}
-                    placeHolder={"Tu provincia"}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Fecha de nacimiento:</span>
-                  <InputCustom
-                    labelText={""}
-                    name={"fechaNacimiento"}
-                    inputValue={user?.fechaNacimiento || ""}
-                    showCharLimits={false}
-                    placeHolder={"AAAA-MM-DD"}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
-              <li className="flex border-b py-2">
-                <div className="flex flex-row flex-wrap gap-2 items-end">
-                  <span className="font-light w-40">Apodo:</span>
-                  <InputCustom
-                    labelText=""
-                    name={"sobrenombre"}
-                    inputValue={user?.sobrenombre}
-                    charLimit={15}
-                    placeHolder={"Simple apodo"}
-                    onChange={onChangeValue}
-                  />
-                </div>
-              </li>
+              <ListElement tag={"Nombre y apellido: *"}>
+                <InputCustom
+                  labelText=""
+                  name={"nombreContacto"}
+                  inputValue={user?.nombreContacto}
+                  charLimit={25}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+              <ListElement tag={"Celular: *"}>
+                <InputCustom
+                  labelText=""
+                  name={"celTE"}
+                  inputValue={user?.celTE}
+                  charLimit={12}
+                  showCharLimits={false}
+                  placeHolder={"543408XXXXXX"}
+                  onChange={onChangeValue}
+                  inputType={"number"}
+                />
+              </ListElement>
+              <ListElement tag={"Dirección: *"}>
+                <InputCustom
+                  labelText=""
+                  name={"direccion"}
+                  inputValue={user?.direccion}
+                  charLimit={30}
+                  placeHolder={"Calle y número"}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+              <ListElement tag={"Localidad: *"}>
+                <InputCustom
+                  labelText=""
+                  name={"localidad"}
+                  inputValue={user?.localidad}
+                  charLimit={30}
+                  placeHolder={"Tu localidad"}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+              <ListElement tag={"Provincia: *"}>
+                <InputCustom
+                  labelText=""
+                  name={"provincia"}
+                  inputValue={user?.provincia}
+                  charLimit={20}
+                  placeHolder={"Tu provincia"}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+              <ListElement tag={"Fecha de nacimiento:"}>
+                <InputCustom
+                  labelText={""}
+                  name={"fechaNacimiento"}
+                  inputValue={user?.fechaNacimiento || ""}
+                  showCharLimits={false}
+                  placeHolder={"AAAA-MM-DD"}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+
+              <ListElement tag={"Apodo:"}>
+                <InputCustom
+                  labelText=""
+                  name={"sobrenombre"}
+                  inputValue={user?.sobrenombre}
+                  charLimit={15}
+                  placeHolder={"Simple apodo"}
+                  onChange={onChangeValue}
+                />
+              </ListElement>
+
               {session?.user?.role === "admin" && (
                 <li className="flex flex-col gap-2 border-b py-2">
                   <div className="flex flex-col sm:flex-row gap-2 items-end">
@@ -511,7 +494,7 @@ function UserEditForm({ userData }) {
                 onclick={handleSubmit}
               />
             </div>
-            <span className="text-sm mx-auto my-2">
+            <span className="text-xs sm:text-sm mx-auto my-2 text-slate-500">
               * Indica campos obligatorios
             </span>
           </div>
@@ -618,3 +601,16 @@ function UserEditForm({ userData }) {
 }
 
 export default UserEditForm;
+
+function ListElement({ children, tag }) {
+  return (
+    <li className="flex border-b py-2 text-slate-700">
+      <div className="flex flex-row flex-wrap gap-2 items-end">
+        <span className="font-light w-40 text-sm sm:text-base">
+          {tag || ""}
+        </span>
+        {children}
+      </div>
+    </li>
+  );
+}
