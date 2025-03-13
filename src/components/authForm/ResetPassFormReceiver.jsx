@@ -7,6 +7,7 @@ import InputSection from "./InputSection";
 import MessageComponent from "@/ui/MessageComponent";
 import { validatePassword } from "@/utils/validations";
 import {
+  addEventToHistory,
   getUserByEmail,
   updateDocInCollection,
 } from "@/utils/firebase/fetchFirebase";
@@ -115,7 +116,6 @@ function ResetPassFormReceiver() {
 
     try {
       // actualizar la BDD para resetear la password
-
       const users = await getUserByEmail(email);
       if (users.length === 0) {
         console.log("No se encontró ningún usuario con ese email.");
@@ -125,7 +125,15 @@ function ResetPassFormReceiver() {
         await updateDocInCollection("contactos", user.id, {
           password: hashedPassword,
         });
-        console.log(`Pass cambiado en user ID ${user.id} correctamente.`);
+
+        await addEventToHistory(
+          user.id,
+          `${user.nombreContacto || "Anónimo"} - (${user.email})`,
+          "Actualización",
+          "El usuario cambió su contraseña.",
+          user.id
+        );
+        // console.log(`Pass cambiado en user ID ${user.id} correctamente.`);
       }
       Swal.fire({
         icon: "success",

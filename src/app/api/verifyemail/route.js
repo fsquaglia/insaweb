@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import {
+  addEventToHistory,
   getUserByEmail,
   updateDocInCollection,
 } from "@/utils/firebase/fetchFirebase";
@@ -21,6 +22,7 @@ export async function GET(req) {
 
     // actualizar la BDD para marcar el usuario como verificado
     const users = await getUserByEmail(decoded.email);
+
     if (users.length === 0) {
       console.log("No se encontró ningún usuario con ese email.");
       return;
@@ -29,6 +31,14 @@ export async function GET(req) {
       await updateDocInCollection("contactos", user.id, {
         usuarioVerificado: true,
       });
+      await addEventToHistory(
+        user.id,
+        `${user.nombreContacto || "Anónimo"} - (${user.email})`,
+        "Actualización",
+        "El usuario validó su email",
+        user.id
+      );
+
       console.log(
         `Usuario ${decoded.email} con ID ${user.id} verificado correctamente.`
       );

@@ -78,8 +78,7 @@ function RegisterForm() {
         false
       );
 
-      //! OJO descomentar
-      //await addNewContactFirestore(newUser);
+      await addNewContactFirestore(newUser);
 
       // enviamos el email de validación
       const response = await fetch("/api/sendEmail", {
@@ -89,15 +88,11 @@ function RegisterForm() {
       });
 
       const data = await response.json();
-      if (response.ok) {
-        //! OJO eliminar el log y simplificar el if ...
-        console.log("Correo enviado:", data.message);
-      } else {
+      if (!response.ok) {
         setError(data.error);
+        return;
       }
 
-      //! OJO eliminar return siguiente
-      return;
       // Intentar loguear al usuario automáticamente después del registro
       const res = await signIn("credentials", {
         redirect: false,

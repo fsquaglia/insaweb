@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { generateVerificationToken } from "@/utils/generateVerificationToken";
+import { getEmailTemplate } from "@/utils/emailTemplate";
 
 export async function POST(req) {
   if (req.method !== "POST") {
@@ -19,24 +20,20 @@ export async function POST(req) {
     // Leer tipo de email desde headers
     const emailType = req.headers.get("x-email-type");
 
+    // Definir la URL base según el entorno
+    const baseURL =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://iharaylondon.com.ar";
+
     // Generar token
     const token = generateVerificationToken(email);
 
-    let subject, text, html;
-
-    if (emailType === "password-reset") {
-      subject = "Restablece tu contraseña";
-      text = `Haz clic en el siguiente enlace para restablecer tu contraseña: https://iharaylondon.com.ar/reset-password?token=${token}`;
-      html = `<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-             <a href="https://iharaylondon.com.ar/reset-password?token=${token}" target="_blank">Restablecer contraseña</a>`;
-    } else {
-      subject = "Verifica tu cuenta";
-      text = `Haz clic en el siguiente enlace para verificar tu cuenta: https://iharaylondon.com.ar/verify-email?token=${token}`;
-      html = `<p>Haz clic en el siguiente enlace para verificar tu cuenta:</p>
-             <a href="https://iharaylondon.com.ar/verify-email?token=${token}" target="_blank">Verificar cuenta</a>`;
-    }
+    // Obtener el template del email
+    const { subject, text, html } = getEmailTemplate(emailType, token, baseURL);
 
     // Configurar transporte de nodemailer
+    //! OJO rever cómo hacer el transporter porque en producción no hay que usar tls
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -49,19 +46,17 @@ export async function POST(req) {
     });
 
     // Enviar email
-    // await transporter.sendMail({
-    //   from: process.env.EMAIL_USER,
-    //   to: email,
-    //   subject,
-    //   text,
-    //   html,
-    // });
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject,
+      text,
+      html,
+    });
 
-    return NextResponse.json({ message: token });
     return NextResponse.json({ message: "Correo enviado" });
   } catch (error) {
     console.error(error);
-
     return NextResponse.json(
       { error: "Error enviando el correo" },
       { status: 500 }

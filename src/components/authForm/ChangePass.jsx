@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import DivContainer from "./DivContainer";
 import InputSection from "./InputSection";
 import { useSession } from "next-auth/react";
-import { changePassword } from "@/utils/firebase/fetchFirebase";
+import {
+  addEventToHistory,
+  changePassword,
+} from "@/utils/firebase/fetchFirebase";
 import MessageComponent from "@/ui/MessageComponent";
 import { validatePassword } from "@/utils/validations";
 import LoadingDiv from "@/ui/LoadingDiv";
@@ -51,6 +54,13 @@ function ChangePass() {
     // Comprobar la contraseña actual y actualizarla
     try {
       await changePassword(session?.user?.id, actualPassword, password);
+      await addEventToHistory(
+        session?.user?.id,
+        `${session?.user?.name || "Anónimo"} - (${session?.user?.email})`,
+        "Actualización",
+        "El usuario ha actualizado su contraseña",
+        session?.user?.id
+      );
       Swal.fire({
         title: "Contraseña actualizada",
         text: "La contraseña ha sido actualizada correctamente",

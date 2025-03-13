@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Puff } from "react-loader-spinner";
 import { FaHome } from "react-icons/fa";
 
@@ -11,10 +11,16 @@ export default function VerifyEmailPage() {
   const [message, setMessage] = useState("Verificando...");
   const [loading, setLoading] = useState(true);
 
+  // Add a ref to track if the verification has been done
+  const verificationDone = useRef(false);
+
   useEffect(() => {
-    if (!token) return;
+    if (!token || verificationDone.current) return;
 
     const verifyEmail = async () => {
+      // Set the ref to true immediately to prevent multiple executions
+      verificationDone.current = true;
+
       try {
         const response = await fetch(`/api/verifyemail?token=${token}`);
         const data = await response.json();
@@ -22,7 +28,6 @@ export default function VerifyEmailPage() {
         if (!response.ok) {
           throw new Error(data.error || "Error verificando el email");
         }
-
         setMessage(data.message || "Verificación exitosa");
       } catch (error) {
         console.error("Error verificando el email: ", error);
