@@ -167,7 +167,7 @@ export const addEventToHistory = async (
   const fechaHoy = getFechaLocal(); // Fecha local del usuario
   const horaLocal = getHoraLocal(); // Hora local del usuario
 
-  const accion = {
+  const dataEvent = {
     nameEmail,
     tipo,
     fecha: horaLocal,
@@ -178,12 +178,27 @@ export const addEventToHistory = async (
   try {
     const docRef = doc(firestoreDB, "historial", fechaHoy);
     // Usamos setDoc con merge: true para agregar el campo si no existe o actualizarlo si ya está.
+
+    // Actualizar el historial de acciones general para el administrador
     await setDoc(
       docRef,
       {
-        [usuarioID]: arrayUnion(accion),
+        [usuarioID]: arrayUnion(dataEvent),
       },
       { merge: true } // Garantiza que no se sobrescriba el documento existente.
+    );
+
+    //Actualizar el historial de acciones del usuario
+    const docRefUser = doc(
+      firestoreDB,
+      `contactos/${usuarioID}/historialAcciones/${fechaHoy}`
+    );
+    await setDoc(
+      docRefUser,
+      {
+        historialDiario: arrayUnion(dataEvent),
+      },
+      { merge: true }
     );
   } catch (error) {
     console.error("Error al registrar la acción:", error);
@@ -319,6 +334,18 @@ export async function getAllUsers(onlyBalances = false) {
     console.error("Error en fetchFirebase al obtener los usuarios: ", error);
     throw new Error("Error en fetchFirebase al obtener los usuarios.");
   }
+}
+
+//obtener los X primeros documentos de una colección
+export async function getDocumentsOfCollection(collectionPath, totalDocuments) {
+  const querySnapshot = await getDocs(
+    query(collection(firestoreDB, collectionPath), limit(totalDocuments))
+  );
+  const documents = [];
+  querySnapshot.forEach((doc) => {
+    documents.push({ id: doc.id, ...doc.data() });
+  });
+  return documents;
 }
 
 //obtener un documento por su ID de una colección
@@ -916,6 +943,7 @@ export async function addNewContactFirestore(dataObject) {
       doc(firestoreDB, `contactos/${docRef.id}/LikesProduct/documentoDeLikes`),
       { likesProductos: [], misLikesCount: 0, likes: [] }
     );
+
     //Agregar evento de registro en el historial
     await addEventToHistory(
       docRef.id,

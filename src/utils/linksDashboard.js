@@ -10,6 +10,7 @@ import { IoColorPaletteSharp } from "react-icons/io5"; //variaciones
 import { FaGear } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
 import { PiPassword } from "react-icons/pi";
+import { RxActivityLog } from "react-icons/rx";
 
 export const links = [
   {
@@ -137,6 +138,16 @@ export const links = [
       title: "Sección de Control de usuarios",
       description:
         "Aquí podrás gestionar los permisos a los usuarios y administrar otros datos.",
+    },
+  },
+  {
+    name: "Actividad",
+    href: "/dashboard/activity",
+    icon: RxActivityLog,
+    head: {
+      title: "Actividad en la aplicación",
+      description:
+        "Aquí podrás ver la actividad de los usuarios y las acciones que han realizado.",
     },
   },
   {
