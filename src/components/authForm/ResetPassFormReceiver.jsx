@@ -13,8 +13,10 @@ import {
 } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
 import bcrypt from "bcryptjs";
+import { Suspense } from "react";
+import LoadingDiv from "@/ui/LoadingDiv";
 
-function ResetPassFormReceiver() {
+function FormReceiver() {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -184,4 +186,10 @@ function ResetPassFormReceiver() {
   );
 }
 
-export default ResetPassFormReceiver;
+export default function ResetPassFormReceiver() {
+  return (
+    <Suspense fallback={<LoadingDiv />}>
+      <FormReceiver />
+    </Suspense>
+  );
+}

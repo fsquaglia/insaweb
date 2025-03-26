@@ -3,8 +3,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { Puff } from "react-loader-spinner";
 import { FaHome } from "react-icons/fa";
+import { Suspense } from "react";
+import LoadingDiv from "@/ui/LoadingDiv";
 
-export default function VerifyEmailPage() {
+function VerifyEmailPageSection() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
@@ -69,5 +71,13 @@ export default function VerifyEmailPage() {
         </button>
       )}
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<LoadingDiv />}>
+      <VerifyEmailPageSection />
+    </Suspense>
   );
 }
