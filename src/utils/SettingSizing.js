@@ -1,0 +1,128 @@
+//?Para las imágenes peso en kBytes y las medidas en px.
+
+export const stringSizing = {
+  main: {
+    maxLengthText1: 25,
+    maxLengthText2: 25,
+    maxLengthText3: 40,
+  },
+  about: {
+    maxLengthTitle: 22,
+    maxLengthDescription: 926,
+  },
+  slogan: { maxLengthTitle: 30 },
+  history: {
+    maxLengthTitle: 22,
+    maxLengthDescription: 600,
+  },
+  team: {
+    maxLengthTitle: 22,
+    maxLengthDescription: 180,
+    maxLengthName: 22,
+  },
+  contact: {
+    maxLengthFantasy: 25,
+    maxLengthRazon: 35,
+    maxLengthPhone: 14,
+    maxLengthCelPhone: 14,
+    maxLengthEmail: 40,
+    maxLengthFace1: 50,
+    maxLengthFace2: 50,
+    maxLengthInsta1: 50,
+    maxLengthInsta2: 50,
+    maxLengthTitleSocial: 30,
+    maxLengthAddress: 50,
+    maxLengthLocation: 50,
+    maxLengthProvince: 50,
+  },
+  categoryProducts: {
+    maxLengthTitle: 20,
+    maxLengthDescription: 75,
+    maxLengthTitleCard: 20,
+    maxLengthTextoSeccionWeb: 260,
+  },
+};
+
+export const imgSizing = {
+  main: {
+    minWidthAccepted: 1900,
+    maxWidthAccepted: 1950,
+    minHeightAccepted: 1000,
+    maxHeigthAccepted: 1100,
+    minSizeKBaccepted: 150,
+    maxSizeKBaccepted: 500,
+  },
+  about: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  slogan: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  history: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  team: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  contact: {
+    minWidthAccepted: 500,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 500,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 80,
+    maxSizeKBaccepted: 300,
+  },
+  contactLogo: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 500,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 500,
+    minSizeKBaccepted: 50,
+    maxSizeKBaccepted: 200,
+  },
+  categoryProducts: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 50,
+    maxSizeKBaccepted: 300,
+  },
+  //productClassA codifiqué así por si luego necesito ...ClassB p.ejemplo
+  productClassA: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 50,
+    maxSizeKBaccepted: 500,
+  },
+  profileUser: {
+    minWidthAccepted: 200,
+    maxWidthAccepted: 800,
+    minHeightAccepted: 200,
+    maxHeigthAccepted: 800,
+    minSizeKBaccepted: 5,
+    maxSizeKBaccepted: 500,
+  },
+};

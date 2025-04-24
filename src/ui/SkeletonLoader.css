@@ -1,0 +1,27 @@
+/* Define el contenedor para el loader */
+.skeleton-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh; /* Asegura que el loader esté centrado en la pantalla */
+}
+
+/* Define el estilo del loader */
+.skeleton-loader {
+  width: 64px;
+  height: 64px;
+  border: 6px solid #ccc; /* Color de borde */
+  border-top-color: transparent; /* Hace que la parte superior sea transparente */
+  border-radius: 50%; /* Forma de círculo */
+  animation: spin-slowly 2s linear infinite; /* Aplica la animación */
+}
+
+/* Define la animación de rotación */
+@keyframes spin-slowly {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

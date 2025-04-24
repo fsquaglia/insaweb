@@ -1,0 +1,8 @@
+.plans-container-slider {
+  display: flex;
+  height: 316px;
+  width: 600px;
+  overflow-x: scroll;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
