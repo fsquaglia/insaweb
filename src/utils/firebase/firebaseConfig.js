@@ -22,7 +22,7 @@ if (process.env.NEXT_PUBLIC_FIREBASE_EMULATORS === "emulators") {
   // Use local emulator settings
   const localConfig = {
     ...firebaseConfig,
-    databaseURL: "http://localhost:9000/?ns=iharalondon",
+    databaseURL: "http://localhost:9000/?ns=insarafaela",
   };
   app = initializeApp(localConfig);
   connectFirestoreEmulator(getFirestore(app), "localhost", 8080);

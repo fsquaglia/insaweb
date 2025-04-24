@@ -64,6 +64,8 @@ export default function History({
 }) {
   const [selectedCircle, setSelectedCircle] = useState(null);
 
+  // console.log("historias: ", historia);
+
   // Combina historia con circlesData
   const combinedData = useMemo(() => {
     return Object.keys(historia).map((key) => {
@@ -105,33 +107,39 @@ export default function History({
       {selectedCircle && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div
-            className="relative bg-white p-8 rounded-lg shadow-xl w-[30rem] max-w-full flex flex-col"
+            className="relative bg-white p-8 rounded-3xl shadow-xl w-[30rem] h-[30rem] max-w-full max-h-full flex flex-col justify-between"
             style={{
               backgroundImage: selectedCircle.imagen
                 ? `url(${selectedCircle.imagen})`
-                : "none", // Opción para manejar la ausencia de imagen
+                : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
               color: "white",
-              backgroundColor: selectedCircle.imagen ? "transparent" : "gray", // Color de respaldo si no hay imagen
+              backgroundColor: selectedCircle.imagen ? "transparent" : "gray",
             }}
           >
             {/* Overlay para asegurar la legibilidad del texto */}
             <div
               className={`absolute inset-0 ${
                 selectedCircle.imagen ? "bg-black bg-opacity-60" : ""
-              } rounded-lg`}
+              } rounded-3xl`}
             ></div>
-            <div className="relative z-10 flex flex-col items-center justify-center">
+
+            {/* Contenido principal */}
+            <div className="relative z-10 flex flex-col items-center justify-center flex-grow">
               <h2 className="text-2xl font-bold mb-4 text-center">
                 {selectedCircle.titulo}
               </h2>
               <p className="text-sm text-center">
                 {selectedCircle.descripcion}
               </p>
+            </div>
+
+            {/* Botón al fondo */}
+            <div className="relative z-10 mt-4 flex justify-center">
               <button
                 onClick={closeModal}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Cerrar
               </button>

@@ -4,114 +4,113 @@ import { Timestamp } from "firebase/firestore";
 
 export const aboutInitialData = {
   descripcion:
-    "En Ihara & London, creemos que el calzado y la indumentaria son más que simples prendas, son una expresión de estilo y personalidad. Nos hemos comprometido en ofrecer productos de alta calidad que combinan confort y diseño innovador.  Nos especializamos en una selección cuidadosamente curada de zapatos y ropa que se adaptan a las últimas tendencias y a las necesidades de nuestros clientes. Desde el casual diario hasta el atuendo más sofisticado, cada pieza en nuestra colección refleja nuestra pasión por la moda y la calidad.  Estamos aquí para brindarte una experiencia de compra agradable, guiándote a encontrar las piezas perfectas para completar tu estilo. Nos esforzamos por ofrecer no solo productos excepcionales, sino también un servicio al cliente de primer nivel que nos distingue en el sector.  Descubre con nosotros una forma de vestir que celebra tu individualidad y comodidad. ¡Bienvenidos a Ihara & London!",
+    "En Insa Rafaela, fabricamos equipos de alta calidad para la elaboración de alimento balanceado, ofreciendo soluciones innovadoras que optimizan la producción agroindustrial. Nuestro compromiso es proporcionar tecnología eficiente y duradera, junto con un asesoramiento especializado que impulse el crecimiento de nuestros clientes. Nos destacamos por entender las necesidades del sector y desarrollar productos que combinan rendimiento, confiabilidad y soporte técnico. Más que proveedores, somos aliados estratégicos que acompañan cada etapa del proceso productivo, garantizando excelencia y eficiencia en cada solución.",
   imagen:
-    "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/about%2Fnosotros01.jpg?alt=media&token=d5c128ba-c8c1-4277-9954-533f6064c0bc",
+    "https://res.cloudinary.com/foodexpressimg/image/upload/v1743270394/insarafaela/gvltrpog1ghybppbtem1.jpg",
   titulo: "Sobre nosotros",
   visible: true,
 };
 
 export const sloganInitialData = {
   imagen:
-    "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/slogan%2FfondoSlogan.jpg?alt=media&token=f795872b-b144-4383-b44d-3eaa4c0de909",
-  titulo: "Vive la vida",
+    "https://res.cloudinary.com/foodexpressimg/image/upload/v1745262113/insarafaela/slogan_d3yhfj.jpg",
+  titulo: "Tecnología para el campo",
   visible: true,
 };
 
 export const historyInitialData = {
   historia1: {
     descripcion:
-      "Nuestra tienda nació de una pasión por la moda y la funcionalidad. Fundada en 2019, comenzamos como un pequeño emprendimiento familiar con el objetivo de ofrecer productos de alta calidad que combinen estilo y comodidad. Con el tiempo, nuestra dedicación a la excelencia nos ha permitido crecer y convertirnos en una referencia en el sector. Hoy, nos enorgullece ofrecer una amplia gama de productos que reflejan las últimas tendencias, sin dejar de lado la practicidad y el confort que nuestros clientes valoran.",
+      "Nacimos con la necesidad de brindar soluciones concretas al sector agroindustrial. Desde nuestros primeros desarrollos, nos enfocamos en ofrecer equipos confiables, duraderos y eficientes que acompañen el crecimiento del campo argentino.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/history%2Fhistoria1.jpg?alt=media&token=540ec85a-2768-40ac-a8f8-701d2d998d3d",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744157323/insarafaela/historia1_n0hoh5.png",
     titulo: "Historia",
     visible: true,
   },
   historia2: {
     descripcion:
-      "Nuestra misión es inspirar a nuestros clientes a través de una experiencia de compra única, proporcionando piezas de calidad que se adapten a su estilo de vida. Nos esforzamos por ofrecer productos que no solo sean estéticamente atractivos, sino que también ofrezcan comodidad y durabilidad. Creemos en la importancia de la atención al cliente y nos comprometemos a brindar un servicio excepcional en cada interacción.",
+      "Fabricar maquinaria de calidad que optimice la elaboración de alimento balanceado, brindando asesoramiento técnico y soluciones adaptadas a las necesidades del productor agropecuario.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/history%2Fhistoria2.jpg?alt=media&token=bbb17233-d3ad-4802-b734-8fa5155e5c70",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744157338/insarafaela/historia2_ri096i.png",
     titulo: "Misión",
     visible: true,
   },
   historia3: {
     descripcion:
-      "Nuestra visión es convertirnos en la tienda líder en la venta de indumentaria y calzado, reconocida por nuestra dedicación a la innovación, la calidad y la satisfacción del cliente. Aspiramos a expandir nuestra presencia tanto en el mercado local como zonal, mientras seguimos siendo fieles a nuestros principios de sostenibilidad y responsabilidad social. Nos imaginamos un futuro donde cada cliente se sienta empoderado y seguro con cada prenda que lleve de nuestra tienda.",
+      "Ser referentes en innovación y eficiencia en la industria de maquinaria agrícola, expandiendo nuestra presencia con tecnología de vanguardia y un servicio que marque la diferencia.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/history%2Fhistoria3.jpg?alt=media&token=d9eb2310-d3e6-4375-a438-da204366e5e1",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744157325/insarafaela/historia3_jlxnow.png",
     titulo: "Visión",
     visible: true,
   },
   historia4: {
     descripcion:
-      "Comprometidos con la más alta calidad, seleccionamos materiales y proveedores cuidadosamente para garantizar durabilidad y confort en nuestras prendas y calzado. Nos mantenemos a la vanguardia de las tendencias de moda, incorporando diseños modernos y funcionales para satisfacer las necesidades cambiantes de nuestros clientes. Valoramos a nuestros clientes y ofrecemos una experiencia de compra excepcional, desde la consulta inicial hasta el servicio postventa. Actuamos con honestidad y transparencia en todas nuestras operaciones para mantener la confianza de clientes y proveedores.",
+      "Compromiso con el cliente, innovación constante, calidad en cada detalle, cercanía con el sector agropecuario y responsabilidad en cada etapa del proceso productivo.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/history%2Fhistoria4.jpg?alt=media&token=70de7543-32cd-4440-971e-295cbb5d1ed7",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744157327/insarafaela/historia4_akjshp.png",
     titulo: "Valores",
     visible: true,
   },
 };
 
 export const mainInitialData = {
-  texto1: "La mejor colección",
-  texto2: "Invierno hot",
-  texto3: "Ofertas todas las semanas",
+  texto1: "Tecnología que rinde",
+  texto2: "Pensado para el agro",
+  texto3: "Asistencia técnica siempre cerca",
   imagen:
-    "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/main%2Fmain01.jpg?alt=media&token=a56599f6-cf71-4329-9e13-6422c7a0f28c",
+    "https://res.cloudinary.com/foodexpressimg/image/upload/v1744079505/insarafaela/pu7rot5g5xxsorkkg0gs.jpg",
   visible: true,
 };
 
 export const teamInitialData = {
   he: {
-    descripcion: "Para completar el equipo.",
+    descripcion: "Ventas región sur.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/team%2Ffer00.png?alt=media&token=2ad6c677-85e8-4fe8-a81d-6b8de170453f",
-    titulo: "He/Él",
-    nombre: "Fer",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744998066/insarafaela/marcelo01_jhf4tk.png",
+    titulo: "Ventas",
+    nombre: "Marcelo",
     visible: true,
   },
   she: {
-    descripcion: "Nacida para la moda.",
+    descripcion: "Ventas región centro/norte.",
     imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/team%2Faye01.jpg?alt=media&token=faa81166-c3a5-4ee9-8d23-a801b6baf607",
-    titulo: "She/Ella",
-    nombre: "Aye",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1744998066/insarafaela/nicolas01_chc5eb.png",
+    titulo: "Comercial/Ventas",
+    nombre: "Nicolás",
     visible: true,
   },
   data: {
-    descripcion:
-      "En nuestra tienda, la calidad y la atención personalizada son nuestra prioridad. Somos un equipo apasionado, dedicado a ofrecerte la mejor experiencia de compra.",
+    descripcion: "Un equipo de trabajo puesto a disposición del cliente",
     imagen: "",
-    titulo: "El equipo",
+    titulo: "Nuestro equipo",
     visible: true,
   },
 };
 
 export const contactInitialData = {
   ubicacion: {
-    direccion: "Ituzaingó 1393",
-    localidad: "San Cristobal",
+    direccion: "Bv. Julio A. Roca 455 Oficina 7",
+    localidad: "Rafaela",
     provincia: "Santa Fe",
   },
   legal: {
-    fantasia: "Ihara & London",
-    razonSocial: "Compagnon, M. Ayelén",
+    fantasia: "Insa S.A.",
+    razonSocial: "Nicolás Andorno",
     logoURL: "",
   },
   medios: {
-    cel: "543492613004",
+    cel: "543492396684",
     TE: "",
-    email: "ayecompagnon@gmail.com",
+    email: "insa.rafaela@gmail.com",
   },
   socialMedia: {
     imagenFondoSocialMedia:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/socialmedia%2Fsocial01.jpg?alt=media&token=811605db-4bff-417e-a0ee-9d77c0668dc9",
-    tituloSocialMedia: "Síguenos",
-    facebook1: "https://www.facebook.com/londonestilo",
+      "https://res.cloudinary.com/foodexpressimg/image/upload/v1745019896/insarafaela/Anotaci%C3%B3n_2025-04-18_204232_z2o0su.jpg",
+    tituloSocialMedia: "Seguinos",
+    facebook1: "",
     facebook2: "",
-    instagram1: "https://www.instagram.com/london_sc/",
-    instagram2: "https://www.instagram.com/ihara_calzado/",
+    instagram1: "https://www.instagram.com/insa.rafaela/",
+    instagram2: "",
   },
 };
 

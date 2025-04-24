@@ -9,11 +9,14 @@ export default function Contact({ medios, ubicacion, showMap }) {
     localidad = "Localidad",
     provincia = "Provincia",
   } = ubicacion || {};
+  const whatsappNicolas = "543492396684";
+  const whatsappMarcelo = "543492396683";
 
   const whatsappMessage = encodeURIComponent(
-    "Hola! me gustaría hacerles una consulta"
+    "Hola! me gustaría hacerles una consulta. Por favor, contáctenme."
   );
-  const whatsappLink = `https://wa.me/${cel}?text=${whatsappMessage}`;
+  const whatsappLinkNicolas = `https://wa.me/${whatsappNicolas}?text=${whatsappMessage}`;
+  const whatsappLinkMarcelo = `https://wa.me/${whatsappMarcelo}?text=${whatsappMessage}`;
 
   return (
     <div>
@@ -34,7 +37,8 @@ export default function Contact({ medios, ubicacion, showMap }) {
               direccion={direccion}
               localidad={localidad}
               provincia={provincia}
-              whatsappLink={whatsappLink}
+              whatsappLink1={whatsappLinkNicolas}
+              whatsappLink2={whatsappLinkMarcelo}
             />
           </div>
         </div>

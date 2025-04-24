@@ -40,6 +40,7 @@ function PageSocialMedia() {
               sectionFirebase={"contacto"}
               subSection={key}
               subObject={values[key]}
+              pathToRevalidate={"/"}
             />
           ))}
           <SocialMediaImgs valuesData={values} />

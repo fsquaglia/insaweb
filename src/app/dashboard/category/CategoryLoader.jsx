@@ -12,6 +12,7 @@ import {
 import { productBase } from "@/utils/SettingInitialData";
 import SubCategory from "./SubCategory";
 import SwitchText from "@/ui/SwitchText";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 const nameCommerce = "Ihara+y+London";
 const urlGenerica = `https://via.placeholder.com/600?text=${nameCommerce}`;
@@ -144,6 +145,7 @@ function CategoryLoader({ data }) {
         showConfirmButton: false,
         timer: 1500,
       });
+      await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

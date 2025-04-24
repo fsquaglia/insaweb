@@ -7,7 +7,7 @@ export default function Slogan({ slogan }) {
   return (
     <div className="w-full flex items-center justify-center">
       <div
-        className={`shadow-2xl shadow-black text-[48px] lg:text-[60px] w-11/12 md:w-3/4 xl:w-1/2 h-[600px] my-20 ps-2 md:ps-8 flex items-center ${greatVibes.className}`}
+        className={`shadow-2xl shadow-black text-[48px] lg:text-[60px] w-11/12 md:w-3/4 xl:w-1/2 h-[600px] my-20 ps-2 md:ps-8 flex items-end ${greatVibes.className}`}
         style={{
           ...(imagen
             ? {
@@ -21,7 +21,7 @@ export default function Slogan({ slogan }) {
               }),
         }}
       >
-        <p className="text-pink-500">{titulo}</p>
+        <p className="text-slate-500">{titulo}</p>
       </div>
     </div>
   );

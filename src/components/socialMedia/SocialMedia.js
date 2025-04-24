@@ -1,9 +1,9 @@
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
 export default function SocialMedia({ socialMedia }) {
-  const facebook1 = socialMedia?.facebook1 || "https://www.facebook.com";
+  const facebook1 = socialMedia?.facebook1 || "";
   const facebook2 = socialMedia?.facebook2 || "";
-  const instagram1 = socialMedia?.instagram1 || "https://www.instagram.com";
+  const instagram1 = socialMedia?.instagram1 || "";
   const instagram2 = socialMedia?.instagram2 || "";
   const tituloSocialMedia = socialMedia?.tituloSocialMedia || "Síguenos...";
   const imagenFondoSocialMedia = socialMedia?.imagenFondoSocialMedia || "";
@@ -12,7 +12,7 @@ export default function SocialMedia({ socialMedia }) {
     <div className="w-full text-center flex flex-col">
       <div className="h-24"></div>
       <section
-        className={`flex flex-col w-full h-[500px] bg-cover bg-fixed bg-center justify-center items-center ${
+        className={`opacity-50 flex flex-col w-full h-[500px] bg-cover bg-fixed bg-center justify-center items-center ${
           imagenFondoSocialMedia ? "" : "bg-default-image-class"
         }`}
         style={

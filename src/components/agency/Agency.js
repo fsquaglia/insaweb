@@ -6,18 +6,6 @@ import { TbWorldWww } from "react-icons/tb";
 export default function Agency() {
   const links = [
     {
-      href: "https://www.instagram.com/dadonediego/",
-      icon: <FaCamera size={18} />,
-      text: "Diego Dadone",
-      title: "Fotografías",
-    },
-    {
-      href: "https://www.instagram.com/fenixmodelss/",
-      icon: <GiHeartWings size={24} />,
-      text: "Fénix models",
-      title: "Modelos",
-    },
-    {
       href: "https://www.linkedin.com/in/fersquaglia/",
       icon: <TbWorldWww size={20} />,
       text: "Desarrollado por Fernando Squaglia",

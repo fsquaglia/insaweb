@@ -13,7 +13,7 @@ export default function CardTeam({ imageSRC, name, text, description }) {
       <div className="text-center">
         <p className="text-xl text-gray-700 font-bold mb-2">{name}</p>
         <p className="text-base text-gray-400 font-normal">{text}</p>
-        <p className="text-base text-gray-400 font-normal italic">
+        <p className="text-base text-gray-400 font-normal italic text-sm">
           {description}
         </p>
       </div>

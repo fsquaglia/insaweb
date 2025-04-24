@@ -24,11 +24,11 @@ export default async function Categories() {
 
   const colorCard = (data) => {
     switch (data) {
-      case "Damas":
+      case "Repuestos":
         return "bg-pink-900";
-      case "Caballeros":
+      case "Equipos":
         return "bg-sky-900";
-      case "Accesorios":
+      case "Plantas":
         return "bg-amber-900";
       default:
         return "";

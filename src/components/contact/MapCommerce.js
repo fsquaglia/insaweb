@@ -2,12 +2,12 @@ const MapCommerce = () => {
   return (
     <div className="w-full h-[600px]">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d672.002995576481!2d-61.243441621031195!3d-30.31141635712345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x944a79a50c5f6c3f%3A0xddfeb813b43d1a54!2sIhara%20%26%20London!5e1!3m2!1ses!2sar!4v1731524951528!5m2!1ses!2sar"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1469.726492908473!2d-61.497530019453976!3d-31.252284926525704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95caae3a2d1ff975%3A0xdb6d70e3f6497ea5!2sBv.%20Presidente%20Julio%20A.%20Roca%20455%2C%20S2300GEA%20Rafaela%2C%20Santa%20Fe!5e1!3m2!1ses!2sar!4v1745501167645!5m2!1ses!2sar"
         className="w-full h-full"
         style={{ border: 0 }}
-        allowFullScreen
+        allowFullScreen=""
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
+        referrerpolicy="no-referrer-when-downgrade"
       ></iframe>
     </div>
   );

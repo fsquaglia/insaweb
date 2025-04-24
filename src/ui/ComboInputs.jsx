@@ -5,12 +5,14 @@ import InputCustom from "./InputCustom";
 import { stringSizing } from "@/utils/SettingSizing";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 export default function ComboInputs({
   section,
   subSection,
   subObject,
   sectionFirebase,
+  pathToRevalidate, //path a revalidar, si no se especifica no se revalida
 }) {
   const [values, setValues] = useState({ ...subObject });
 
@@ -111,6 +113,10 @@ export default function ComboInputs({
         showConfirmButton: false,
         timer: 1500,
       });
+      //revalidar la ruta si se especifica
+      if (pathToRevalidate) {
+        revalidateSomePath(pathToRevalidate);
+      }
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

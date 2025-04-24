@@ -17,12 +17,25 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**", // Permite cualquier imagen desde Cloudinary
+      },
+      {
+        protocol: "https",
         hostname: "lh3.googleusercontent.com",
         port: "",
         pathname: "/**", // Permite cualquier imagen desde Google User Content
       },
+      {
+        protocol: "https",
+        hostname: "unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
+
   // async redirects() {
   //   return [
   //     {

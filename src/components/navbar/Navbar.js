@@ -25,7 +25,7 @@ export default function Navbar({ configurations }) {
           <Link href="/">
             <Image
               src="/images/logo_blanco01.png"
-              alt="Logo Ihara & London"
+              alt="Logo Insa Rafaela SA"
               width={64}
               height={64}
               className="size-12 sm:size-16"

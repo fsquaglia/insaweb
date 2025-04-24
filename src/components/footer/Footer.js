@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <div>
@@ -22,14 +24,16 @@ export default function Footer() {
           </div>
           <div className="text-center w-3/5 mx-auto flex flex-col justify-center items-center">
             {/* Contenido de la segunda columna */}
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/logosIharaLondon%2Flogo_blanco01.png?alt=media&token=92d797fd-31b6-42de-85d4-f93b662ab7c4"
-              alt="Logo Ihara & London"
-              height={"100px"}
-              width={"100px"}
+            <Image
+              src="/images/logo_blanco01.png"
+              alt="Logo Insa Rafaela SA"
+              width={96}
+              height={96}
+              className="size-12 sm:size-24"
             />
-            <h2 className="text-lg font-semibold">Ihara & London</h2>
-            <p className="text-sm">Indumentaria y Calzado</p>
+
+            <h2 className="text-lg font-semibold">Insa Rafaela S.A.</h2>
+            <p className="text-sm">Servicio de calidad.</p>
           </div>
           <div className="text-left w-3/5 mx-auto">
             {/* Contenido de la tercera columna */}
@@ -37,13 +41,13 @@ export default function Footer() {
             <p className="text-sm">
               Para más información, comuníquese con nosotros a través de
               <a
-                href="mailto:fernandosquaglia@gmail.com"
+                href="mailto:insa.rafaela@gmail.com"
                 className="underline mx-1"
               >
                 email
               </a>
               o{" "}
-              <a href="https://wa.me/5493408674244" className="underline mx-1">
+              <a href="https://wa.me/5493492396683" className="underline mx-1">
                 WhatsApp
               </a>
               o utilizando los datos proporcionados en la sección

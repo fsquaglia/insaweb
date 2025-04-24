@@ -8,8 +8,8 @@ import MessageComponent from "@/ui/MessageComponent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Ihara y London",
-  description: "Indumentaria y calzado para damas y caballeros",
+  title: "Insa Rafaela SA",
+  description: "Equipos y repuestos para el agro",
 };
 
 export default async function RootLayout({ children }) {

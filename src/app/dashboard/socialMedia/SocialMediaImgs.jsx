@@ -4,6 +4,7 @@ import ImgCustom from "@/ui/ImgCustom";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 function SocialMediaImgs({ valuesData }) {
   const [values, setValues] = useState(valuesData);
@@ -31,6 +32,7 @@ function SocialMediaImgs({ valuesData }) {
         showConfirmButton: false,
         timer: 1500,
       });
+      await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

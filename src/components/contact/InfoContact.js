@@ -1,6 +1,12 @@
 import { FaWhatsapp } from "react-icons/fa";
 
-function InfoContact({ direccion, localidad, provincia, whatsappLink }) {
+function InfoContact({
+  direccion,
+  localidad,
+  provincia,
+  whatsappLink1,
+  whatsappLink2,
+}) {
   return (
     <div className="grid grid-cols h-full">
       <div className="bg-blue-900 py-10 px-2 col-span-2">
@@ -13,13 +19,24 @@ function InfoContact({ direccion, localidad, provincia, whatsappLink }) {
             {`${direccion}, ${localidad} (${provincia})`}
           </span>
         </p>
-        <div className="font-bold text-blue-100 py-8">
+        <div className="font-bold text-blue-100 py-8 flex flex-col">
           <span>Comunicate</span>
-          <span>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <FaWhatsapp className="text-green-500 w-8 h-8 my-4 ml-2" />
-            </a>
-          </span>
+          <div className="flex flex-row items-center  gap-2">
+            <span className="w-24">Nicolás</span>
+            <span className="cursor-pointer">
+              <a href={whatsappLink1} target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp className="text-green-500 w-8 h-8 my-4 ml-2" />
+              </a>
+            </span>
+          </div>
+          <div className="flex flex-row items-center  gap-2">
+            <span className="w-24">Marcelo</span>
+            <span>
+              <a href={whatsappLink2} target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp className="text-green-500 w-8 h-8 my-4 ml-2" />
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
