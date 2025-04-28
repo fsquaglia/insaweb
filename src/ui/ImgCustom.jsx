@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import validateImage from "@/utils/ImageValidator";
 import { imgSizing } from "@/utils/SettingSizing";
 import { setImageStorage } from "@/utils/firebase/fetchFirebase";
+import { setImageCloudinary } from "@/utils/firebase/fetchCloudinary";
 
 //Nombre del comercio
 const nameCommerce = process.env.NEXT_PUBLIC_NAME_COMMERCE;
@@ -84,7 +85,7 @@ export default function ImgCustom({
       // subir la imagen al Storage de Firebase
       const folder = folderStorage ?? section;
 
-      const downloadURL = await setImageStorage(file, folder);
+      const downloadURL = await setImageCloudinary(file, folder);
       urlImgReturn(downloadURL);
     } catch (error) {
       console.error("Error al subir archivo: ", error);
