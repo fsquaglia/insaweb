@@ -7,6 +7,7 @@ import {
 import Swal from "sweetalert2";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCustom from "@/ui/ComboCustom";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -59,6 +60,7 @@ export default function Page() {
         showConfirmButton: false,
         timer: 1500,
       });
+      await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

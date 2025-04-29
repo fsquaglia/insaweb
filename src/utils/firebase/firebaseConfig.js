@@ -18,7 +18,7 @@ let firebaseConfig = {
 // Initialize Firebase with dynamic configuration
 let app;
 //if (typeof window !== 'undefined' && window.location.hostname === "localhost") {
-if (process.env.NEXT_PUBLIC_FIREBASE_EMULATORS === "emulatorss") {
+if (process.env.NEXT_PUBLIC_FIREBASE_EMULATORS === "emulators") {
   // Use local emulator settings
   const localConfig = {
     ...firebaseConfig,

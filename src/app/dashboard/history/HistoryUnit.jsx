@@ -3,6 +3,7 @@ import ComboCustom from "@/ui/ComboCustom";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 export default function HistoryUnit({ historyNum, historyKey }) {
   const [values, setValues] = useState({ ...historyNum });
@@ -36,6 +37,7 @@ export default function HistoryUnit({ historyNum, historyKey }) {
         showConfirmButton: false,
         timer: 1500,
       });
+      await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

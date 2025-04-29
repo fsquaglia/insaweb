@@ -3,8 +3,6 @@ import Link from "next/link";
 
 export default function Main({ main }) {
   //valores por defecto si no se recibe main
-  console.log("main", main);
-
   const imagen =
     main?.imagen ||
     "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/main%2Fmain01.jpg?alt=media&token=a56599f6-cf71-4329-9e13-6422c7a0f28c";
