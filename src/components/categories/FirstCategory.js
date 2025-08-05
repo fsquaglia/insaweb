@@ -10,7 +10,7 @@ function FirstCategory({ category, urlFragment }) {
     : [];
   return (
     <div className="col-start-1 row-span-2 drop-shadow-lg relative flex bg-white p-6">
-      <div className="absolute left-0 top-28 sm:top-60 h-72 sm:h-40 w-full bg-green-600 bg-opacity-50 z-10">
+      <div className="absolute left-0 top-28 sm:top-60 h-72 sm:h-40 w-full bg-blue-700 bg-opacity-50 z-10">
         <p className="absolute right-10 bottom-10 text-5xl text-slate-100">
           {category.docData.id || ""}
         </p>
@@ -40,7 +40,7 @@ function FirstCategory({ category, urlFragment }) {
       )}
       <div className="absolute top-10 right-4 flex flex-col items-end z-40">
         <p className="text-6xl font-sans text-slate-100 font-bold my-4">
-          FASHION
+          EFICIENCIA
         </p>
         <p className="font-sans text-white sm:text-slate-700 w-60 text-right text-xs lg:text-base">
           {category.docData.textoSeccionWeb || ""}

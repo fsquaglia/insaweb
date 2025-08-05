@@ -82,12 +82,14 @@ export default async function Home() {
     {
       id: "offers",
       component: <Offers />,
-      condition: configurations?.mostrarOfertasEnHome,
+      // condition: configurations?.mostrarOfertasEnHome,
+      condition: false,
     },
     {
       id: "tips",
       component: <Tips />,
-      condition: configurations?.mostrarTipsEnHome,
+      // condition: configurations?.mostrarTipsEnHome,
+      condition: false,
     },
     {
       id: "history",
@@ -97,7 +99,8 @@ export default async function Home() {
     {
       id: "about",
       component: <About about={data ? data.about : null} />,
-      condition: configurations?.mostrarAboutEnHome,
+      // condition: configurations?.mostrarAboutEnHome,
+      condition: false,
     },
     {
       id: "team",
@@ -120,12 +123,13 @@ export default async function Home() {
           showMap={configurations?.mostrarMapaEnHome ?? false}
         />
       ),
-      condition: true,
+      condition: false,
     },
     {
       id: "slogan",
       component: <Slogan slogan={data ? data.eslogan : null} />,
-      condition: configurations?.mostrarSloganEnHome,
+      // condition: configurations?.mostrarSloganEnHome,
+      condition: true,
     },
   ];
 

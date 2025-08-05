@@ -3,13 +3,13 @@ import CardCarousel from "./CardCarousel";
 import { getFolderStorage } from "@/utils/firebase/fetchFirebase";
 
 const imgsCarousel = [
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994580/insarafaela/rotormolino01_pjzxvp.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994579/insarafaela/zaranda01_zq8yqc.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994580/insarafaela/matriz01_m8gg97.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994580/insarafaela/rotormezcla01_ltkjo3.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994579/insarafaela/cangilon01_hmjaxj.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994579/insarafaela/correas_miad6r.png",
-  "https://res.cloudinary.com/foodexpressimg/image/upload/v1744994579/insarafaela/martillos01_qrnxyv.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/Zarandas_tr4ynb.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/Matriz_zvnfb7.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/Martillos_rcfzqt.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/Tornillo_paao7d.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/celdas_bt1xnm.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917352/insarafaela/carousel/Repuestos_ewprzf.png",
+  "https://res.cloudinary.com/foodexpressimg/image/upload/v1753917351/insarafaela/carousel/cangilon_xgkvei.png",
 ];
 
 export default async function Carousel() {

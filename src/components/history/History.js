@@ -105,7 +105,7 @@ export default function History({
       </div>
 
       {selectedCircle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-900 ease-in-out opacity-100">
           <div
             className="relative bg-white p-8 rounded-3xl shadow-xl w-[30rem] h-[30rem] max-w-full max-h-full flex flex-col justify-between"
             style={{

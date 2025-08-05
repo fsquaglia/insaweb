@@ -19,6 +19,8 @@ function Page({ params }) {
   const [subCategorySelected, setSubcategorySelected] = useState(
     decodeURIComponent(subcategoria)
   );
+  const imageBgUrl =
+    "https://res.cloudinary.com/foodexpressimg/image/upload/v1745019896/insarafaela/Anotaci%C3%B3n_2025-04-18_204232_z2o0su.jpg";
 
   useEffect(() => {
     setCategory(decodeURIComponent(categoria));
@@ -108,13 +110,13 @@ function Page({ params }) {
       {/*--------SideNav----------*/}
       <div className="w-full md:w-1/4">
         {/*SideNav -> Buscador*/}
-        <div className="border rounded flex justify-between items-center p-2 w-full sm:max-w-sm">
+        {/* <div className="border rounded flex justify-between items-center p-2 w-full sm:max-w-sm">
           <input
             className="border-0 bg-transparent flex-grow m-1 focus:outline-none w-full max-w-sm"
             placeholder="Próximamente disponible..."
           />
           <FaSearch className="text-gray-600 cursor-pointer w-5 h-5" />
-        </div>
+        </div> */}
         {/*SideNav -> SubCategorias*/}
         <div className="flex flex-col gap-4 my-4 md:my-12 text-slate-800">
           <span className="text-lg md:text-xl md:mb-6 mb-2">

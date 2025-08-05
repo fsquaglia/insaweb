@@ -31,9 +31,9 @@ export default function Navbar({ configurations }) {
               className="size-12 sm:size-16"
             />
           </Link>
-          <div className="absolute -bottom-1 -right-1">
+          {/* <div className="absolute -bottom-1 -right-1">
             <Likes session={session} status={status} />
-          </div>
+          </div> */}
         </div>
         <div className="flex-grow">
           <div className="hidden sm:block">

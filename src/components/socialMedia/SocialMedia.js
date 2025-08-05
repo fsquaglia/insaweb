@@ -12,7 +12,7 @@ export default function SocialMedia({ socialMedia }) {
     <div className="w-full text-center flex flex-col">
       <div className="h-24"></div>
       <section
-        className={`opacity-50 flex flex-col w-full h-[500px] bg-cover bg-fixed bg-center justify-center items-center ${
+        className={`opacity-50 flex flex-col w-full h-[400px] sm:h-[500px] bg-cover bg-fixed bg-center justify-center items-center ${
           imagenFondoSocialMedia ? "" : "bg-default-image-class"
         }`}
         style={
