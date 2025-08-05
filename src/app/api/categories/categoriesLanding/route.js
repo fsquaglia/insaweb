@@ -26,11 +26,16 @@ export async function GET(req) {
       (cat) => cat.docData.showLanding === true
     );
 
-    if (categoriesShowLanding.length > 3) {
-      categoriesShowLanding = categoriesShowLanding.slice(0, 3);
-    } else if (categoriesShowLanding.length < 3) {
-      categoriesShowLanding = categories.slice(0, 3);
-    }
+    // console.log(
+    //   "Categorías filtradas para mostrar en Landing:",
+    //   categoriesShowLanding
+    // );
+
+    // if (categoriesShowLanding.length > 3) {
+    //   categoriesShowLanding = categoriesShowLanding.slice(0, 3);
+    // } else if (categoriesShowLanding.length < 3) {
+    //   categoriesShowLanding = categories.slice(0, 3);
+    // }
 
     return new Response(JSON.stringify(categoriesShowLanding), {
       status: 200,

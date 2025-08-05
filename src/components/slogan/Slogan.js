@@ -7,21 +7,21 @@ export default function Slogan({ slogan }) {
   return (
     <div className="w-full flex items-center justify-center">
       <div
-        className={`shadow-2xl shadow-black text-[48px] lg:text-[60px] w-11/12 md:w-3/4 xl:w-1/2 h-[600px] my-20 ps-2 md:ps-8 flex items-end ${greatVibes.className}`}
+        className={`container max-w-5xl shadow-2xl shadow-black text-lg lg:text-[50px] h-[400px] sm:h-[600px] my-20 mx-2 sm:mx-20 ps-2 md:ps-8 flex items-end bg-gray-100 bg-contain ${greatVibes.className}`}
         style={{
           ...(imagen
             ? {
                 backgroundImage: `url(${imagen})`,
-                backgroundSize: "auto 100%",
-                backgroundPosition: "right center",
+                // backgroundSize: "auto 90%",
+                backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
               }
             : {
-                backgroundColor: "#f5f5f5", // Color de fondo por defecto
+                backgroundColor: "#e1e0e0ff", // Color de fondo por defecto
               }),
         }}
       >
-        <p className="text-slate-500">{titulo}</p>
+        <p className="m-8 text-slate-500">{titulo}</p>
       </div>
     </div>
   );

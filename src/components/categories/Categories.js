@@ -18,6 +18,7 @@ export default async function Categories() {
 
     // Intenta obtener el JSON
     dataCategories = await response.json();
+    // console.log("Categorías obtenidas:", dataCategories.length);
   } catch (error) {
     console.error("Error al obtener las categorías:", error);
   }
@@ -38,7 +39,7 @@ export default async function Categories() {
   return (
     <div>
       <div className="h-24"></div>
-      <div className="w-full sm:container sm:mx-auto flex flex-wrap justify-center items-center">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center">
         {dataCategories && dataCategories.length > 0 ? (
           dataCategories.map((cat) => (
             <CardCategory
@@ -47,7 +48,7 @@ export default async function Categories() {
               title={cat.docData.tituloCard}
               text={cat.docData.descripcion}
               imageSrc={cat.docData.imagen}
-              bgColorTailwind={colorCard(cat.docID)}
+              bgColorTailwind={colorCard("Plantas")}
               subcategories={cat.docData.subcategorias}
             />
           ))

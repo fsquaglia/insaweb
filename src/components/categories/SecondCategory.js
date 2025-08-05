@@ -10,7 +10,7 @@ function SecondCategory({ category, urlFragment }) {
     : [];
   return (
     <div className="col-start-1 row-start-3 row-span-2 drop-shadow-lg relative flex flex-row-reverse bg-white p-6">
-      <div className="absolute left-0 sm:left-10 top-0 h-full w-48 bg-amber-500 bg-opacity-50 z-20">
+      <div className="absolute left-0 sm:left-10 top-0 h-full w-48 bg-emerald-800 bg-opacity-50 z-20">
         <p className="absolute left-0 sm:left-10 bottom-10 text-6xl text-slate-200">
           {category.docData.id || ""}
         </p>

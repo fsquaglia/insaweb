@@ -11,7 +11,7 @@ function ThirdCategory({ category, urlFragment }) {
 
   return (
     <div className="col-start-1 row-start-5 row-span-2 drop-shadow-lg relative flex justify-center items-center bg-white">
-      <div className="hidden sm:block absolute right-10 top-0 h-full w-48 bg-violet-500 bg-opacity-50 z-20"></div>
+      <div className="hidden sm:block absolute right-10 top-0 h-full w-48 bg-orange-700 bg-opacity-50 z-20"></div>
       <div className="absolute top-0 left-0 right-0 bottom-0 sm:hidden bg-violet-300 bg-opacity-50 z-20"></div>
       <p className="absolute left-10 bottom-10 text-6xl text-slate-400 z-10">
         {category.docData.id || ""}
@@ -20,7 +20,7 @@ function ThirdCategory({ category, urlFragment }) {
         {category.docData.textoSeccionWeb || ""}
       </p>
       <p className="absolute left-10 top-10 text-6xl font-sans text-slate-100 font-bold z-20">
-        STYLE
+        SOLIDEZ
       </p>
       {/*div de las subcategorías*/}
       <div className="absolute left-10 top-0 h-full w-fit z-40 flex flex-col justify-center gap-4">

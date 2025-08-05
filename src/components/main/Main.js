@@ -12,17 +12,17 @@ export default function Main({ main }) {
 
   return (
     <div
-      className={`bg-gray-300 h-screen w-screen flex items-center bg-cover bg-fixed ${
-        imagen ? "xl:bg-top bg-right" : "bg-gray-500"
-      }`}
-      style={imagen ? { backgroundImage: `url(${imagen})` } : {}}
+      className="min-h-[400px] lg:h-screen flex items-center bg-contain lg:bg-cover bg-no-repeat bg-right lg:bg-fixed lg:bg-top bg-zinc-800"
+      style={imagen && { backgroundImage: `url(${imagen})` }}
     >
-      <div className="ml-10 md:ml-40 xl:ml-80 flex flex-col">
-        <p className="text-4xl lg:text-6xl font-bold text-gray-100 my-2">
+      <div className="ml-4 sm:ml-10 xl:ml-40 2xl:ml-60 flex flex-col">
+        <p className="text-2xl sm:text-4xl xl:text-6xl font-bold text-gray-100 my-2">
           {texto1}
         </p>
-        <p className="text-4xl lg:text-6xl font-bold text-gray-100">{texto2}</p>
-        <p className="text-xl text-gray-100 my-2">{texto3}</p>
+        <p className="text-2xl sm:text-4xl xl:text-6xl font-bold text-gray-100">
+          {texto2}
+        </p>
+        <p className="text-lg sm:text-xl text-gray-100 my-2">{texto3}</p>
         <div className="w-3/5 columns-2 my-6">
           <div>
             <Link href={"/categories"}>

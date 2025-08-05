@@ -163,14 +163,14 @@ function PageProductDetail({ params }) {
               </div>
               <hr className="my-2" />
               {/* CODIGOS */}
-              <div className="inline-flex bg-slate-200 text-slate-800 text-sm p-1 my-2">
+              {/* <div className="inline-flex bg-slate-200 text-slate-800 text-sm p-1 my-2">
                 <span className="me-2">{`Código ${product?.codigoNro}`}</span>
                 {product?.codigoAnterior && (
                   <span className="me-2">{`Código anterior: ${product?.codigoAnterior}`}</span>
                 )}
-              </div>
+              </div> */}
               {/*Visible sólo ADMIN (session) */}
-              {session && session.user?.role === "admin" && (
+              {false && session && session.user?.role === "admin" && (
                 <div className="bg-indigo-100 rounded w-full text-slate-500">
                   <div
                     className="border-b-2 border-gray-100 px-4 py-1 cursor-pointer"
@@ -202,8 +202,8 @@ function PageProductDetail({ params }) {
 
               <p className="text-slate-500 my-6">{product?.detalle}</p>
               {/* COLOR */}
-              <hr className="my-2" />
-              <p className="my-2 flex flex-row items-center">
+              {/* <hr className="my-2" /> */}
+              {/* <p className="my-2 flex flex-row items-center">
                 <IoIosColorPalette className="text-red-400 me-1" size={20} />
                 <span className="inline-block w-20 font-mono font-bold text-md">
                   COLOR:{" "}
@@ -211,9 +211,9 @@ function PageProductDetail({ params }) {
                 <span className="font-light text-lg uppercase">
                   {product?.color}
                 </span>
-              </p>
+              </p> */}
               {/* TALLAS */}
-              <p className="my-2 flex flex-row items-center">
+              {/* <p className="my-2 flex flex-row items-center">
                 <GiBodyHeight className="text-blue-400 me-1" size={20} />
                 <span className="inline-block w-20 font-mono font-bold text-md">
                   TALLAS*:{" "}
@@ -229,7 +229,7 @@ function PageProductDetail({ params }) {
                         {`${talle.magnitud} (${talle.stock})`}
                       </span>
                     ))}
-              </p>
+              </p> */}
 
               <hr className="my-2" />
               {/* NOTAS */}
@@ -255,10 +255,9 @@ function PageProductDetail({ params }) {
                   </span>
                 ))}
               <div className="text-xs text-slate-400 my-12">
-                *Disponibilidad de talles y números sujeta al stock en tienda
-                física. Las imágenes en ocasiones pueden ser solo ilustrativas.
-                Para más información sobre este producto, no dudes en
-                contactarnos.
+                *Las imágenes son meramente ilustrativas. El producto puede
+                variar en color, forma y tamaño. Para más información sobre este
+                producto, no dudes en contactarnos.
               </div>
             </div>
           </div>

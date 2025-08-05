@@ -15,9 +15,9 @@ export default function Team({
       titulo: "He/Él",
     },
     she: {
-      descripcion: "Nacida para la moda",
+      descripcion: "",
       imagen: "",
-      nombre: "Aye",
+      nombre: "",
       titulo: "She/Ella",
     },
   },
