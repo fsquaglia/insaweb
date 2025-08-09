@@ -21,18 +21,18 @@ export default function Contact({ medios, ubicacion, showMap }) {
   return (
     <div>
       <div className="h-32"></div>
-      <div className="xl:container mx-auto relative">
+      <div className="xl:container mx-auto block sm:relative">
         {/* Mapa de fondo */}
         <div>{showMap && <MapCommerce />}</div>
 
         {/* Contenido superpuesto */}
-        <div className="flex flex-row absolute right-5 2xl:right-10 top-10 w-4/5 md:w-1/2 lg:w-2/5 xl:w-1/3">
-          <div className="w-3/5">
+        <div className="flex flex-col sm:flex-row block sm:absolute right-0 sm:right-5 2xl:right-10 sm:top-10 w-full sm:w-4/5 md:w-1/2 lg:w-2/5 xl:w-1/3">
+          <div className="sm:w-3/5">
             {/* Formulario de contacto */}
             <ContactUs />
           </div>
           {/* Datos de contacto */}
-          <div className="w-2/5">
+          <div className="sm:w-2/5">
             <InfoContact
               direccion={direccion}
               localidad={localidad}

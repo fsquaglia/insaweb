@@ -2,8 +2,15 @@
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 export default function ContactUs() {
+  const { data: session, status } = useSession();
+
+  // Si hay sesión, usar el email del usuario autenticado
+  const defaultEmail = session?.user?.email || "";
+  const defaultName = session?.user?.name || "";
+
   const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_KEY;
@@ -21,6 +28,11 @@ export default function ContactUs() {
 
   // Escuchar cambios en el campo "message"
   const messageWatch = watch("message", "");
+
+  // Verificar el estado de la sesión
+  if (status === "loading") {
+    return <div>Cargando...</div>; // O un spinner de carga
+  }
 
   const sendEmail = (data) => {
     const formFields = {
@@ -100,8 +112,10 @@ export default function ContactUs() {
           name="user_email"
           placeholder="Email"
           maxLength={maxLengthEmail}
+          disabled={!!defaultEmail} // Deshabilitar si hay sesión
+          defaultValue={defaultEmail} // Usar el email del usuario autenticado
           {...register("user_email", {
-            required: "Campo requerido",
+            required: defaultEmail ? false : "Campo requerido", // Solo requerido si no hay sesión
             minLength: { value: 7, message: "Siete caracteres mínimos" },
           })}
           className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none text-gray-700 pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
