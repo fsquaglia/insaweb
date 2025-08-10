@@ -100,7 +100,7 @@ export default async function Home() {
       id: "about",
       component: <About about={data ? data.about : null} />,
       // condition: configurations?.mostrarAboutEnHome,
-      condition: false,
+      condition: true,
     },
     {
       id: "team",
@@ -123,7 +123,7 @@ export default async function Home() {
           showMap={configurations?.mostrarMapaEnHome ?? false}
         />
       ),
-      condition: false,
+      condition: true,
     },
     {
       id: "slogan",
