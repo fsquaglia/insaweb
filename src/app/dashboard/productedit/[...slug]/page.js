@@ -139,24 +139,18 @@ const sections = (
     id: 2,
     description: "Agrega una imagen a tu producto.",
     content: (
-      <div>
-        {values?.imagen?.length >= 2 ? (
-          <div className="mx-auto bg-gray-200 p-1 text-center  my-1 text-red-400 rounded">
-            Llegaste al límite de dos imágenes, elimina alguna para poder subir
-            otra.
-          </div>
-        ) : (
-          <ImageUpload onUploadSuccess={handleUploadSuccess} />
-        )}
-
+      <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex gap-4 my-2">
           {values?.imagen && values.imagen.length > 0 ? (
             values.imagen.map((imgUrl, index) => (
-              <div key={index} className="w-1/2 relative">
+              <div
+                key={index}
+                className="border-2 w-1/2 aspect-square relative"
+              >
                 <img
                   src={imgUrl}
                   alt={`Imagen ${index + 1}`}
-                  className="w-full h-auto object-cover"
+                  className="w-full aspect-square object-cover"
                   onLoad={(e) => {
                     e?.target.nextSibling &&
                       e.target.nextSibling.classList.remove("invisible");
@@ -191,6 +185,14 @@ const sections = (
             </p>
           )}
         </div>
+        {values?.imagen?.length >= 2 ? (
+          <div className="mx-auto bg-gray-200 p-1 text-center  my-1 text-red-400 rounded">
+            Llegaste al límite de dos imágenes, elimina alguna para poder subir
+            otra.
+          </div>
+        ) : (
+          <ImageUpload onUploadSuccess={handleUploadSuccess} />
+        )}
       </div>
     ),
   },

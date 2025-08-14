@@ -538,3 +538,6 @@ export const dataConfigInitial = {
   mostrarNovedadesEnHome: true,
   mostrarMasMeGustaEnHome: true,
 };
+
+// Imagen genérica para Categorías de productos y otros
+export const urlGenerica = `https://res.cloudinary.com/foodexpressimg/image/upload/v1755090679/insarafaela/generic01_ozlb5m.png`;

@@ -87,38 +87,39 @@ function PageProductDetail({ params }) {
           {/*--- div de las imágenes---- */}
           <div className="w-full md:w-2/5 bg-slate-50 p-8">
             {product?.imagen && product.imagen.length > 0 ? (
-              <div className=" flex justify-center items-center h-full">
-                <div className="">
-                  {/* *** Imagen grande principal *** */}
-                  <div className="mb-4">
-                    <Image
-                      src={currentImage} // *** Mostrar la imagen seleccionada ***
-                      alt={`Imagen de ${product.nombre}`}
-                      width={500}
-                      height={500}
-                      className="rounded-lg object-cover"
-                      priority={true}
-                    />
-                  </div>
-
-                  {/* *** Mostrar las miniaturas si hay más de una imagen *** */}
-                  {product.imagen.length > 1 && (
-                    <div className="flex justify-around ">
-                      {product.imagen.map((imgUrl, index) => (
-                        <div key={index} className="">
-                          <Image
-                            src={imgUrl}
-                            alt={`Miniatura ${index + 1}`}
-                            width={100}
-                            height={100}
-                            className="cursor-pointer rounded-lg border-2 border-gray-200 object-cover"
-                            onClick={() => setCurrentImage(imgUrl)} // *** Cambiar la imagen grande al hacer clic ***
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+              <div className=" flex flex-col justify-center items-center h-full">
+                {/* *** Imagen grande principal *** */}
+                <div className="mb-4 aspect-square flex justify-center items-center">
+                  <Image
+                    src={currentImage} // *** Mostrar la imagen seleccionada ***
+                    alt={`Imagen de ${product.nombre}`}
+                    width={500}
+                    height={500}
+                    className="rounded-lg object-cover"
+                    priority={true}
+                  />
                 </div>
+
+                {/* *** Mostrar las miniaturas si hay más de una imagen *** */}
+                {product.imagen.length > 1 && (
+                  <div className="flex justify-around gap-4">
+                    {product.imagen.map((imgUrl, index) => (
+                      <div
+                        key={index}
+                        className="aspect-square flex justify-center items-center border-2 border-gray-200 rounded-lg "
+                      >
+                        <Image
+                          src={imgUrl}
+                          alt={`Miniatura ${index + 1}`}
+                          width={100}
+                          height={100}
+                          className="cursor-pointer rounded-lg object-cover"
+                          onClick={() => setCurrentImage(imgUrl)} // *** Cambiar la imagen grande al hacer clic ***
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
               <span className="text-center my-12 text-slate-600">

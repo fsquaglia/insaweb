@@ -13,9 +13,10 @@ import { productBase } from "@/utils/SettingInitialData";
 import SubCategory from "./SubCategory";
 import SwitchText from "@/ui/SwitchText";
 import { revalidateSomePath } from "@/utils/actions/actions";
+import { urlGenerica } from "@/utils/SettingInitialData";
 
-const nameCommerce = "Ihara+y+London";
-const urlGenerica = `https://via.placeholder.com/600?text=${nameCommerce}`;
+// const nameCommerce = "Ihara+y+London";
+// const urlGenerica = `https://via.placeholder.com/600?text=${nameCommerce}`;
 const newCategory = {
   docID: "newCategory",
   docData: {
