@@ -6,6 +6,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 //import { storage } from "./firebase"; // Asegúrate de importar correctamente
 import { imagesDB as storage } from "@/utils/firebase/firebaseConfig";
 import { imgSizing } from "@/utils/SettingSizing";
+import { CldUploadWidget } from "next-cloudinary";
+import { FaRegImage } from "react-icons/fa6";
 
 export default function ImageUpload({ onUploadSuccess }) {
   const [error, setError] = useState(null);
@@ -68,11 +70,12 @@ export default function ImageUpload({ onUploadSuccess }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div
+    <div>
+      {/* <div
       {...getRootProps()}
       className="border-dashed border-2 p-4 rounded-lg cursor-pointer"
-    >
-      <input {...getInputProps()} />
+    > */}
+      {/* <input {...getInputProps()} />
       {isDragActive ? (
         <p>Suelta el archivo aquí...</p>
       ) : (
@@ -80,7 +83,59 @@ export default function ImageUpload({ onUploadSuccess }) {
           Arrastra y suelta una imagen aquí, o haz clic para seleccionar un
           archivo
         </p>
-      )}
+      )} */}
+
+      {/*** Widget de Cloudinary ***/}
+      <CldUploadWidget
+        uploadPreset="tspeblqq"
+        options={{
+          folder: "productos",
+          multiple: false,
+          sources: ["local", "url", "camera"],
+          maxFileSize: 1 * 1024 * 1024, // 1MB como ejemplo
+          resource_type: "image",
+        }}
+        onSuccess={(result) => {
+          // console.log("✅ Imagen subida a Cloudinary:", result?.info?.secure_url);
+          const url = result?.info?.secure_url || "";
+          // urlImgReturn(url);
+          // setImageUrl(url);
+          onUploadSuccess(url);
+        }}
+      >
+        {({ open }) => {
+          return (
+            <div>
+              {/* <div
+              className="relative bg-gray-200 shadow-lg flex justify-center items-center "
+              style={{
+                width: 384,
+                height: 384,
+                overflow: "hidden",
+                position: "relative",
+              }}
+              // onClick={openWidget}
+            > */}
+              {/* {imageUrl && (
+                    <Image
+                      src={imageUrl}
+                      alt={`${nameCommerce} ${section}`}
+                      fill
+                      sizes={`${imageStyle.width}px`}
+                      className="absolute inset-0 z-0 object-contain"
+                    />
+                  )} */}
+              <button
+                className="rounded-full p-4 bg-blue-400 text-slate-100 flex justify-center items-center hover:bg-blue-500 transition"
+                onClick={() => open()}
+              >
+                <FaRegImage size={20} />
+              </button>
+            </div>
+          );
+        }}
+      </CldUploadWidget>
+      {/*** Widget de Cloudinary ***/}
 
       {error && <p className="text-red-500">{error}</p>}
       {uploading && <p>Subiendo imagen...</p>}

@@ -3,6 +3,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { FaRegImage } from "react-icons/fa6";
 
 const nameCommerce = process.env.NEXT_PUBLIC_NAME_COMMERCE;
 
@@ -66,10 +67,10 @@ export default function ImgCustom({
               />
             )}
             <button
-              className="rounded-xl p-2 bg-blue-400 absolute bottom-2 right-2 z-10 text-slate-100"
+              className="rounded-full p-4 bg-blue-400 absolute bottom-2 right-2 z-10 text-slate-100 flex justify-center items-center hover:bg-blue-500 transition"
               onClick={() => open()}
             >
-              Imagen
+              <FaRegImage size={20} />
             </button>
           </div>
         );

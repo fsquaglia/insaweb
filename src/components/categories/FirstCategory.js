@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-function FirstCategory({ category, urlFragment }) {
+function FirstCategory({ category, urlFragment, word, color }) {
   const sortedSubcategories = category.docData.subcategorias
     ? category.docData.subcategorias
         .slice()
@@ -9,8 +9,11 @@ function FirstCategory({ category, urlFragment }) {
         .slice(0, 5)
     : [];
   return (
-    <div className="col-start-1 row-span-2 drop-shadow-lg relative flex bg-white p-6">
-      <div className="absolute left-0 top-28 sm:top-60 h-72 sm:h-40 w-full bg-blue-700 bg-opacity-50 z-10">
+    <div className="w-full drop-shadow-lg relative flex bg-white p-6">
+      {/* Texto de la Categoría y FRANJA de color */}
+      <div
+        className={`absolute left-0 top-28 sm:top-60 h-72 sm:h-40 w-full bg-opacity-50 z-10 ${color}`}
+      >
         <p className="absolute right-10 bottom-10 text-5xl text-slate-100">
           {category.docData.id || ""}
         </p>
@@ -23,24 +26,26 @@ function FirstCategory({ category, urlFragment }) {
               key={subcategoria}
               href={`${urlFragment}/${category.docID}/${subcategoria}`}
             >
-              <p className="text-center text-xs sm:text-sm font-sans font-bold text-green-300 cursor-pointer hover:underline">
+              <p className="text-center text-xs sm:text-sm font-sans font-bold text-emerald-500 cursor-pointer hover:underline">
                 {subcategoria}
               </p>
             </Link>
           ))}
       </div>
+      {/* Imagen de la Categoría */}
       {category.docData.imagen && (
         <Image
           src={category.docData.imagen}
           alt={`Imagen de la categoría ${category.docData.id}`}
           width={420}
           height={420}
-          className="h-[420px] object-scale-down object-left grayscale brightness-150"
+          className="h-[420px] object-scale-down object-left "
         />
       )}
       <div className="absolute top-10 right-4 flex flex-col items-end z-40">
+        {/* Palabra como Potencia, Solidez, Eficiencia */}
         <p className="text-6xl font-sans text-slate-100 font-bold my-4">
-          EFICIENCIA
+          {word || "Potencia"}
         </p>
         <p className="font-sans text-white sm:text-slate-700 w-60 text-right text-xs lg:text-base">
           {category.docData.textoSeccionWeb || ""}

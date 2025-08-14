@@ -21,7 +21,7 @@ function CardProduct({
   };
 
   return (
-    <div className="container w-72  flex justify-center h-fit">
+    <div className="container w-72 h-fit flex justify-center">
       <div className="bg-white  shadow-lg  rounded transform hover:drop-shadow-xl hover:shadow-emerald-200  duration-500 ease-in-out">
         {/*Imágenes del producto y LIKE */}
         <div className="relative">
@@ -29,25 +29,27 @@ function CardProduct({
             New
           </span> */}
 
-          {likesCount > 0 && (
+          {false && likesCount > 0 && (
             <div className="absolute top-0 left-0 text-sm font-semibold m-2 flex flex-row items-center h-8 gap-1">
               <span className="text-slate-500">{likesCount}</span>
               <FaHeart className="text-red-500" />
             </div>
           )}
-          <div className="absolute top-0 right-0 m-2 flex flex-row items-center justify-center h-8 text-lg">
-            <button
-              onClick={() =>
-                onToggleLike(
-                  product?.docID,
-                  product?.docData?.nombre,
-                  product?.docData?.imagen[0]
-                )
-              }
-            >
-              {isLiked ? "💖" : "🤍"}
-            </button>
-          </div>
+          {false && (
+            <div className="absolute top-0 right-0 m-2 flex flex-row items-center justify-center h-8 text-lg">
+              <button
+                onClick={() =>
+                  onToggleLike(
+                    product?.docID,
+                    product?.docData?.nombre,
+                    product?.docData?.imagen[0]
+                  )
+                }
+              >
+                {isLiked ? "💖" : "🤍"}
+              </button>
+            </div>
+          )}
 
           {product && product?.docData.imagen.length > 0 && (
             <Image
@@ -55,7 +57,7 @@ function CardProduct({
               alt={product.docData.nombre}
               width={300}
               height={300}
-              className="rounded-t object-cover"
+              className="rounded-t object-cover w-72 h-72"
               priority
             />
           )}
@@ -73,7 +75,7 @@ function CardProduct({
         </div>
 
         {/*-----Datos del producto----- */}
-        <div className="p-2 text-center">
+        <div className="p-2 text-center bg-stone-50">
           {/*Nombre de producto */}
           <Link
             href={`/product-category/productDetail/${category}/${subCategory}/${product?.docID}`}
@@ -95,7 +97,7 @@ function CardProduct({
         </div>
         <div>
           {/*Marca del producto */}
-          {product && (
+          {false && product && (
             <div className=" text-center bg-emerald-200 font-light text-slate-500 text-md w-full p-2">
               {product?.docData.marca}
             </div>
