@@ -7,7 +7,7 @@ import {
 import Swal from "sweetalert2";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCustom from "@/ui/ComboCustom";
-// import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateSomePath } from "@/utils/actions/actions";
 import { revalidateTag } from "@/utils/actions/revalidations";
 
 export default function Page() {
@@ -55,6 +55,7 @@ export default function Page() {
     try {
       await setNodoRealtime("main", values);
       await revalidateTag("landingPage");
+      await revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -62,7 +63,6 @@ export default function Page() {
         showConfirmButton: false,
         timer: 1500,
       });
-      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({
