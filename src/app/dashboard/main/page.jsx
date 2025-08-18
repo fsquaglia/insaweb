@@ -7,8 +7,9 @@ import {
 import Swal from "sweetalert2";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCustom from "@/ui/ComboCustom";
-import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
+// import { revalidateSomePath } from "@/utils/actions/actions";
+// import { revalidateTag } from "@/utils/actions/revalidations";
+import { revalidateUniqueTag } from "@/utils/actions/actions";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -54,8 +55,8 @@ export default function Page() {
   const onclick = async () => {
     try {
       await setNodoRealtime("main", values);
-      await revalidateTag("landingPage");
-      await revalidateSomePath("/");
+      revalidateUniqueTag("landingPage");
+      // await revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",
