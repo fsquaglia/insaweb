@@ -10,6 +10,7 @@ import ButtonDashboard from "@/ui/ButtonDashboard";
 import Swal from "sweetalert2";
 import SwitchVisible from "@/ui/SwitchVisible";
 import { InfinitySpin } from "react-loader-spinner";
+import { revalidateTag } from "@/utils/actions/revalidations";
 
 function PageConfig() {
   //agregar en componente edit product tomar
@@ -64,6 +65,7 @@ function PageConfig() {
 
     try {
       await updateConfig(newValues);
+      await revalidateTag("configurations");
       Swal.fire({
         position: "top-end",
         icon: "success",

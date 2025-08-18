@@ -36,8 +36,9 @@ function Page({ params }) {
           )}`,
           {
             next: {
-              revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+              // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
             },
+            tags: ["categories", "subcategories"],
           }
         );
         const categ = await res.json();

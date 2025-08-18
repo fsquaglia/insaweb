@@ -55,37 +55,45 @@ function DivContainer({ children, typeForm, handleSubmit, error }) {
             <DivGoogle textGoogle={textGoogle} />
           )}
 
-          {typeForm === "forgot" && <DivForgotPass element={"up"} />}
+          {false && typeForm === "forgot" && <DivForgotPass element={"up"} />}
           {/* Línea horizontal con texto */}
-          <div className="flex items-center my-2">
-            <hr className="h-0 border-b border-solid grow" />
-            <p className="mx-4 text-xs sm:text-normal">{dataLine || ""}</p>
-            <hr className="h-0 border-b border-solid grow" />
-          </div>
+          {false && (
+            <div className="flex items-center my-2">
+              <hr className="h-0 border-b border-solid grow" />
+              <p className="mx-4 text-xs sm:text-normal">{dataLine || ""}</p>
+              <hr className="h-0 border-b border-solid grow" />
+            </div>
+          )}
           {/* Contenido variable */}
-          <div>{children}</div>
+          {false && <div>{children}</div>}
 
           {/* Textos de registro, inicio de sesión, etc */}
-          <div className="mx-2">
-            {typeForm === "login" && <DivLogin />}
-            {typeForm === "register" && <DivRegister />}
-            {typeForm === "resetPass" && <DivForgotPassReceiver />}
-            {typeForm === "forgot" && <DivForgotPass element={"down"} />}
-          </div>
+          {false && (
+            <div className="mx-2">
+              {typeForm === "login" && <DivLogin />}
+              {typeForm === "register" && <DivRegister />}
+              {typeForm === "resetPass" && <DivForgotPassReceiver />}
+              {typeForm === "forgot" && <DivForgotPass element={"down"} />}
+            </div>
+          )}
 
           {/* Errores */}
-          <div>
-            {error && (
-              <p className="text-red-500 my-2 text-xs sm:text-sm">{error}</p>
-            )}
-          </div>
+          {false && (
+            <div>
+              {error && (
+                <p className="text-red-500 my-2 text-xs sm:text-sm">{error}</p>
+              )}
+            </div>
+          )}
           {/* Botón inferior */}
-          <button
-            className="border w-full px-6 py-4 sm:py-5 sm:mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-full sm:rounded-2xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 bg-blue-500"
-            type="submit"
-          >
-            {textButton || "Aplicar"}
-          </button>
+          {false && (
+            <button
+              className="border w-full px-6 py-4 sm:py-5 sm:mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-full sm:rounded-2xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 bg-blue-500"
+              type="submit"
+            >
+              {textButton || "Aplicar"}
+            </button>
+          )}
         </form>
       </div>
     </div>

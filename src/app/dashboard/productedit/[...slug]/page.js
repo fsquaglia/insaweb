@@ -22,6 +22,7 @@ import {
   updateProductByID,
 } from "@/utils/firebase/fetchFirebase";
 import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateTag } from "@/utils/actions/revalidations";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -578,7 +579,7 @@ function ProductPage({ params }) {
     if (values.publicado) {
       //el producto se PUBLICA
       //!AQUI HACER LAS VALIDACIONES DE LOS CAMPOS
-      alert("aquí hacer las validaciones");
+      alert("Chequea todos los campos antes de publicar");
     }
     const showMessage = values.publicado
       ? "Producto actualizado y publicado"
@@ -600,6 +601,8 @@ function ProductPage({ params }) {
           subcategory
         )}`
       );
+      await revalidateTag("products");
+      await revalidateTag("productById");
 
       Swal.fire({
         position: "center",

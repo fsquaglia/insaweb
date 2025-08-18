@@ -23,6 +23,7 @@ export default function PageUsers() {
         const response = await fetch(`/api/users/userById/${userId}`, {
           next: {
             revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+            tags: ["userById", "users"],
           },
         });
         if (!response.ok) throw new Error("No encontramos el usuario");

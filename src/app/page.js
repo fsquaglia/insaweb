@@ -21,7 +21,8 @@ export default async function Home() {
   try {
     const homeResponse = await fetch(`${apiUrl}/api/home`, {
       next: {
-        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+        tags: ["landingPage"],
       },
     });
 
@@ -38,7 +39,8 @@ export default async function Home() {
   try {
     const configResponse = await fetch(`${apiUrl}/api/configurations`, {
       next: {
-        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
+        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
+        tags: ["configurations"],
       },
     });
 

@@ -4,7 +4,8 @@ import ImgCustom from "@/ui/ImgCustom";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
-import { revalidateSomePath } from "@/utils/actions/actions";
+// import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateTag } from "@/utils/actions/revalidations";
 
 function SocialMediaImgs({ valuesData }) {
   const [values, setValues] = useState(valuesData);
@@ -25,6 +26,7 @@ function SocialMediaImgs({ valuesData }) {
   const onclickFondo = async () => {
     try {
       await setNodoRealtime("contacto/socialMedia", values.socialMedia);
+      await revalidateTag("landingPage");
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -32,7 +34,7 @@ function SocialMediaImgs({ valuesData }) {
         showConfirmButton: false,
         timer: 1500,
       });
-      await revalidateSomePath("/");
+      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

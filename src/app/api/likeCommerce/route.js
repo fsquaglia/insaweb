@@ -1,6 +1,6 @@
 import { getDocumentById } from "@/utils/firebase/fetchFirebase";
 
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export async function GET(req) {
   try {

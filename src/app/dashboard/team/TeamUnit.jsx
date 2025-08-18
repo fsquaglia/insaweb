@@ -3,7 +3,8 @@ import ComboCustom from "@/ui/ComboCustom";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { revalidateSomePath } from "@/utils/actions/actions";
+// import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateTag } from "@/utils/actions/revalidations";
 
 export default function TeamUnit({ sectionTeam, teamKey }) {
   const [values, setValues] = useState({ ...sectionTeam });
@@ -30,7 +31,8 @@ export default function TeamUnit({ sectionTeam, teamKey }) {
   const onclick = async () => {
     try {
       await setNodoRealtime(`team/${teamKey}`, values);
-      await revalidateSomePath("/");
+      await revalidateTag("landingPage");
+      // await revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",

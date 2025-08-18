@@ -103,8 +103,8 @@ function SessionComponent({ session, status }) {
               </div>
             )}
 
-            {/*icono de edición de usuario*/}
-            {showUser && (
+            {/*icono de edición de usuario >> desactivado con false*/}
+            {false && showUser && (
               <div
                 className={`size-6 rounded-full bg-slate-100 border absolute -bottom-2 -right-2 z-50 flex items-center justify-center hover:bg-green-300 hover:border-green-300 transition-transform duration-700 ${
                   showUser ? "scale-100" : "scale-0"
@@ -126,8 +126,8 @@ function SessionComponent({ session, status }) {
               />
             </DivCircle>
           )}
-          {/*Ícono de notificaciones */}
-          {!isNotifications && showNotification && (
+          {/*Ícono de notificaciones >> desactivado con false */}
+          {false && !isNotifications && showNotification && (
             <DivCircle className="animate-pulse bg-rose-600 hover:bg-rose-500">
               <MdNotificationsActive
                 className="size-6"

@@ -43,6 +43,7 @@ function PageProductDetail({ params }) {
             next: {
               revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
             },
+            tags: ["products", "productById"],
           }
         );
 

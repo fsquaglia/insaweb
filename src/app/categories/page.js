@@ -30,7 +30,8 @@ export default async function PageCategories() {
   try {
     const response = await fetch(`${apiUrl}/api/categories/categories`, {
       next: {
-        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+        tags: ["categories, categoriesLanding, subcategories"],
       },
     });
     if (!response.ok) {
