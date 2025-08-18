@@ -13,6 +13,7 @@ import { productBase } from "@/utils/SettingInitialData";
 import SubCategory from "./SubCategory";
 import SwitchText from "@/ui/SwitchText";
 import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateTag } from "@/utils/actions/revalidations";
 import { urlGenerica } from "@/utils/SettingInitialData";
 
 // const nameCommerce = "Ihara+y+London";
@@ -92,8 +93,8 @@ function CategoryLoader({ data }) {
     }));
   };
 
-  //Button Actualizar
-  const onclick = async () => {
+  //Button Actualizar categoría
+  const handleSubmitCategories = async () => {
     //verificar que todos los campos tengan valores
     if (
       valuesEdit.docData.descripcion === "" ||
@@ -138,6 +139,7 @@ function CategoryLoader({ data }) {
       categoriesProducts.sort((a, b) => a.docID.localeCompare(b.docID));
       const newLoaderCategories = [...categoriesProducts, newCategory];
       setValues(newLoaderCategories);
+      await revalidateTag("categories");
 
       Swal.fire({
         position: "top-end",
@@ -146,7 +148,7 @@ function CategoryLoader({ data }) {
         showConfirmButton: false,
         timer: 1500,
       });
-      await revalidateSomePath("/");
+      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({
@@ -229,7 +231,7 @@ function CategoryLoader({ data }) {
               folderStorage={"image"}
               img={valuesEdit.docData.imagen}
               urlImgReturn={urlImgReturn}
-              onclick={onclick}
+              onclick={handleSubmitCategories}
             />
           </>
         ) : (

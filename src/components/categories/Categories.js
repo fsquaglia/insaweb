@@ -6,7 +6,10 @@ export default async function Categories() {
   let dataCategories;
   try {
     const response = await fetch(`${apiUrl}/api/categories/categoriesLanding`, {
-      next: { revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE) },
+      next: {
+        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+        tags: ["categories"],
+      },
     });
 
     // Verifica si la respuesta es OK

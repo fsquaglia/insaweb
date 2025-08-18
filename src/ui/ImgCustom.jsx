@@ -40,7 +40,7 @@ export default function ImgCustom({
         folder: section,
         multiple: false,
         sources: ["local", "url", "camera"],
-        maxFileSize: 1 * 1024 * 1024, // 5MB como ejemplo
+        maxFileSize: 1 * 1024 * 1024, // 1MB como ejemplo
         resource_type: "image",
       }}
       onSuccess={(result) => {

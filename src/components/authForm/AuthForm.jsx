@@ -63,7 +63,8 @@ function AuthForm() {
           !callbackUrl.startsWith("/dashboard")
         ) {
           // El usuario con rol "user" puede acceder a cualquier lugar excepto el dashboard
-          router.push(callbackUrl);
+          // router.push(callbackUrl);
+          router.push("/");
         } else {
           // Si no tienen permisos, redirigir a una página de error o su área permitida
           router.push("/unauthorized");
@@ -73,7 +74,8 @@ function AuthForm() {
         if (session?.user.role === "admin") {
           router.push("/dashboard"); // Admin puede ir al dashboard o a donde sea
         } else {
-          router.push("/users"); // Usuario normal se redirige a su área
+          // router.push("/users"); // Usuario normal se redirige a su área
+          router.push("/"); // Usuario normal se redirige a su área
         }
       }
     }

@@ -105,6 +105,7 @@ export const links = [
     name: "Variaciones",
     href: "/dashboard/variations",
     icon: IoColorPaletteSharp,
+    disabled: true,
     head: {
       title: "Sección variaciones",
       description:
@@ -134,6 +135,7 @@ export const links = [
     name: "Control de usuarios",
     href: "/dashboard/userManagement",
     icon: FaUserPen,
+    disabled: true,
     head: {
       title: "Sección de Control de usuarios",
       description:
@@ -144,6 +146,7 @@ export const links = [
     name: "Actividad",
     href: "/dashboard/activity",
     icon: RxActivityLog,
+    disabled: true,
     head: {
       title: "Actividad en la aplicación",
       description:
@@ -154,6 +157,7 @@ export const links = [
     name: "Cambia tu contraseña",
     href: "/dashboard/changePass",
     icon: PiPassword,
+    disabled: true,
     head: {
       title: "Aquí podrás cambiar tu contraseña",
       description:

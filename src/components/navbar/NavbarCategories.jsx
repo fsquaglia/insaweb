@@ -35,7 +35,8 @@ const NavbarCategories = () => {
       try {
         const res = await fetch(`/api/categories/categories`, {
           next: {
-            revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+            // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
+            tags: ["categories"],
           },
         });
 

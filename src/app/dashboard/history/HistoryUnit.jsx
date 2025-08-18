@@ -3,7 +3,8 @@ import ComboCustom from "@/ui/ComboCustom";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { revalidateSomePath } from "@/utils/actions/actions";
+// import { revalidateSomePath } from "@/utils/actions/actions";
+import { revalidateTag } from "@/utils/actions/revalidations";
 
 export default function HistoryUnit({ historyNum, historyKey }) {
   const [values, setValues] = useState({ ...historyNum });
@@ -30,6 +31,7 @@ export default function HistoryUnit({ historyNum, historyKey }) {
   const onclick = async () => {
     try {
       await setNodoRealtime(`historia/${historyKey}`, values);
+      await revalidateTag("landingPage");
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -37,7 +39,7 @@ export default function HistoryUnit({ historyNum, historyKey }) {
         showConfirmButton: false,
         timer: 1500,
       });
-      await revalidateSomePath("/");
+      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({
