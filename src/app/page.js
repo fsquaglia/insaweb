@@ -15,46 +15,17 @@ import MessageComponent from "@/ui/MessageComponent";
 export default async function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-  let configurations, data;
+  // ** Peticiones para datos de la Landing **
+  const [data, configurations, dataCategories] = await Promise.all([
+    fetcherWithTags(`${apiUrl}/api/home`, "landingPage"),
+    fetcherWithTags(`${apiUrl}/api/configurations`, "configurations"),
+    fetcherWithTags(
+      `${apiUrl}/api/categories/categories?landing=true`,
+      "categories"
+    ),
+  ]);
 
-  // Primera petición: Datos de home
-  try {
-    const homeResponse = await fetch(`${apiUrl}/api/home`, {
-      next: {
-        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_LARGE),
-        tags: ["landingPage"],
-      },
-    });
-
-    if (!homeResponse.ok) {
-      throw new Error("Error al cargar home");
-    }
-
-    data = await homeResponse.json();
-  } catch (error) {
-    console.error("Error en la solicitud de home:", error);
-  }
-
-  // Segunda petición: Configuraciones
-  try {
-    const configResponse = await fetch(`${apiUrl}/api/configurations`, {
-      next: {
-        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
-        tags: ["configurations"],
-      },
-    });
-
-    if (!configResponse.ok) {
-      throw new Error("Error al cargar la configuración");
-    }
-
-    configurations = await configResponse.json();
-  } catch (error) {
-    console.error("Error en la solicitud de configuraciones:", error);
-  }
-
-  // Si ambas peticiones fallan, mostramos un mensaje de error
-  if (!data || !configurations) {
+  if (!data || !configurations || !dataCategories) {
     return (
       <div className="flex mx-auto my-4">
         <MessageComponent
@@ -78,7 +49,7 @@ export default async function Home() {
     },
     {
       id: "categories",
-      component: <Categories />,
+      component: <Categories dataCategories={dataCategories} />,
       condition: true,
     },
     {
@@ -137,9 +108,6 @@ export default async function Home() {
 
   return (
     <div>
-      {/* <div className="bg-slate-900 text-gray-200 bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-20">
-        <Navbar configurations={configurations} />
-      </div> */}
       <main className="w-full flex flex-col items-center justify-center">
         {sections
           .filter((section) => section.condition)
@@ -152,4 +120,16 @@ export default async function Home() {
       <Footer />
     </div>
   );
+}
+
+//helper function to fetch data with error handling and caching
+async function fetcherWithTags(url, tag) {
+  try {
+    const res = await fetch(url, { next: { tags: [tag] } });
+    if (!res.ok) throw new Error(`Error al cargar ${url}`);
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }

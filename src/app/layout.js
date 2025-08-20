@@ -20,8 +20,7 @@ export default async function RootLayout({ children }) {
   try {
     const configResponse = await fetch(`${apiUrl}/api/configurations`, {
       next: {
-        // revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE_MEDIUM),
-        next: { tags: ["configurations"] },
+        tags: ["configurations"],
       },
     });
 
