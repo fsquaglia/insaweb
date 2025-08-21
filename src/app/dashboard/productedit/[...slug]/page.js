@@ -22,7 +22,6 @@ import {
   updateProductByID,
 } from "@/utils/firebase/fetchFirebase";
 import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
 
 //obtener la fecha de ayer en formato string AAAAMMDD
 function getYesterdayDate() {
@@ -601,8 +600,7 @@ function ProductPage({ params }) {
           subcategory
         )}`
       );
-      await revalidateTag("products");
-      await revalidateTag("productById");
+      await revalidateSomePath("/", "layout");
 
       Swal.fire({
         position: "center",

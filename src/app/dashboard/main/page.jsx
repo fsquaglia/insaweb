@@ -8,8 +8,6 @@ import Swal from "sweetalert2";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import ComboCustom from "@/ui/ComboCustom";
 import { revalidateSomePath } from "@/utils/actions/actions";
-// import { revalidateTag } from "@/utils/actions/revalidations";
-// import { revalidateUniqueTag } from "@/utils/actions/actions";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -22,7 +20,6 @@ export default function Page() {
         const data = await getNodoRealtime("main");
         if (data) {
           setValues(data);
-          // console.log(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -55,7 +52,6 @@ export default function Page() {
   const onclick = async () => {
     try {
       await setNodoRealtime("main", values);
-      // revalidateUniqueTag("landingPage");
       await revalidateSomePath("/");
       Swal.fire({
         position: "top-end",

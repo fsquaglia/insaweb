@@ -5,8 +5,8 @@ import InputCustom from "@/ui/InputCustom";
 import ButtonDashboard from "@/ui/ButtonDashboard";
 import { createSubcollection } from "@/utils/firebase/fetchFirebase";
 import Swal from "sweetalert2";
-// import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
+import { revalidateSomePath } from "@/utils/actions/actions";
+// import { revalidateTag } from "@/utils/actions/revalidations";
 
 function SubCategory({ categoryObject, reloadData }) {
   const [newSubCat, setNewSubCat] = useState("");
@@ -36,9 +36,10 @@ function SubCategory({ categoryObject, reloadData }) {
         setSubCatArray([...subCatArray, newSubCat]);
         setNewSubCat(""); // Limpiar el input después de agregar
         reloadData(); //recargar la lista de categorías y demás
-        // await revalidateSomePath("/categories");
-        await revalidateTag("categories");
-        await revalidateTag("subcategories");
+
+        await revalidateSomePath("/", "layout");
+        // await revalidateTag("categories");
+        // await revalidateTag("subcategories");
       }
     } catch (error) {
       console.error("Error! ", error);

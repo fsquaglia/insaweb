@@ -3,8 +3,7 @@ import ComboCustom from "@/ui/ComboCustom";
 import { setNodoRealtime } from "@/utils/firebase/fetchFirebase";
 import { useState } from "react";
 import Swal from "sweetalert2";
-// import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 export default function HistoryUnit({ historyNum, historyKey }) {
   const [values, setValues] = useState({ ...historyNum });
@@ -28,10 +27,11 @@ export default function HistoryUnit({ historyNum, historyKey }) {
   };
 
   //Button Actualizar
-  const onclick = async () => {
+  const handleOnclick = async () => {
     try {
       await setNodoRealtime(`historia/${historyKey}`, values);
-      await revalidateTag("landingPage");
+      await revalidateSomePath("/");
+
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -62,7 +62,7 @@ export default function HistoryUnit({ historyNum, historyKey }) {
         img={values?.imagen || ""}
         section={"history"}
         urlImgReturn={urlImgReturn}
-        onclick={onclick}
+        onclick={handleOnclick}
         switchLabel={"Visible en Home:"}
         initialValue={values?.visible}
         onToggle={onToggle}

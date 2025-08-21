@@ -7,8 +7,7 @@ import { useEffect, useState } from "react";
 import ComboCustom from "@/ui/ComboCustom";
 import SkeletonLoader from "@/ui/SkeletonLoader";
 import Swal from "sweetalert2";
-// import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 function PageAbout() {
   const [values, setValues] = useState({});
@@ -53,7 +52,7 @@ function PageAbout() {
   const onclick = async () => {
     try {
       await setNodoRealtime("about", values);
-      await revalidateTag("landingPage");
+      await revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -61,7 +60,6 @@ function PageAbout() {
         showConfirmButton: false,
         timer: 1500,
       });
-      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

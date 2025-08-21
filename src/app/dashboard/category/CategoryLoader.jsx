@@ -13,7 +13,7 @@ import { productBase } from "@/utils/SettingInitialData";
 import SubCategory from "./SubCategory";
 import SwitchText from "@/ui/SwitchText";
 import { revalidateSomePath } from "@/utils/actions/actions";
-import { revalidateTag } from "@/utils/actions/revalidations";
+// import { revalidateTag } from "@/utils/actions/revalidations";
 import { urlGenerica } from "@/utils/SettingInitialData";
 
 // const nameCommerce = "Ihara+y+London";
@@ -135,11 +135,21 @@ function CategoryLoader({ data }) {
         valuesEdit.docID,
         valuesEdit.docData
       );
+
+      //! revisar este código para poder trabajar con estado
+      //! local en lugar de hacer nuevamente las peticiones a firebase
+
       const categoriesProducts = await getAllDocsColection("productos");
       categoriesProducts.sort((a, b) => a.docID.localeCompare(b.docID));
       const newLoaderCategories = [...categoriesProducts, newCategory];
       setValues(newLoaderCategories);
-      await revalidateTag("categories");
+      // await revalidateTag("categories");
+      await revalidateSomePath("/", "layout");
+      // await revalidateSomePath("/categories");
+      // await revalidateSomePath("/product-category/[...slug]/page", "page");
+
+      //! ver revalidar navbar donde se ven las categorias
+      //! ver de revalidar menu lateral de categorías
 
       Swal.fire({
         position: "top-end",
