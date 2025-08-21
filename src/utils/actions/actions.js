@@ -1,6 +1,5 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { revalidateTag } from "next/cache";
 import { signIn } from "next-auth/react";
 
 export async function authenticate(formData) {
@@ -21,10 +20,6 @@ export async function authenticate(formData) {
   return null; // No hay error
 }
 
-export async function revalidateSomePath(path) {
-  revalidatePath(path);
-}
-
-export async function revalidateUniqueTag(tag) {
-  revalidateTag(tag);
+export async function revalidateSomePath(path, type = "page") {
+  revalidatePath(path, type);
 }

@@ -12,6 +12,7 @@ import {
 import Swal from "sweetalert2";
 import { productBase } from "@/utils/SettingInitialData";
 import MessageComponent from "@/ui/MessageComponent";
+import { revalidateSomePath } from "@/utils/actions/actions";
 
 function CategorySelect({ data }) {
   const router = useRouter();
@@ -110,6 +111,7 @@ function CategorySelect({ data }) {
           "",
           product.docData.imagen[0],
         ]);
+        await revalidateSomePath("/", "page");
 
         const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${newProduct.id}`;
         router.push(newRoute);
