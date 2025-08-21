@@ -25,7 +25,7 @@ function SocialMediaImgs({ valuesData }) {
   const onclickFondo = async () => {
     try {
       await setNodoRealtime("contacto/socialMedia", values.socialMedia);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",

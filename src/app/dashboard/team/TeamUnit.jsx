@@ -30,7 +30,7 @@ export default function TeamUnit({ sectionTeam, teamKey }) {
   const onclick = async () => {
     try {
       await setNodoRealtime(`team/${teamKey}`, values);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",

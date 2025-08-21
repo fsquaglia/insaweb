@@ -164,7 +164,7 @@ function CardVariations({
     try {
       //actualizamos los valores existentes de variaciones
       await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
-      await revalidateSomePath("/dashboard/variations");
+      revalidateSomePath("/dashboard/variations");
       Swal.fire({
         position: "center",
         icon: "success",
@@ -235,7 +235,7 @@ function CardVariations({
       //actualizamos los valores existentes de variaciones
       await setNodoRealtime(`variaciones/${idVariation}/data`, uniqueArray);
       //revalidamos la página para mostrar los cambios
-      await revalidateSomePath("/dashboard/variations");
+      revalidateSomePath("/dashboard/variations");
       //si los datos están en sessionStorage o localStorage, también los eliminamos
       if (typeof window !== "undefined") {
         sessionStorage.removeItem("variations");

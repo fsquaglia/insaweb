@@ -52,7 +52,7 @@ export default function SloganPage() {
   const onclick = async () => {
     try {
       await setNodoRealtime("eslogan", values);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",

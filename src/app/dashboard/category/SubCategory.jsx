@@ -37,7 +37,7 @@ function SubCategory({ categoryObject, reloadData }) {
         setNewSubCat(""); // Limpiar el input después de agregar
         reloadData(); //recargar la lista de categorías y demás
 
-        await revalidateSomePath("/", "layout");
+        revalidateSomePath("/", "layout");
         // await revalidateTag("categories");
         // await revalidateTag("subcategories");
       }

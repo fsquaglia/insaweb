@@ -52,7 +52,7 @@ function PageAbout() {
   const onclick = async () => {
     try {
       await setNodoRealtime("about", values);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",
