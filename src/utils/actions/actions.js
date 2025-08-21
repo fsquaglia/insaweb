@@ -23,6 +23,7 @@ export async function authenticate(formData) {
 // Revalidar la ruta según el tipo especificado
 // Si no se especifica tipo, revalida la ruta por defecto
 // Lo hice así porque estoy experimentando problemas de revalidación
+// Debe usar async porque es una acción del servidor
 export async function revalidateSomePath(path, type = "") {
   if (!path) {
     return null;
