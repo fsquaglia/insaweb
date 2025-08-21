@@ -52,7 +52,7 @@ export default function Page() {
   const onclick = async () => {
     try {
       await setNodoRealtime("main", values);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
       Swal.fire({
         position: "top-end",
         icon: "success",

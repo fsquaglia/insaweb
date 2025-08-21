@@ -65,7 +65,7 @@ function PageConfig() {
 
     try {
       await updateConfig(newValues);
-      await revalidateSomePath("/", "layout");
+      revalidateSomePath("/", "layout");
       Swal.fire({
         position: "top-end",
         icon: "success",

@@ -20,6 +20,25 @@ export async function authenticate(formData) {
   return null; // No hay error
 }
 
-export async function revalidateSomePath(path, type = "page") {
-  revalidatePath(path, type);
+// Revalidar la ruta según el tipo especificado
+// Si no se especifica tipo, revalida la ruta por defecto
+// Lo hice así porque estoy experimentando problemas de revalidación
+export function revalidateSomePath(path, type = "") {
+  if (!path) {
+    return null;
+  }
+
+  switch (type) {
+    case "":
+      revalidatePath(path);
+      break;
+    case "page":
+      revalidatePath(path, "page");
+      break;
+    case "layout":
+      revalidatePath(path, "layout");
+      break;
+    default:
+      return null;
+  }
 }

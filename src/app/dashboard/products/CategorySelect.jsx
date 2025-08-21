@@ -111,7 +111,7 @@ function CategorySelect({ data }) {
           "",
           product.docData.imagen[0],
         ]);
-        await revalidateSomePath("/", "page");
+        revalidateSomePath("/", "page");
 
         const newRoute = `/dashboard/productedit/${categorySelected.docID}/${subCatSelected}/${newProduct.id}`;
         router.push(newRoute);

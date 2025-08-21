@@ -188,11 +188,9 @@ function PageNotifications() {
         user.id
       );
 
-      await revalidateSomePath(
-        "/users/notifications",
-        "/users/profile",
-        "dashboard/userManagement"
-      );
+      revalidateSomePath("/users/notifications");
+      revalidateSomePath("/users/profile");
+      revalidateSomePath("dashboard/userManagement");
 
       setUser((prevUser) => ({
         ...prevUser,

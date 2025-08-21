@@ -30,7 +30,7 @@ export default function HistoryUnit({ historyNum, historyKey }) {
   const handleOnclick = async () => {
     try {
       await setNodoRealtime(`historia/${historyKey}`, values);
-      await revalidateSomePath("/");
+      revalidateSomePath("/");
 
       Swal.fire({
         position: "top-end",
@@ -39,7 +39,6 @@ export default function HistoryUnit({ historyNum, historyKey }) {
         showConfirmButton: false,
         timer: 1500,
       });
-      // await revalidateSomePath("/");
     } catch (error) {
       console.error("Error! ", error);
       Swal.fire({

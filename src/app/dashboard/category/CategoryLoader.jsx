@@ -144,7 +144,7 @@ function CategoryLoader({ data }) {
       const newLoaderCategories = [...categoriesProducts, newCategory];
       setValues(newLoaderCategories);
       // await revalidateTag("categories");
-      await revalidateSomePath("/", "layout");
+      revalidateSomePath("/", "layout");
       // await revalidateSomePath("/categories");
       // await revalidateSomePath("/product-category/[...slug]/page", "page");
 
