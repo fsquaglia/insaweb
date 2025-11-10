@@ -96,7 +96,7 @@ function PageProductDetail({ params }) {
                     alt={`Imagen de ${product.nombre}`}
                     width={500}
                     height={500}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-contain aspect-square"
                     priority={true}
                   />
                 </div>
@@ -114,7 +114,7 @@ function PageProductDetail({ params }) {
                           alt={`Miniatura ${index + 1}`}
                           width={100}
                           height={100}
-                          className="cursor-pointer rounded-lg object-cover"
+                          className="cursor-pointer rounded-lg object-contain aspect-square"
                           onClick={() => setCurrentImage(imgUrl)} // *** Cambiar la imagen grande al hacer clic ***
                         />
                       </div>

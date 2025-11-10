@@ -57,7 +57,7 @@ function CardProduct({
               alt={product.docData.nombre}
               width={300}
               height={300}
-              className="rounded-t object-cover w-72 h-72"
+              className="rounded-t object-contain w-72 h-72"
               priority
             />
           )}

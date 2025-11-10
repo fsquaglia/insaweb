@@ -24,6 +24,14 @@ export async function GET(req) {
       result = categories.filter((cat) => cat.docData.showLanding === true);
     }
 
+    // Ordenar de acuerdo al campo 'order' en 'docData', si no existe el campo, se coloca al final
+
+    result.sort((a, b) => {
+      const orderA = a.docData.order !== undefined ? a.docData.order : Infinity;
+      const orderB = b.docData.order !== undefined ? b.docData.order : Infinity;
+      return orderA - orderB;
+    });
+
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { "Content-Type": "application/json" },
