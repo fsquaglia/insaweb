@@ -26,6 +26,7 @@ import {
   variationsInitialData1,
 } from "@/utils/SettingInitialData";
 import Swal from "sweetalert2";
+import { revalidateAll } from "@/utils/actions/actions";
 
 export default function Page() {
   const [pointerEvent, setPointerEvent] = useState(true);
@@ -45,6 +46,11 @@ export default function Page() {
     } else {
       Swal.fire("Email incorrecto");
     }
+  };
+
+  const handleRevalidate = async () => {
+    const result = await revalidateAll();
+    alert(result.message);
   };
 
   return (
@@ -195,6 +201,19 @@ export default function Page() {
           textButton={"Actualizar Usuarios"}
           onClick={() => actualizarUsuarios()}
           fill={false}
+        />
+      </div>
+      <hr />
+      <span>
+        Revalidar la página principal después de realizar cambios en la
+        configuración u otros datos que afecten el contenido mostrado.
+      </span>
+      <div>
+        <ButtonGeneric
+          textButton={"Revalidar"}
+          onClick={() => {
+            handleRevalidate();
+          }}
         />
       </div>
     </div>
