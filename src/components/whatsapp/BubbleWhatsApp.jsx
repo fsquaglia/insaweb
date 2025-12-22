@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaWhatsapp, FaPaperPlane, FaTimes } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
-export default function BubbleWhatsApp() {
+export default function BubbleWhatsApp({phoneNumber = "5491122334455", messageText = "" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const pathname = usePathname();
-  const phoneNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5491122334455";
+  // const phoneNumber =
+  //   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5491122334455";
 
   const [productLink, setProductLink] = useState("");
 
@@ -35,7 +35,7 @@ export default function BubbleWhatsApp() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <div className="fixed bottom-20 right-5 z-50 flex flex-col items-end">
       <AnimatePresence>
         {isOpen && (
           <motion.div

@@ -9,8 +9,8 @@ export default function Contact({ medios, ubicacion, showMap }) {
     localidad = "Localidad",
     provincia = "Provincia",
   } = ubicacion || {};
-  const whatsappNicolas = "543492396684";
-  const whatsappMarcelo = "543492396683";
+  const whatsappNicolas = process.env.NEXT_PUBLIC_PHONE_NICO ;
+  const whatsappMarcelo = process.env.NEXT_PUBLIC_PHONE_MARCELO ;
 
   const whatsappMessage = encodeURIComponent(
     "Hola! me gustaría hacerles una consulta. Por favor, contáctenme."
