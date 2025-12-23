@@ -1,4 +1,4 @@
-import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import SocialIconLarge from "@/ui/SocialIconLarge";
 
 export default function SocialMedia({ socialMedia }) {
   const facebook1 = socialMedia?.facebook1 || "";
@@ -12,9 +12,7 @@ export default function SocialMedia({ socialMedia }) {
     <div className="w-full text-center flex flex-col">
       <div className="h-24"></div>
       <section
-        className={`opacity-50 flex flex-col w-full h-[400px] sm:h-[500px] bg-cover bg-fixed bg-center justify-center items-center ${
-          imagenFondoSocialMedia ? "" : "bg-default-image-class"
-        }`}
+        className="flex flex-col w-full h-[400px] sm:h-[500px] bg-cover bg-fixed bg-center justify-center items-center relative"
         style={
           imagenFondoSocialMedia
             ? {
@@ -23,8 +21,11 @@ export default function SocialMedia({ socialMedia }) {
             : {}
         }
       >
-        {/* div central */}
-        <div className="flex bg-slate-100 bg-opacity-90 w-1/2 md:w-5/12 lg:w-3/12 h-[500px] items-center justify-center">
+        {/* Pseudo-elemento para la opacidad solo del fondo */}
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+
+        {/* div central - con z-index para estar encima de la opacidad */}
+        <div className="flex bg-slate-100 bg-opacity-90 w-9/12 md:w-5/12 lg:w-3/12 h-[500px] items-center justify-center relative z-10">
           <div>
             <div className="w-20 h-1 bg-blue-400 mx-auto"></div>
             <p className="text-gray-80 text-3xl font-semibold my-4">
@@ -32,52 +33,25 @@ export default function SocialMedia({ socialMedia }) {
             </p>
             <div className="flex flex-wrap justify-center">
               {facebook1 && (
-                <span>
-                  <a
-                    href={facebook1}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                  >
-                    <FaFacebookF className="text-2xl m-4" />
-                  </a>
-                </span>
+                <SocialIconLarge
+                  social="facebook"
+                  handle="Tu Página"
+                  socialUrl=""
+                />
               )}
               {facebook2 && (
-                <span>
-                  <a
-                    href={facebook2}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                  >
-                    <FaFacebookF className="text-2xl m-4" />
-                  </a>
-                </span>
+                <SocialIconLarge
+                  social="facebook"
+                  handle="Tu Página"
+                  socialUrl=""
+                />
               )}
               {instagram1 && (
-                <span>
-                  <a
-                    href={instagram1}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram className="text-2xl m-4" />
-                  </a>
-                </span>
-              )}
-              {instagram2 && (
-                <span>
-                  <a
-                    href={instagram2}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram className="text-2xl m-4" />
-                  </a>
-                </span>
+                <SocialIconLarge
+                  social="instagram"
+                  handle="@insa.rafaela"
+                  socialUrl={instagram1}
+                />
               )}
             </div>
           </div>

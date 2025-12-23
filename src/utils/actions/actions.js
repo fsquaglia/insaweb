@@ -26,20 +26,35 @@ export async function authenticate(formData) {
 // Debe usar async porque es una acción del servidor
 export async function revalidateSomePath(path, type = "") {
   if (!path) {
-    return null;
+    return { success: false, message: "Path es requerido" };
   }
 
-  switch (type) {
-    case "":
-      revalidatePath(path);
-      break;
-    case "page":
-      revalidatePath(path, "page");
-      break;
-    case "layout":
-      revalidatePath(path, "layout");
-      break;
-    default:
-      return null;
+  try {
+    switch (type) {
+      case "":
+        revalidatePath(path);
+        break;
+      case "page":
+        revalidatePath(path, "page");
+        break;
+      case "layout":
+        revalidatePath(path, "layout");
+        break;
+      default:
+        return { success: false, message: "Tipo inválido" };
+    }
+
+    return {
+      success: true,
+      message: `Path "${path}" revalidado correctamente`,
+    };
+  } catch (error) {
+    console.error("Error revalidando path:", error);
+    return { success: false, message: "Error al revalidar" };
   }
+}
+
+// Helper para revalidar todo
+export async function revalidateAll() {
+  return revalidateSomePath("/", "layout");
 }

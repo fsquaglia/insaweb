@@ -516,7 +516,7 @@ function ProductPage({ params }) {
     }
     const newImages = values.imagen.filter((_, index) => index !== item);
     setValues((prevValues) => ({ ...prevValues, imagen: newImages }));
-    console.log(values.imagen);
+    // console.log(values.imagen);
   };
 
   //fn para actualizar documento de índice de Firestore con códigos de productos

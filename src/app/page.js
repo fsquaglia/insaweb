@@ -11,6 +11,7 @@ import Contact from "../components/contact/Contact";
 import Slogan from "../components/slogan/Slogan";
 import Footer from "@/components/footer/Footer";
 import MessageComponent from "@/ui/MessageComponent";
+import BubbleWhatsApp from "@/components/whatsapp/BubbleWhatsApp";
 
 export default async function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -117,6 +118,8 @@ export default async function Home() {
             </section>
           ))}
       </main>
+        {/* Componente flotante de WhatsApp */}
+          <BubbleWhatsApp />
       <Footer />
     </div>
   );
