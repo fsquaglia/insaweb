@@ -1,33 +1,43 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaWhatsapp, FaPaperPlane, FaTimes } from "react-icons/fa";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-export default function BubbleWhatsApp({phoneNumber = "5491122334455", messageText = "" }) {
+export default function BubbleWhatsApp({ phoneNumber = "", messageText = "" }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const pathname = usePathname();
-  // const phoneNumber =
-  //   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5491122334455";
+  const [message, setMessage] = useState(messageText || "");
+  const { data: session } = useSession();
+  const nameUserLogued = session?.user?.name || "Usuario";
+  // const pathname = usePathname();
 
-  const [productLink, setProductLink] = useState("");
+  if (!phoneNumber) {
+    phoneNumber = process.env.NEXT_PUBLIC_PHONE_NICO || "5493408674244";
+  }
 
-  useEffect(() => {
-    if (pathname.startsWith("/producto/")) {
-      setProductLink(window.location.href);
-    } else {
-      setProductLink("");
-    }
-  }, [pathname]);
+  // const [productLink, setProductLink] = useState("");
+
+  // useEffect(() => {
+  //   if (pathname.startsWith("/producto/")) {
+  //     setProductLink(window.location.href);
+  //   } else {
+  //     setProductLink("");
+  //   }
+  // }, [pathname]);
 
   const handleSend = () => {
-    const base = `Hola! `;
-    const productText = productLink
-      ? `Quisiera consultar sobre este producto: ${productLink}`
-      : "";
-    const fullMessage = encodeURIComponent(`${base}${message} ${productText}`);
+    const base = session
+      ? `Hola!, mi nombre es ${nameUserLogued}. Me gustaría saber más sobre sus servicios`
+      : `Hola! Me gustaría saber más sobre sus servicios.`;
+
+    const newMessage = message ? message : base;
+
+    // const productText = productLink
+    //   ? `Quisiera consultar sobre este producto: ${productLink}`
+    //   : "";
+    const fullMessage = encodeURIComponent(`${newMessage}`);
     const url = `https://wa.me/${phoneNumber}?text=${fullMessage}`;
     window.open(url, "_blank");
     setMessage("");

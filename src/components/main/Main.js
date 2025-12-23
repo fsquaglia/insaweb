@@ -11,28 +11,26 @@ export default function Main({ main }) {
   const texto3 = main?.texto3 || "Ofertas todas las semanas";
 
   return (
-    <div
-      className="min-h-[400px] lg:h-screen flex items-center bg-contain lg:bg-cover bg-no-repeat bg-right lg:bg-fixed lg:bg-top bg-zinc-800"
-      style={imagen && { backgroundImage: `url(${imagen})` }}
-    >
-      <div className="ml-4 sm:ml-10 xl:ml-40 2xl:ml-60 flex flex-col">
-        <p className="text-2xl sm:text-4xl xl:text-6xl font-bold text-gray-100 my-2">
+<div
+  className="min-h-[700px] lg:h-screen flex items-center bg-cover bg-no-repeat bg-hero-mobile lg:bg-hero-desktop bg-zinc-800 relative"
+  style={imagen && { backgroundImage: `url(${imagen})` }}
+>
+         {/* Pseudo-elemento para la opacidad solo del fondo */}
+  <div className="absolute inset-0 bg-black opacity-50 sm:hidden"></div>
+      
+      {/* Textos y botón */ }
+  <div className="ml-4 sm:ml-10 xl:ml-40 2xl:ml-60 flex flex-col relative z-10">
+        <p className="text-xl sm:text-4xl xl:text-6xl font-bold text-gray-100 my-2">
           {texto1}
         </p>
-        <p className="text-2xl sm:text-4xl xl:text-6xl font-bold text-gray-100">
+        <p className="text-xl sm:text-4xl xl:text-6xl font-bold text-gray-100">
           {texto2}
         </p>
-        <p className="text-lg sm:text-xl text-gray-100 my-2">{texto3}</p>
-        <div className="w-3/5 columns-2 my-6">
-          <div>
+        <p className="sm:text-xl text-gray-100 my-2">{texto3}</p>
+        <div className="w-3/5 columns-2 my-20 sm:my-6">
             <Link href={"/categories"}>
               <ButtonGeneric textButton={"Accede"} fill={true} />
             </Link>
-          </div>
-
-          {/* <div>
-            <ButtonGeneric textButton={"botón"} fill={false} />
-          </div> */}
         </div>
       </div>
     </div>

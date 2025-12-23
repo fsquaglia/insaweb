@@ -24,6 +24,10 @@ module.exports = {
       animation: {
         "spin-slow": "spin 3s linear infinite",
       },
+      backgroundPosition: {
+        "hero-mobile": "right -200px top",
+        "hero-desktop": "right top",
+      },
     },
   },
   plugins: [],
