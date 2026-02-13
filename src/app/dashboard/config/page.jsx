@@ -221,7 +221,13 @@ function PageConfig() {
             </div>
           </div>
         </div>
-
+        <ButtonDashboard
+          onclick={() => {
+            console.log("sisi");
+            revalidateSomePath("/", "layout");
+          }}
+          textButton={"Revalidar app"}
+        />
         <ButtonDashboard onclick={handleSubmit} textButton={"Actualizar"} />
       </div>
     </div>
