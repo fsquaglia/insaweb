@@ -9,10 +9,11 @@ async function getCategoryById(id) {
       {
         // cache: "revalidate",
         // next: { revalidate: 3600 }, // ISR: revalida cada hora
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Error fetching categorías");
+
     return res.json();
   } catch (error) {
     console.error(error);
