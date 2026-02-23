@@ -1,5 +1,5 @@
 import ContactUs from "./ContactUs";
-import MapCommerce from "./MapCommerce";
+import MapCommerce from "./MapCommerceRafaela";
 import InfoContact from "./InfoContact";
 
 export default function Contact({ medios, ubicacion, showMap }) {
@@ -9,11 +9,11 @@ export default function Contact({ medios, ubicacion, showMap }) {
     localidad = "Localidad",
     provincia = "Provincia",
   } = ubicacion || {};
-  const whatsappNicolas = process.env.NEXT_PUBLIC_PHONE_NICO ;
-  const whatsappMarcelo = process.env.NEXT_PUBLIC_PHONE_MARCELO ;
+  const whatsappNicolas = process.env.NEXT_PUBLIC_PHONE_NICO;
+  const whatsappMarcelo = process.env.NEXT_PUBLIC_PHONE_MARCELO;
 
   const whatsappMessage = encodeURIComponent(
-    "Hola! me gustaría hacerles una consulta. Por favor, contáctenme."
+    "Hola! me gustaría hacerles una consulta. Por favor, contáctenme.",
   );
   const whatsappLinkNicolas = `https://wa.me/${whatsappNicolas}?text=${whatsappMessage}`;
   const whatsappLinkMarcelo = `https://wa.me/${whatsappMarcelo}?text=${whatsappMessage}`;

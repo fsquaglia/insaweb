@@ -223,8 +223,10 @@ function PageConfig() {
         </div>
         <ButtonDashboard
           onclick={() => {
-            console.log("sisi");
             revalidateSomePath("/", "layout");
+            alert(
+              "App revalidada, reinicia tu sesión si es necesario para aplicar los cambios",
+            );
           }}
           textButton={"Revalidar app"}
         />

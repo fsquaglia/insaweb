@@ -28,6 +28,9 @@ module.exports = {
         "hero-mobile": "right -200px top",
         "hero-desktop": "right top",
       },
+      maxWidth: {
+        "8xl": "88rem", // 1408px — puedes ajustar el valor
+      },
     },
   },
   plugins: [],
