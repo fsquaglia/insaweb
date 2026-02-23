@@ -23,7 +23,8 @@ function AuthForm() {
       if (session.user.role === "admin") {
         router.push("/dashboard");
       } else if (session.user.role === "user") {
-        router.push("/users");
+        router.push("/");
+        // router.push("/users");
       }
     }
   }, [session, router]);
@@ -75,7 +76,7 @@ function AuthForm() {
           router.push("/dashboard"); // Admin puede ir al dashboard o a donde sea
         } else {
           // router.push("/users"); // Usuario normal se redirige a su área
-          router.push("/"); // Usuario normal se redirige a su área
+          router.push("/"); // Usuario normal se redirige a / ahora que el home es su área principal
         }
       }
     }

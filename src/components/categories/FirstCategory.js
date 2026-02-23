@@ -9,47 +9,53 @@ function FirstCategory({ category, urlFragment, word, color }) {
         .slice(0, 5)
     : [];
   return (
-    <div className="w-full drop-shadow-lg relative flex bg-white p-6">
-      {/* Texto de la Categoría y FRANJA de color */}
-      <div
-        className={`absolute left-0 top-28 sm:top-60 h-72 sm:h-40 w-full bg-opacity-50 z-10 ${color}`}
-      >
-        <p className="absolute right-10 bottom-10 text-5xl text-slate-100">
-          {category.docData.id || ""}
-        </p>
+    <div
+      className={`w-full drop-shadow-lg opacity-60 ${color} flex flex-row text-slate-100`}
+    >
+      {/* IMAGEN */}
+      <div className="w-1/3">
+        {category.docData.imagen && (
+          <Image
+            src={category.docData.imagen}
+            alt={`Imagen de la categoría ${category.docData.id}`}
+            width={420}
+            height={420}
+            className="object-scale-down object-left "
+          />
+        )}
       </div>
-      {/*div de las subcategorías*/}
-      <div className="absolute bottom-8 left-0 h-60 w-full z-40 flex gap-2 sm:gap-4 items-end justify-center">
-        {sortedSubcategories.length > 0 &&
-          sortedSubcategories.map((subcategoria) => (
-            <Link
-              key={subcategoria}
-              href={`${urlFragment}/${category.docID}/${subcategoria}`}
-            >
-              <p className="text-center text-xs sm:text-sm font-sans font-bold text-emerald-500 cursor-pointer hover:underline">
-                {subcategoria}
-              </p>
-            </Link>
-          ))}
-      </div>
-      {/* Imagen de la Categoría */}
-      {category.docData.imagen && (
-        <Image
-          src={category.docData.imagen}
-          alt={`Imagen de la categoría ${category.docData.id}`}
-          width={420}
-          height={420}
-          className="h-[420px] object-scale-down object-left "
-        />
-      )}
-      <div className="absolute top-10 right-4 flex flex-col items-end z-40">
+
+      {/* TEXTOS */}
+      <div className="flex flex-col gap-2 mx-4 my-2 w-2/3">
         {/* Palabra como Potencia, Solidez, Eficiencia */}
-        <p className="text-6xl font-sans text-slate-100 font-bold my-4">
+        <p className="text-5xl font-sans font-bold text-right opacity-80 flex-none">
           {word || "Potencia"}
         </p>
-        <p className="font-sans text-white sm:text-slate-700 w-60 text-right text-xs lg:text-base">
+
+        {/* Texto descriptivo*/}
+        <p className="font-sans italic w-full text-justify text-sm lg:text-base flex-1">
           {category.docData.textoSeccionWeb || ""}
         </p>
+
+        {/* Nombre de la Categoría */}
+        <p className="text-4xl text-right flex-none">
+          {category.docData.id || ""}
+        </p>
+
+        {/*Subcategorías*/}
+        <div className="w-full flex gap-2 sm:gap-4 items-end justify-center flex-none">
+          {sortedSubcategories.length > 0 &&
+            sortedSubcategories.map((subcategoria) => (
+              <Link
+                key={subcategoria}
+                href={`${urlFragment}/${category.docID}/${subcategoria}`}
+              >
+                <p className="text-center text-xs sm:text-sm font-sans font-bold text-black cursor-pointer hover:underline">
+                  {subcategoria}
+                </p>
+              </Link>
+            ))}
+        </div>
       </div>
     </div>
   );

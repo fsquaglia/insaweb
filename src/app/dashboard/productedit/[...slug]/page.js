@@ -57,7 +57,7 @@ const sections = (
   onClickSwitchOferta,
   handleHashtagsChange,
   handleUploadSuccess,
-  handleDeleteImage
+  handleDeleteImage,
 ) => [
   {
     name: "Principal",
@@ -102,7 +102,7 @@ const sections = (
           type={"textarea"}
           onChange={onChange}
           inputValue={values?.detalle || ""}
-          charLimit={100}
+          charLimit={350}
           placeHolder="Detalle largo del producto"
         />
         <InputCustom
@@ -434,7 +434,7 @@ function ProductPage({ params }) {
           const productSelected = await getProductByID(
             category,
             subcategory,
-            product
+            product,
           );
           //si no tiene código, asignarle uno
           if (productSelected.codigoNro === "") {
@@ -597,8 +597,8 @@ function ProductPage({ params }) {
 
       revalidateSomePath(
         `/product-category/${encodeURIComponent(category)}/${encodeURIComponent(
-          subcategory
-        )}`
+          subcategory,
+        )}`,
       );
       revalidateSomePath("/", "layout");
 
@@ -658,7 +658,7 @@ function ProductPage({ params }) {
                 onClickSwitchOferta,
                 handleHashtagsChange,
                 handleUploadSuccess,
-                handleDeleteImage
+                handleDeleteImage,
               ).map(
                 (section) =>
                   openTab === section.id && (
@@ -669,7 +669,7 @@ function ProductPage({ params }) {
                     >
                       {section.content}
                     </Section>
-                  )
+                  ),
               )}
             </div>
 

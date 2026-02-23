@@ -5,6 +5,12 @@ import SalutationUser from "@/ui/SalutationUser";
 
 export default function Layout({ children }) {
   return (
+    <div className="w-full flex flex-col items-center antialiased mt-24">
+      <span>Aún no te podemos mostrar el contenido de esta sección.</span>
+    </div>
+  );
+
+  return (
     <div
       id="view"
       className="w-full flex flex-col items-center antialiased mt-24"
