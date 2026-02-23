@@ -16,12 +16,19 @@ function InfoContact({
         <h2 className="mb-2 font-bold text-xl 2xl:text-2xl text-blue-100 before:block before:absolute before:bg-sky-300 before:content[''] relative before:w-0 2xl:before:w-40 before:h-1 before:-skew-y-3 before:-bottom-4">
           Info Contacto
         </h2>
-        <p className="font-bold text-blue-100 py-2 sm:py-8 border-b border-blue-700">
-          Visitanos
+        <div className="flex flex-col gap-2 justify-center items-center mt-8">
+          <span className="font-bold text-blue-100">Estamos en</span>
+          <span className="font-normal text-blue-300 block ml-2">Rafaela</span>
+          <span className="font-normal text-sm text-blue-300 block ml-2">
+            provincia de Santa Fe
+          </span>
+        </div>
+        {/* <p className="font-bold text-blue-100 py-2 sm:py-8 border-b border-blue-700">
+          Estamos en
           <span className="font-normal text-xs text-blue-300 block ml-2">
             {`${direccion}, ${localidad} (${provincia})`}
           </span>
-        </p>
+        </p> */}
         <div className="text-blue-100 py-2 sm:py-8 flex flex-col gap-2 text-sm">
           <span className="font-bold">Comunicate</span>
           <div className="flex flex-row flex-wrap sm:flex-col gap-2 justify-center">

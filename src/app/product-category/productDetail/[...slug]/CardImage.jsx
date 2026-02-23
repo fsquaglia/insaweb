@@ -12,46 +12,44 @@ export default function CardImage({ images = [], altText = "Producto" }) {
   const currentImage = imageList[selectedIndex];
 
   return (
-    <div className="w-full md:w-2/5 bg-slate-50 p-8">
-      <div className="flex flex-col justify-center items-center h-full">
-        {/* Imagen principal */}
-        <div className="mb-6 aspect-square w-full flex justify-center items-center bg-white rounded-lg">
-          <Image
-            src={currentImage}
-            alt={`Imagen de ${altText}`}
-            width={500}
-            height={500}
-            className="rounded-lg object-contain aspect-square"
-            priority
-          />
-        </div>
-
-        {/* Miniaturas */}
-        {imageList.length > 1 && (
-          <div className="flex gap-3 overflow-x-auto w-full justify-center">
-            {imageList.map((imgUrl, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedIndex(index)}
-                className={`flex-shrink-0 aspect-square w-20 h-20 flex justify-center items-center rounded-lg transition-all ${
-                  selectedIndex === index
-                    ? "border-2 border-blue-500 bg-blue-50"
-                    : "border-2 border-gray-200 hover:border-gray-300"
-                }`}
-                aria-label={`Ver imagen ${index + 1}`}
-              >
-                <Image
-                  src={imgUrl}
-                  alt={`Miniatura ${index + 1}`}
-                  width={100}
-                  height={100}
-                  className="rounded object-contain aspect-square"
-                />
-              </button>
-            ))}
-          </div>
-        )}
+    <div className=" flex flex-col justify-center items-center h-full">
+      {/* Imagen principal */}
+      <div className="w-full h-full flex justify-center items-center mb-4">
+        <Image
+          src={currentImage}
+          alt={`Imagen de ${altText}`}
+          width={600}
+          height={600}
+          className="sm:rounded-lg object-contain aspect-square"
+          priority
+        />
       </div>
+
+      {/* Miniaturas */}
+      {imageList.length > 1 && (
+        <div className="flex gap-3 overflow-x-auto w-full h-full justify-center">
+          {imageList.map((imgUrl, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedIndex(index)}
+              className={`flex-shrink-0 w-20 h-20 flex justify-center items-center rounded-lg transition-all ${
+                selectedIndex === index
+                  ? "border-2 border-blue-500 bg-blue-50"
+                  : "border-2 border-gray-200 hover:border-gray-300"
+              }`}
+              aria-label={`Ver imagen ${index + 1}`}
+            >
+              <Image
+                src={imgUrl}
+                alt={`Miniatura ${index + 1}`}
+                width={100}
+                height={100}
+                className="object-contain aspect-square"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

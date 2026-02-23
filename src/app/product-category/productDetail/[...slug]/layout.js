@@ -2,7 +2,7 @@ function layout({ children }) {
   return (
     <div>
       <div className="h-24"></div>
-      {children}
+      <div className="max-w-8xl mx-auto">{children}</div>
     </div>
   );
 }

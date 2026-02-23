@@ -18,7 +18,7 @@ function SessionComponent({ session, status }) {
   const [showNotification, setShowNotification] = useState(
     session?.user?.hasBalance ||
       !session?.user?.hasPhone ||
-      !session?.user?.verifiedUser
+      !session?.user?.verifiedUser,
   );
   const [showUser, setShowUser] = useState(false);
 
@@ -32,7 +32,7 @@ function SessionComponent({ session, status }) {
     setShowNotification(
       session?.user?.hasBalance ||
         !session?.user?.hasPhone ||
-        !session?.user?.verifiedUser
+        !session?.user?.verifiedUser,
     );
   }, [session]);
 
@@ -116,7 +116,7 @@ function SessionComponent({ session, status }) {
             )}
           </div>
           {/*Ícono Dashboard */}
-          {!isDashboard && (
+          {session?.user?.role === "admin" && !isDashboard && (
             <DivCircle className="bg-cyan-600 hover:bg-cyan-500">
               <MdOutlineSpaceDashboard
                 title="Ir al Panel"
