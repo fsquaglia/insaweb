@@ -1,5 +1,4 @@
 "use client";
-import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
@@ -7,19 +6,9 @@ import { useEffect } from "react";
 import { CiLogin } from "react-icons/ci";
 import Link from "next/link";
 
-// Configuración EmailJS
-const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-const publicKey = process.env.NEXT_PUBLIC_EMAILJS_KEY;
-
-// Configuración de longitudes máximas
 const maxLengthName = 25;
 const maxLengthEmail = 35;
 const maxLengthMessage = 250;
-
-// Generar número de contacto
-const generateContactNumber = () =>
-  Math.floor(Math.random() * 1000000).toString();
 
 export default function ContactUs() {
   const { data: session, status } = useSession();
@@ -38,7 +27,6 @@ export default function ContactUs() {
     },
   });
 
-  // Cuando la sesión está lista, actualizar valores por defecto
   useEffect(() => {
     if (status === "authenticated") {
       reset({
@@ -51,16 +39,19 @@ export default function ContactUs() {
 
   const messageWatch = watch("message", "");
 
-  const sendEmail = (data) => {
-    const formFields = {
-      user_name: data.user_name,
-      user_email: data.user_email,
-      message: data.message,
-      contact_number: generateContactNumber(),
-    };
+  const sendEmail = async (data) => {
+    try {
+      const response = await fetch("/api/sendResend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userName: data.user_name,
+          userEmail: data.user_email,
+          message: data.message,
+        }),
+      });
 
-    emailjs.send(serviceID, templateID, formFields, { publicKey }).then(
-      () => {
+      if (response.ok) {
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -68,38 +59,42 @@ export default function ContactUs() {
           showConfirmButton: false,
           timer: 1500,
         });
-      },
-      (error) => {
-        console.error("Falló enviar mensaje: ", error);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Algo falló...",
-          showConfirmButton: false,
-          timer: 1500,
+        reset({
+          user_name: session?.user?.name || "",
+          user_email: session?.user?.email || "",
+          message: "",
         });
+      } else {
+        throw new Error("Error en el servidor");
       }
-    );
+    } catch (error) {
+      console.error("Falló enviar mensaje: ", error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Algo falló...",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
-if (status === "loading") {
-  return (
-    <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-      <div className="w-6 h-6 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-      <span className="mt-2">Cargando datos...</span>
-    </div>
-  );
-}
-
-
+  if (status === "loading") {
+    return (
+      <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+        <div className="w-6 h-6 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        <span className="mt-2">Cargando datos...</span>
+      </div>
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit(sendEmail)}
       className="relative flex flex-col z-10 mx-auto py-8 px-4 2xl:px-8 md:ml-auto md:mt-0 bg-white shadow-md bg-opacity-90 h-full"
     >
-       <div className="flex flex-row items-center justify-between mb-2">
-        <h2 className="text-gray-900 text-md 2xl:text-lg font-medium title-font ">
+      <div className="flex flex-row items-center justify-between mb-2">
+        <h2 className="text-gray-900 text-md 2xl:text-lg font-medium title-font">
           Escribinos, te respondemos
         </h2>
         {!session && (
