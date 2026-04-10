@@ -2,6 +2,7 @@ import { IoArrowBack } from "react-icons/io5";
 import Link from "next/link";
 import CardImage from "./CardImage";
 import BackButton from "@/ui/BackButton";
+import BubbleWhatsApp from "@/components/whatsapp/BubbleWhatsApp";
 
 async function fetchProduct(category, subcategory, productId) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -93,6 +94,8 @@ export default async function PageProductDetail({ params }) {
           dudes en contactarnos.
         </div>
       </div>
+      {/* Componente flotante de WhatsApp */}
+      <BubbleWhatsApp />
     </div>
   );
 }
