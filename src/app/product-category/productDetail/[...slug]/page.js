@@ -1,4 +1,3 @@
-import { IoArrowBack } from "react-icons/io5";
 import Link from "next/link";
 import CardImage from "./CardImage";
 import BackButton from "@/ui/BackButton";
@@ -26,6 +25,42 @@ async function fetchProduct(category, subcategory, productId) {
     );
     return null;
   }
+}
+
+export async function generateMetadata({ params }) {
+  const [cat, subcat, productId] = params.slug;
+
+  const category = decodeURIComponent(cat);
+  const subcategory = decodeURIComponent(subcat);
+
+  const data = await fetchProduct(category, subcategory, productId);
+
+  if (!data) {
+    return {
+      title: "Producto | Insa Rafaela SA",
+      description: "Equipos y repuestos para el agro",
+    };
+  }
+
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.insarafaela.com.ar";
+  const productUrl = `${siteUrl}/product-category/productDetail/${cat}/${subcat}/${productId}`;
+  const imagen = data?.imagen?.[0] || null; // primera imagen del producto
+
+  return {
+    title: `${data.nombre} | Insa Rafaela SA`,
+    description: data.detalle || "Equipos y repuestos para el agro",
+    openGraph: {
+      title: `${data.nombre} | Insa Rafaela SA`,
+      description: data.detalle || "Equipos y repuestos para el agro",
+      url: productUrl,
+      siteName: "Insa Rafaela SA",
+      type: "website",
+      ...(imagen && {
+        images: [{ url: imagen, width: 1200, height: 630, alt: data.nombre }],
+      }),
+    },
+  };
 }
 
 export default async function PageProductDetail({ params }) {
