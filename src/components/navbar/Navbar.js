@@ -5,7 +5,7 @@ import NavLinks from "./NavLinks";
 import Image from "next/image";
 import Link from "next/link";
 import NavbarCategories from "./NavbarCategories";
-import Likes from "./Likes";
+// import Likes from "./Likes";
 import { useSession } from "next-auth/react";
 
 export default function Navbar({ configurations }) {

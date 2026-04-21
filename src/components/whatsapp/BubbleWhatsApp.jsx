@@ -17,9 +17,8 @@ export default function BubbleWhatsApp({ phoneNumber = "", messageText = "" }) {
   const isProductPage = pathname.includes("productDetail");
 
   // Usar telefonoFinal en lugar de mutar phoneNumber
-  const phoneNumberFinal = "5493408674244";
-  // const phoneNumberFinal =
-  //   phoneNumber || process.env.NEXT_PUBLIC_PHONE_NICO || "5493408674244";
+
+  const phoneNumberFinal = phoneNumber || process.env.NEXT_PUBLIC_PHONE_DEFAULT;
 
   // Validar formato del número de teléfono (debe incluir código de país)
   const isValidPhoneNumber = (phone) => {
@@ -45,9 +44,9 @@ export default function BubbleWhatsApp({ phoneNumber = "", messageText = "" }) {
       // Combinar usuario message + link de producto si aplica
       if (isProductPage) {
         if (typeof window !== "undefined") {
-          // const productLink = window.location.href;
-          const productLink =
-            "https://www.insarafaela.com.ar/product-category/productDetail/Repuestos/Repuestos%20para%20Mezcladoras/yx43IlWqLadFHi3MoM7L";
+          const productLink = window.location.href;
+          // const productLink =
+          //   "https://www.insarafaela.com.ar/product-category/productDetail/Repuestos/Repuestos%20para%20Mezcladoras/yx43IlWqLadFHi3MoM7L";
           newMessage = `Hola, quisiera saber más sobre este producto: ${productLink}`;
         }
       } else {

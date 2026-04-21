@@ -3,9 +3,9 @@ import { Timestamp } from "firebase/firestore";
 import { Hourglass } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import InputCustom from "@/ui/InputCustom";
-import SwitchVisible from "@/ui/SwitchVisible";
+// import SwitchVisible from "@/ui/SwitchVisible";
 import ButtonDashboard from "@/ui/ButtonDashboard";
-import CustomSelect from "./StockBySize";
+// import CustomSelect from "./StockBySize";
 import {
   getCodeToUse,
   getVariationsFromStorage,
@@ -13,7 +13,7 @@ import {
 } from "@/utils/local_session_storage.js/local_session_storage";
 import Swal from "sweetalert2";
 import SwitchPublished from "@/ui/SwitchPublished";
-import MultiSelect from "./MultiSelect";
+// import MultiSelect from "./MultiSelect";
 import ImageUpload from "./ImageUpload";
 import {
   getProductByID,
@@ -69,22 +69,12 @@ const sections = (
           <div className="flex flex-col">
             <InputCustom
               name={"codigoNro"}
-              labelText={"Código "}
+              labelText={"Código automático "}
               onChange={onChange}
               inputValue={values?.codigoNro || ""}
               charLimit={10}
               placeHolder={"Se ingresará automático"}
               disabled={true}
-            />
-          </div>
-          <div className="flex flex-col">
-            <InputCustom
-              name={"codigoAnterior"}
-              labelText={"Código anterior"}
-              onChange={onChange}
-              inputValue={values?.codigoAnterior || ""}
-              charLimit={10}
-              placeHolder={"Código del sistema anterior"}
             />
           </div>
         </div>
@@ -93,7 +83,7 @@ const sections = (
           labelText={"Nombre del producto "}
           onChange={onChange}
           inputValue={values?.nombre || ""}
-          charLimit={25}
+          charLimit={825}
           placeHolder="Ingresa un nombre"
         />
         <InputCustom
@@ -102,34 +92,8 @@ const sections = (
           type={"textarea"}
           onChange={onChange}
           inputValue={values?.detalle || ""}
-          charLimit={350}
+          charLimit={360}
           placeHolder="Detalle largo del producto"
-        />
-        <InputCustom
-          labelText="Marca "
-          name="marca"
-          type="select"
-          placeHolder="Elige una opción"
-          inputValue={values?.marca || "Genérico"}
-          options={variations?.marca || []} // Asegurarse que no sea undefined
-          onChange={onChange}
-        />
-        <InputCustom
-          name={"modelo"}
-          labelText={"Modelo "}
-          placeHolder={"Modelo para esa Marca"}
-          inputValue={values?.modelo || ""}
-          onChange={onChange}
-          charLimit={20}
-        />
-        <InputCustom
-          name={"color"}
-          labelText={"Color "}
-          type={"select"}
-          placeHolder="Elige una opción"
-          inputValue={values?.color || "Genérico"}
-          options={variations?.color || []}
-          onChange={onChange}
         />
       </>
     ),
@@ -143,10 +107,7 @@ const sections = (
         <div className="flex gap-4 my-2">
           {values?.imagen && values.imagen.length > 0 ? (
             values.imagen.map((imgUrl, index) => (
-              <div
-                key={index}
-                className="border-2 w-1/2 aspect-square relative"
-              >
+              <div key={index} className="w-1/2 aspect-square relative">
                 <img
                   src={imgUrl}
                   alt={`Imagen ${index + 1}`}
@@ -197,154 +158,17 @@ const sections = (
     ),
   },
   {
-    name: "Stock",
+    name: "Publicar",
     id: 3,
-    description: "Control de stock, magnitudes y producto publicado.",
+    description: "Publicar o guardar como borrador.",
     content: (
       <>
-        <InputCustom
-          name={"precioCompra"}
-          labelText={"Precio de compra "}
-          inputType={"number"}
-          placeHolder={"0"}
-          inputValue={values?.precioCompra || 0}
-          onChange={onChange}
-          showCharLimits={false}
-        />
-
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-col w-1/3">
-            <InputCustom
-              name={"precioVenta"}
-              labelText={"Precio de venta "}
-              inputType={"number"}
-              placeHolder={"0"}
-              inputValue={
-                values?.precioVenta ||
-                values?.precioCompra * configurations?.multiplicadorCpraVta ||
-                0
-              }
-              onChange={onChange}
-              showCharLimits={false}
-              disabled={values?.esPrecioVentaDeGrupo || false}
-            />
-          </div>
-
-          <div className="flex flex-col w-1/3">
-            <InputCustom
-              name={"descEfectPorc"}
-              labelText={"Descto pago Efect. "}
-              inputType={"number"}
-              placeHolder={"10"}
-              inputValue={values?.descEfectPorc}
-              onChange={onChange}
-              showCharLimits={false}
-              disabled={values?.esPrecioVentaDeGrupo || false}
-            />
-          </div>
-          <SwitchVisible
-            switchLabel={"Precio venta de grupo "}
-            name={"esPrecioVentaDeGrupo"}
-            initialValue={values?.esPrecioVentaDeGrupo}
-            onToggle={onClickSwitchPrecioVenta}
-          />
-        </div>
-        <InputCustom
-          name={"fechaCompra"}
-          labelText={"Fecha de compra AAAAMMDD "}
-          inputType={"number"}
-          showCharLimits={false}
-          placeHolder={getYesterdayDate()}
-          inputValue={values?.fechaCompra || getYesterdayDate()}
-          onChange={onChange}
-        />
-        <InputCustom
-          name={"IDgrupoDeValores"}
-          type={"select"}
-          labelText={"Grupo de Valores "}
-          options={variations?.grupoDeValores || []}
-          placeHolder={"Elige una opción"}
-          inputValue={values?.IDgrupoDeValores || 1}
-          onChange={onChange}
-          showCharLimits={false}
-        />
-        <div className="my-4">
-          <CustomSelect
-            updateStock={handleUpdateStock}
-            options={variations?.talle || ["Genérico"]}
-            quantities={
-              values?.magnitudDisponible || [
-                {
-                  magnitud: "Genérico",
-                  stock: 1,
-                },
-              ]
-            }
-          />
-        </div>
         <div className="my-4">
           <SwitchPublished
             published={values?.publicado}
             onClick={onClickSwitch}
           />
         </div>
-      </>
-    ),
-  },
-  {
-    name: "Extras",
-    id: 4,
-    description: "Agreguemos más información a tu producto",
-    content: (
-      <>
-        <InputCustom
-          name={"extra1"}
-          labelText={"Dato extra 1 "}
-          onChange={onChange}
-          inputValue={values?.extra1 || ""}
-          charLimit={40}
-          placeHolder={"Algún dato extra del producto?"}
-        />
-        <InputCustom
-          name={"extra2"}
-          labelText={"Dato extra 2 "}
-          onChange={onChange}
-          inputValue={values?.extra2 || ""}
-          charLimit={40}
-          placeHolder={"Otro dato extra del producto?"}
-        />
-        <SwitchVisible
-          switchLabel={"En Oferta"}
-          name={"enOferta"}
-          initialValue={values?.enOferta || false}
-          onToggle={onClickSwitchOferta}
-        />
-        <InputCustom
-          name={"porcentajeDescuentoOferta"}
-          labelText={"Descuento (%) "}
-          inputType={"number"}
-          showCharLimits={false}
-          inputValue={values?.porcentajeDescuentoOferta || 50}
-          onChange={onChange}
-          disabled={!values?.enOferta}
-        />
-        <InputCustom
-          name={"productosRelacionados"}
-          labelText={"Productos relacionados "}
-          onChange={onChange}
-          inputValue={values?.productosRelacionados || ""}
-          disabled={true}
-        />
-
-        <MultiSelect
-          labelText="Hashtags#"
-          name="hashtags"
-          options={
-            variations?.hashtag || [{ value: "default", label: "Default" }]
-          }
-          defaultValue={values?.hashtags || []}
-          onChange={handleHashtagsChange}
-        />
       </>
     ),
   },
@@ -516,7 +340,6 @@ function ProductPage({ params }) {
     }
     const newImages = values.imagen.filter((_, index) => index !== item);
     setValues((prevValues) => ({ ...prevValues, imagen: newImages }));
-    // console.log(values.imagen);
   };
 
   //fn para actualizar documento de índice de Firestore con códigos de productos
@@ -576,9 +399,36 @@ function ProductPage({ params }) {
   //submit principal del formulario
   const onSubmitValues = async () => {
     if (values.publicado) {
-      //el producto se PUBLICA
-      //!AQUI HACER LAS VALIDACIONES DE LOS CAMPOS
-      alert("Chequea todos los campos antes de publicar");
+      // Aquí el producto se PUBLICA
+      // verificar que values.nombre tenga por lo menos 3 caracteres, que values.detalle tenga por lo menos 10 caracteres
+      if (values.nombre.length < 3) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "El nombre del producto debe tener al menos 3 caracteres.",
+          showConfirmButton: true,
+        });
+        return;
+      } else if (values.detalle.length < 10) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "El detalle del producto debe tener al menos 10 caracteres.",
+          showConfirmButton: true,
+        });
+        return;
+      }
+
+      const result = await Swal.fire({
+        title: "Publicar producto",
+        icon: "warning",
+        text: "Revisa que toda la info esté correcta",
+        showCancelButton: true,
+        confirmButtonText: "Sí, publicar",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (!result.isConfirmed) return; // ← aborta si cancela
     }
     const showMessage = values.publicado
       ? "Producto actualizado y publicado"
@@ -623,7 +473,7 @@ function ProductPage({ params }) {
   };
 
   return (
-    <div className="font-sans flex min-h-screen justify-center w-full">
+    <div className="font-sans flex min-h-80 justify-center w-full">
       {values ? (
         <div className="py-8 w-full lg:w-3/4 xl:w-1/2">
           <div className="flex items-center justify-center border rounded shadow my-2 bg-gray-700">

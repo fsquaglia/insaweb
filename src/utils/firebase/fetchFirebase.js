@@ -883,39 +883,6 @@ export async function setProductsCategoryFirestore() {
   }
 }
 
-//agregar datos iniciales para Colección CATEGORIAS TIPS. Serán solo datos para iniciar la BD
-export async function setTipsCategoryFirestore() {
-  // Array de datos de las categorías de tips en tipsCategoriesInitialData
-  try {
-    // Usar `Promise.all` para esperar a que todas las promesas se resuelvan
-    await Promise.all(
-      tipsCategoriesInitialData.map((category) =>
-        addDoc(collection(firestoreDB, "tipsCategoria"), category)
-      )
-    );
-    // console.log("Categorías de tips creadas");
-  } catch (e) {
-    console.error("Error agregando categorías: ", e);
-    throw e;
-  }
-}
-
-//agregar datos iniciales para Colección TIPS. Serán solo datos para iniciar la BD
-export async function setTipsFirestore() {
-  // Array de datos de Tips en tipsInitialData
-  try {
-    // Usar `Promise.all` para esperar a que todas las promesas se resuelvan
-    await Promise.all(
-      tipsInitialData.map((elem) =>
-        addDoc(collection(firestoreDB, "tips"), elem)
-      )
-    );
-    // console.log("Tips creados");
-  } catch (e) {
-    console.error("Error agregando Tips: ", e);
-    throw e;
-  }
-}
 
 //?ESCRIBIR DATOS EN FIRESTORE
 //Agregar un nuevo CONTACTO/CLIENTE/USUARIO

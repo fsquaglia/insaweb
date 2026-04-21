@@ -5,8 +5,6 @@ import { useSession } from "next-auth/react";
 import ButtonGeneric from "../../components/generic/ButtonGeneric";
 import {
   setProductsCategoryFirestore,
-  setTipsCategoryFirestore,
-  setTipsFirestore,
   loadDataInitFirebase,
   addNewContactFirestore,
   addNewProductFirestore,
@@ -78,16 +76,7 @@ export default function Page() {
           onClick={setProductsCategoryFirestore}
         />
       </div>
-      <div>
-        <ButtonGeneric
-          textButton={"Categ. Tips"}
-          onClick={setTipsCategoryFirestore}
-        />
-      </div>
-      <div>
-        <ButtonGeneric textButton={"Tips"} onClick={setTipsFirestore} />
-      </div>
-      <div>
+          <div>
         <ButtonGeneric
           textButton={"Historia"}
           onClick={() => {
