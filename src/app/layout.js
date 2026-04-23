@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Insa Rafaela SA",
   description: "Equipos y repuestos para el agro",
+  alternates: {
+    canonical: "https://www.insarafaela.com.ar",
+  },
   openGraph: {
     title: "Insa Rafaela SA",
     description: "Equipos y repuestos para el agro",

@@ -63,6 +63,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${tituloCard} | Insa Rafaela SA`,
     description: descripcion || "Equipos y repuestos para el agro",
+    alternates: {
+      canonical: categoriaUrl,
+    },
     openGraph: {
       title: `${tituloCard} | Insa Rafaela SA`,
       description: descripcion || "Equipos y repuestos para el agro",
