@@ -100,54 +100,83 @@ export default async function PageProductDetail({ params }) {
   const images = data?.imagen || [];
   const textAlt = data?.nombre || "Producto";
 
-  return (
-    <div className="flex flex-col items-stretch items-center justify-center lg:flex-row lg:flex-wrap mt-4 sm:m-8">
-      {/*Volver atrás mostrado sólo en pantallas pequeñas*/}
-      <div className="w-full h-8 flex items-center justify-end lg:hidden mb-4 pr-4">
-        <BackButton />
-      </div>
-      {/*--- div de las imágenes---- */}
-      <div className="w-full lg:w-2/5">
-        <CardImage images={images} altText={textAlt} />
-      </div>
+  //JSON-LD para SEO como un producto para mostrar en Google
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.insarafaela.com.ar";
+  const productUrl = `${siteUrl}/product-category/productDetail/${cat}/${subcat}/${productId}`;
+  const imagen = data?.imagen?.[0] || null;
 
-      {/*----div de los textos---- */}
-      <div className="w-full lg:w-3/5 flex flex-col sm:px-8 my-4 lg:my-0">
-        <div className="h-20 lg:flex lg:items-end lg:justify-end hidden">
-          {/*Volver atrás mostrado sólo en pantallas grandes*/}
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: data.nombre,
+    description: data.detalle || "Equipos y repuestos para el agro",
+    url: productUrl,
+    brand: {
+      "@type": "Brand",
+      name: "Insa Rafaela SA",
+    },
+    ...(imagen && { image: imagen }),
+  };
+
+  return (
+    <>
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <div className="flex flex-col items-stretch items-center justify-center lg:flex-row lg:flex-wrap mt-4 sm:m-8">
+        {/*Volver atrás mostrado sólo en pantallas pequeñas*/}
+        <div className="w-full h-8 flex items-center justify-end lg:hidden mb-4 pr-4">
           <BackButton />
         </div>
-        <div className="flex-1 flex flex-col justify-center">
-          {/* BREADCRUMBS */}
-          <p className="bg-slate-400 text-slate-50 text-xs sm:text-sm p-1">
-            <Link href={"/"}>
-              <span>{`Home > `} </span>
-            </Link>
-            {`${category} > ${subcategory} > ${productId}`}
-          </p>
-          {/* DETALLES Y NOTAS DEL PRODUCTO */}
-          <div className="ms-2">
-            {/* NOMBRE DEL PRODUCTO*/}
-            {data && (
-              <h1 className="text-2xl text-slate-700 font-bold my-6">
-                {data.nombre}
-              </h1>
-            )}
-            <hr className="my-2" />
-            {/* DETALLE DEL PRODUCTO */}
-            <p className="text-slate-500 my-6">{data?.detalle || "Detalle"}</p>
-            <hr className="my-2" />
-            {/* NOTAS */}
+        {/*--- div de las imágenes---- */}
+        <div className="w-full lg:w-2/5">
+          <CardImage images={images} altText={textAlt} />
+        </div>
+
+        {/*----div de los textos---- */}
+        <div className="w-full lg:w-3/5 flex flex-col sm:px-8 my-4 lg:my-0">
+          <div className="h-20 lg:flex lg:items-end lg:justify-end hidden">
+            {/*Volver atrás mostrado sólo en pantallas grandes*/}
+            <BackButton />
+          </div>
+          <div className="flex-1 flex flex-col justify-center">
+            {/* BREADCRUMBS */}
+            <p className="bg-slate-400 text-slate-50 text-xs sm:text-sm p-1">
+              <Link href={"/"}>
+                <span>{`Home > `} </span>
+              </Link>
+              {`${category} > ${subcategory} > ${productId}`}
+            </p>
+            {/* DETALLES Y NOTAS DEL PRODUCTO */}
+            <div className="ms-2">
+              {/* NOMBRE DEL PRODUCTO*/}
+              {data && (
+                <h1 className="text-2xl text-slate-700 font-bold my-6">
+                  {data.nombre}
+                </h1>
+              )}
+              <hr className="my-2" />
+              {/* DETALLE DEL PRODUCTO */}
+              <p className="text-slate-500 my-6">
+                {data?.detalle || "Detalle"}
+              </p>
+              <hr className="my-2" />
+              {/* NOTAS */}
+            </div>
+          </div>
+          <div className="text-xs text-slate-400 my-12 text-center">
+            *Las imágenes son meramente ilustrativas. El producto puede variar
+            en color, forma y tamaño. Para más información sobre este producto,
+            no dudes en contactarnos.
           </div>
         </div>
-        <div className="text-xs text-slate-400 my-12 text-center">
-          *Las imágenes son meramente ilustrativas. El producto puede variar en
-          color, forma y tamaño. Para más información sobre este producto, no
-          dudes en contactarnos.
-        </div>
+        {/* Componente flotante de WhatsApp */}
+        <BubbleWhatsApp />
       </div>
-      {/* Componente flotante de WhatsApp */}
-      <BubbleWhatsApp />
-    </div>
+    </>
   );
 }
