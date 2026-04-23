@@ -60,6 +60,20 @@ export async function generateMetadata({ params }) {
         images: [{ url: imagen, width: 1200, height: 630, alt: data.nombre }],
       }),
     },
+    // Tags adicionales con name= para compatibilidad con WhatsApp
+    other: {
+      "og:title": `${data.nombre} | Insa Rafaela SA`,
+      "og:description": data.detalle || "Equipos y repuestos para el agro",
+      "og:url": productUrl,
+      "og:site_name": "Insa Rafaela SA",
+      "og:type": "website",
+      ...(imagen && {
+        "og:image": imagen,
+        // "og:image:width": "1200",
+        // "og:image:height": "630",
+        "og:image:alt": data.nombre,
+      }),
+    },
   };
 }
 
