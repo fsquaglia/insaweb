@@ -127,98 +127,7 @@ export const footerInitialData = {
     "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/logosIharaLondon%2Flogo_blanco01.png?alt=media&token=92d797fd-31b6-42de-85d4-f93b662ab7c4",
 };
 
-export const tipsInitialData = [
-  {
-    categoria: "Guías de compra",
-    detalle:
-      "Al comprar calzado, asegúrate de probarlo al final del día cuando tus pies están más hinchados. Verifica que haya espacio suficiente en la punta y que no rocen en los laterales. Camina con ellos por la tienda para asegurarte de que no hay puntos de presión.",
-    fecha: Timestamp.fromDate(new Date("2024-06-06")),
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Fprobarcalzado.jpg?alt=media&token=7c7e9502-9eff-4945-af82-c42e50c80213",
-    titulo: "Como comprar calzado que se ajuste perfectamente",
-    visible: true,
-  },
-  {
-    categoria: "Cuidado de la ropa",
-    detalle:
-      "Si tienes una mancha de vino en tu ropa, actúa rápido. Cubre la mancha con sal para absorber el líquido. Luego, enjuaga con agua fría y lava la prenda como de costumbre. Este método ayuda a evitar que la mancha se fije permanentemente en la tela.",
-    fecha: Timestamp.fromDate(new Date("2024-06-02")),
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Fmancha-vino-ropa.webp?alt=media&token=b98e0301-d005-4593-8f01-23c044c7e012",
-    titulo: "Elimina manchas de vino en la ropa",
-    visible: true,
-  },
-  {
-    categoria: "Consejos de estilo",
-    detalle:
-      "Para crear un atuendo equilibrado, usa la regla del 60-30-10: 60% de un color dominante, 30% de un color secundario y 10% de un color de acento. Esta fórmula ayuda a combinar colores de manera armoniosa y atractiva, evitando combinaciones desentonadas.",
-    fecha: Timestamp.fromDate(new Date("2024-06-03")),
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Fconsejos.webp?alt=media&token=36ab1f4e-9e6a-49c3-8b5e-5897e90988da",
-    titulo: "Combinar colores en la vestimenta",
-    visible: true,
-  },
-  {
-    categoria: "Tendencias de moda",
-    detalle:
-      "Este verano, los colores pastel como el lavanda y el verde menta están en auge, al igual que los tonos vibrantes como el coral y el amarillo neón. Incorporar estos colores en tu vestimenta puede actualizar tu estilo y mantenerlo fresco y a la moda.",
-    fecha: Timestamp.fromDate(new Date("2024-06-04")),
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Ftendencias_2024.jpg.webp?alt=media&token=d1f516f8-177c-439d-a4a4-ae708c5aab46",
-    titulo: "Tendencias de colores para verano 2024",
-    visible: true,
-  },
-  {
-    categoria: "Cuidado del calzado",
-    detalle:
-      "Para limpiar el calzado de cuero, usa un paño húmedo y jabón neutro. Frota suavemente para quitar la suciedad. Luego, aplica una crema hidratante específica para cuero para mantener la flexibilidad y el brillo. Evita el uso de productos químicos agresivos que pueden dañar el material.",
-    fecha: Timestamp.fromDate(new Date("2024-06-01")),
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Fcomo-limpiar-botas-de-piel.webp?alt=media&token=0b98be8a-0c84-4b9c-adbd-c734efe4cc17",
-    titulo: "Cómo limpiar calzado de cuero",
-    visible: true,
-  },
-];
 
-export const tipsCategoriesInitialData = [
-  {
-    descripcion: "Las mejores recomendaciones para vestirse bien",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2FConsejoEstilo.png?alt=media&token=049f0f86-01a7-4041-b731-ae0da08c4626",
-    titulo: "Consejos de estilo",
-  },
-  {
-    descripcion: "Recomendaciones sobre sostenibilidad",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2Fsostenibilidad.svg?alt=media&token=430743f6-0651-41c4-9435-fbf2d71eb158",
-    titulo: "Sostenibilidad en la moda",
-  },
-  {
-    descripcion:
-      "Para ayudarte a resolver tus dudas a la hora de tomar desiciones",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2FGuiaCompra.svg?alt=media&token=eb0b3fd0-7d61-4bc1-a337-14bc06842b8c",
-    titulo: "Guías de compra",
-  },
-  {
-    descripcion: "Todo resuelto a la hora de dejar la ropa como nueva",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2FCuidadoRopa.png?alt=media&token=46e8f146-8e1b-4864-982d-475a9db2466a",
-    titulo: "Cuidado de la ropa",
-  },
-  {
-    descripcion: "Mantener un calzado como nuevo será una tarea simple",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2FCuidadoCalzado.svg?alt=media&token=e21b1365-4af1-47fd-b6b2-bcbe4de4dd07",
-    titulo: "Cuidado del calzado",
-  },
-  {
-    descripcion: "Te mantenemos al día con lo que se viene en el rubro Modas",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/tips%2FTendencias.svg?alt=media&token=f5940315-4e3f-45f2-9f84-0e8f7a1c53cb",
-    titulo: "Tendencias de moda",
-  },
-];
 
 //!datos de algunos contactos iniciales SI NO SE USA BORRAR
 export const dataContactInitial = [
@@ -304,7 +213,7 @@ export const newUserDataInitial = (
     fechaAlta: Timestamp.fromDate(new Date()),
     imagen: image
       ? image
-      : "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/images%2FUserGeneric.png?alt=media&token=46f36e6c-9009-4641-ae30-841df4a23cde",
+      : "https://res.cloudinary.com/foodexpressimg/image/upload/v1776694089/generic_user_bxd24y.png",
     fechaVenceSaldo: Timestamp.fromDate(new Date("1900-01-01")),
     fechaNacimiento: null,
     likesIDproductos: [],
@@ -313,65 +222,7 @@ export const newUserDataInitial = (
 };
 
 // Categorias de productos Iniciales
-export const categoriesProductsInitialData = [
-  {
-    id: "Accesorios",
-    descripcion: "El complemento indispensable para cualquier look.",
-    textoSeccionWeb:
-      "Los detalles hacen la diferencia. Descubre nuestra amplia variedad de accesorios que complementan cualquier outfit. Bolsos, cinturones, y más, pensados para agregar estilo y funcionalidad a tu día a día.",
-    colorBase: "orange",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2Faccesorios02.jpg?alt=media&token=d1a25704-9159-4b8a-9368-7366f6d18812",
-    showLanding: true,
-    tituloCard: "Accesorios",
-  },
-  {
-    id: "Caballeros",
-    descripcion:
-      "La moda masculina es sutil. Un buen estilo y gusto agradable.",
-    textoSeccionWeb:
-      "Descubre la elegancia y sofisticación que define el estilo masculino. Nuestra colección para caballeros combina diseño y confort, con prendas ideales para destacar en cada ocasión. Renueva tu guardarropa con piezas que reflejan tu personalidad y buen gusto.",
-    colorBase: "blue",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2F_DMD9151bis.jpg?alt=media&token=a86eefdd-7203-4671-86cc-740394a6ac97",
-    showLanding: true,
-    tituloCard: "Para ellos",
-  },
-  {
-    id: "Damas",
-    descripcion:
-      "Encuentra lo que necesitas para resaltar tu belleza de manera única.",
-    textoSeccionWeb:
-      "Explora nuestra exclusiva colección para damas, diseñada para realzar tu estilo y feminidad. Desde looks casuales hasta elegantes conjuntos, encontrarás prendas que se adaptan a cada ocasión, siempre con un toque de sofisticación y tendencia.",
-    colorBase: "pink",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2F405ad68e-7fb3-4073-86d5-57886500292c.jpg?alt=media&token=98f8511b-d7ea-42af-b77e-056ce6aa782d",
-    showLanding: true,
-    tituloCard: "Para ellas",
-  },
-  {
-    id: "Kids",
-    descripcion: "Los más peques también quieren tener su lugar.",
-    textoSeccionWeb:
-      "Nuestra colección para niños ofrece prendas diseñadas para brindar un toque de sofisticación y estilo a los más pequeños. Desde prendas infantiles hasta accesorios para niños, encontrarás todo lo que necesitas para brindar un momento de diversión.",
-    colorBase: "green",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2FK050A.jpg?alt=media&token=b370ec09-f12e-4e9e-8618-dd98e3dbea5a",
-    showLanding: false,
-    tituloCard: "Kids",
-  },
-  {
-    id: "Unisex",
-    descripcion: "La moda también tiene un lugar para compartir.",
-    textoSeccionWeb:
-      "Estilo sin límites. Nuestra colección unisex ofrece prendas versátiles y modernas, diseñadas para todos. Descubre piezas esenciales que combinan comodidad y tendencia, perfectas para cualquier ocasión y género.",
-    colorBase: "purple",
-    imagen:
-      "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/categories%2Funisex.webp?alt=media&token=92dd937d-729a-40bb-85a5-4ffad7bacab4",
-    showLanding: false,
-    tituloCard: "Unisex",
-  },
-];
+export const categoriesProductsInitialData = [];
 
 //? PRODUCTO BASE docBase
 export const productBase = {
@@ -385,7 +236,7 @@ export const productBase = {
   modelo: "",
   color: "Genérico",
   imagen: [
-    "https://firebasestorage.googleapis.com/v0/b/iharalondon.appspot.com/o/products%2FnoDisponible.png?alt=media&token=8f1273b7-f7d6-4179-8c8f-e1ff4ee6d871",
+    "https://res.cloudinary.com/foodexpressimg/image/upload/v1776692158/generic_product_pspkso.jpg",
   ],
   magnitudDisponible: [
     {

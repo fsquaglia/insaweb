@@ -39,6 +39,57 @@ function MessageNotFound({
   );
 }
 
+export async function generateMetadata({ params }) {
+  const [category] = params.slug;
+  const categoriaURL = decodeURIComponent(category);
+
+  const categorias = await getCategorias();
+  const categoriaData = categorias.find(
+    (cat) => cat.docData.id === categoriaURL,
+  );
+
+  if (!categoriaData) {
+    return {
+      title: "Categoría | Insa Rafaela SA",
+      description: "Equipos y repuestos para el agro",
+    };
+  }
+
+  const { descripcion, imagen, tituloCard } = categoriaData.docData;
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.insarafaela.com.ar";
+  const categoriaUrl = `${siteUrl}/product-category/${category}`;
+
+  return {
+    title: `${tituloCard} | Insa Rafaela SA`,
+    description: descripcion || "Equipos y repuestos para el agro",
+    alternates: {
+      canonical: categoriaUrl,
+    },
+    openGraph: {
+      title: `${tituloCard} | Insa Rafaela SA`,
+      description: descripcion || "Equipos y repuestos para el agro",
+      url: categoriaUrl,
+      siteName: "Insa Rafaela SA",
+      type: "website",
+      ...(imagen && {
+        images: [{ url: imagen, alt: tituloCard }],
+      }),
+    },
+    other: {
+      "og:title": `${tituloCard} | Insa Rafaela SA`,
+      "og:description": descripcion || "Equipos y repuestos para el agro",
+      "og:url": categoriaUrl,
+      "og:site_name": "Insa Rafaela SA",
+      "og:type": "website",
+      ...(imagen && {
+        "og:image": imagen,
+        "og:image:alt": tituloCard,
+      }),
+    },
+  };
+}
+
 export default async function layout({ children, params }) {
   const [category, subcategory] = params.slug;
   // categoría y subcategoría vienen codificadas en la URL
@@ -48,6 +99,8 @@ export default async function layout({ children, params }) {
   // Obtener todas las categorías de la BDD y ordenarlas alfabéticamente
   // [ 'Equipos', 'Galpones', 'Plantas', 'Repuestos', 'Silos', 'Vehículos' ]
   const categorias = await getCategorias();
+  // console.log("categorias: ", categorias);
+
   //! MANEJO DE ERROR EN LA RESPUESTA DEL FETCH 👆
 
   const categoriesOrdered = (categorias || [])
@@ -64,10 +117,10 @@ export default async function layout({ children, params }) {
 
   // Si la categoría existe, verificar si la subcategoría existe dentro de esa categoría
   const categoriaData = categorias.find(
-    (cat) => cat.docData.id === categoriaURL
+    (cat) => cat.docData.id === categoriaURL,
   );
   const subcategoriesList = (categoriaData.docData.subcategorias || []).sort(
-    (a, b) => a.localeCompare(b)
+    (a, b) => a.localeCompare(b),
   );
 
   if (!subcategoriesList.includes(subcategoriaURL)) {

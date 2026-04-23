@@ -10,6 +10,31 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Insa Rafaela SA",
   description: "Equipos y repuestos para el agro",
+  alternates: {
+    canonical: "https://www.insarafaela.com.ar",
+  },
+  openGraph: {
+    title: "Insa Rafaela SA",
+    description: "Equipos y repuestos para el agro",
+    url: "https://www.insarafaela.com.ar",
+    siteName: "Insa Rafaela SA",
+    type: "website",
+    images: [
+      {
+        url: "https://www.insarafaela.com.ar/images/WhatsappINSA01.jpg",
+        alt: "Insa Rafaela SA",
+      },
+    ],
+  },
+  other: {
+    "og:title": "Insa Rafaela SA",
+    "og:description": "Equipos y repuestos para el agro",
+    "og:url": "https://www.insarafaela.com.ar",
+    "og:site_name": "Insa Rafaela SA",
+    "og:type": "website",
+    "og:image": "https://www.insarafaela.com.ar/images/WhatsappINSA01.jpg",
+    "og:image:alt": "Insa Rafaela SA",
+  },
 };
 
 export default async function RootLayout({ children }) {
@@ -40,7 +65,7 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Providers>
           <div className="bg-slate-900 text-gray-200 bg-opacity-100 md:bg-opacity-90 shadow-md fixed top-0 left-0 right-0 z-50">
