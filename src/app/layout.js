@@ -35,7 +35,8 @@ export const metadata = {
     "og:image": "https://www.insarafaela.com.ar/images/WhatsappINSA01.jpg",
     "og:image:alt": "Insa Rafaela SA",
   },
-  //<meta name="google-site-verification" content="wxakSlBhSQ6miIGjOYw6VM9n0lFsKZMkDjAAu3k-B78" />
+  // Verificación de Google para Search Console
+  // <meta name="google-site-verification" content="wxakSlBhSQ6miIGjOYw6VM9n0lFsKZMkDjAAu3k-B78" />
   verification: {
     google: "wxakSlBhSQ6miIGjOYw6VM9n0lFsKZMkDjAAu3k-B78",
   },
