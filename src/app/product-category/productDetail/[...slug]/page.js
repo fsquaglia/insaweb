@@ -117,6 +117,18 @@ export default async function PageProductDetail({ params }) {
       name: "Insa Rafaela SA",
     },
     ...(imagen && { image: imagen }),
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      price: "0",
+      priceCurrency: "ARS",
+      priceValidUntil: "2027-12-31",
+      url: productUrl,
+      seller: {
+        "@type": "Organization",
+        name: "Insa Rafaela SA",
+      },
+    },
   };
 
   return (
