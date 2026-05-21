@@ -4,7 +4,7 @@ import Navbar from "../components/navbar/Navbar";
 import Agency from "../components/agency/Agency";
 import { Providers } from "./Providers";
 import MessageComponent from "@/ui/MessageComponent";
-
+import { VisitTracker } from "@/components/VisitTracker";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -81,6 +81,7 @@ export default async function RootLayout({ children }) {
           <div className="z-50">
             <Agency />
           </div>
+          <VisitTracker />
         </Providers>
       </body>
     </html>

@@ -63,6 +63,47 @@ import { revalidateSomePath } from "../actions/actions";
 
 //!FIRESTORE
 
+// Registrar una visita al sitio incrementando el contador total de visitas y actualizando la fecha de última visita
+export async function registerSiteVisit() {
+  try {
+    const docRef = doc(firestoreDB, "analytics", "siteStats");
+
+    await setDoc(
+      docRef,
+      {
+        totalVisits: increment(1),
+        lastUpdated: new Date(),
+      },
+      { merge: true },
+    );
+  } catch (error) {
+    console.error("Error al registrar visita:", error);
+    throw error;
+  }
+}
+
+// obtener las estadísticas del sitio, incluyendo el total de visitas y la fecha de última actualización
+
+export async function getSiteStats() {
+  try {
+    const docRef = doc(firestoreDB, "analytics", "siteStats");
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return { totalVisits: 0, lastUpdated: null };
+    }
+
+    const data = docSnap.data();
+    return {
+      totalVisits: data.totalVisits ?? 0,
+      lastUpdated: data.lastUpdated?.toDate() ?? null,
+    };
+  } catch (error) {
+    console.error("Error al obtener stats:", error);
+    return { totalVisits: 0, lastUpdated: null };
+  }
+}
+
 // Agregar un nuevo usuario al listado de emailsPromocionales
 export async function addEmailPromotional(email, nombre) {
   try {
@@ -89,11 +130,11 @@ export async function likeProductToUser(
   nameProduct,
   category,
   subcategory,
-  image
+  image,
 ) {
   if (!userID || !productID || !nameProduct || !category || !subcategory) {
     throw new Error(
-      "Todos los argumentos (userID, productID, nameProduct, category, subcategory) son requeridos"
+      "Todos los argumentos (userID, productID, nameProduct, category, subcategory) son requeridos",
     );
   }
 
@@ -106,7 +147,7 @@ export async function likeProductToUser(
     const docRefLikesIdProductUser = doc(firestoreDB, `contactos/${userID}`);
     const docRefLikeProductUser = doc(
       firestoreDB,
-      `contactos/${userID}/LikesProduct/documentoDeLikes`
+      `contactos/${userID}/LikesProduct/documentoDeLikes`,
     );
     const docRefProduct = doc(firestoreDB, "items", productID);
 
@@ -135,7 +176,7 @@ export async function likeProductToUser(
     });
 
     console.log(
-      isAddAction ? "Like agregado con éxito." : "Like quitado con éxito."
+      isAddAction ? "Like agregado con éxito." : "Like quitado con éxito.",
     );
   } catch (error) {
     console.error("Error al procesar el like del usuario: ", error);
@@ -162,7 +203,7 @@ export const addEventToHistory = async (
   nameEmail,
   tipo,
   detalles,
-  refID
+  refID,
 ) => {
   const fechaHoy = getFechaLocal(); // Fecha local del usuario
   const horaLocal = getHoraLocal(); // Hora local del usuario
@@ -185,20 +226,20 @@ export const addEventToHistory = async (
       {
         [usuarioID]: arrayUnion(dataEvent),
       },
-      { merge: true } // Garantiza que no se sobrescriba el documento existente.
+      { merge: true }, // Garantiza que no se sobrescriba el documento existente.
     );
 
     //Actualizar el historial de acciones del usuario
     const docRefUser = doc(
       firestoreDB,
-      `contactos/${usuarioID}/historialAcciones/${fechaHoy}`
+      `contactos/${usuarioID}/historialAcciones/${fechaHoy}`,
     );
     await setDoc(
       docRefUser,
       {
         historialDiario: arrayUnion(dataEvent),
       },
-      { merge: true }
+      { merge: true },
     );
   } catch (error) {
     console.error("Error al registrar la acción:", error);
@@ -210,7 +251,7 @@ export const actualizarUsuarios = async () => {
   try {
     // Obtener todos los documentos de la colección "contactos"
     const contactosSnapshot = await getDocs(
-      collection(firestoreDB, "contactos")
+      collection(firestoreDB, "contactos"),
     );
 
     if (contactosSnapshot.empty) {
@@ -230,7 +271,7 @@ export const actualizarUsuarios = async () => {
       // Crear la subcolección "historialAcciones/documentoDeAcciones"
       const historialRef = doc(
         firestoreDB,
-        `contactos/${docSnapshot.id}/historialAcciones/documentoDeAcciones`
+        `contactos/${docSnapshot.id}/historialAcciones/documentoDeAcciones`,
       );
       batch.set(historialRef, { historialUsuario: [] });
     });
@@ -289,7 +330,7 @@ export async function getAllUsers(onlyBalances = false) {
       // Filtra por saldo mayor a 0
       usersQuery = query(
         collection(firestoreDB, "contactos"),
-        where("saldo", ">", 0)
+        where("saldo", ">", 0),
       );
     } else {
       // No se aplica ningún filtro, simplemente obtén todos los usuarios
@@ -339,7 +380,7 @@ export async function getAllUsers(onlyBalances = false) {
 //obtener los X primeros documentos de una colección
 export async function getDocumentsOfCollection(collectionPath, totalDocuments) {
   const querySnapshot = await getDocs(
-    query(collection(firestoreDB, collectionPath), limit(totalDocuments))
+    query(collection(firestoreDB, collectionPath), limit(totalDocuments)),
   );
   const documents = [];
   querySnapshot.forEach((doc) => {
@@ -364,7 +405,7 @@ export async function getDocumentById(collectionPath, docId) {
 export async function getUserByEmail(email) {
   const q = query(
     collection(firestoreDB, "contactos"),
-    where("email", "==", email)
+    where("email", "==", email),
   );
 
   const querySnapshot = await getDocs(q);
@@ -395,7 +436,7 @@ export async function getProductFirestore(
   collectionPath,
   limitNumber,
   startAfterDoc = null,
-  includeProductsWithoutStock
+  includeProductsWithoutStock,
 ) {
   // console.log("startAfterDoc", startAfterDoc);
   try {
@@ -406,7 +447,7 @@ export async function getProductFirestore(
       collectionRef,
       where("publicado", "==", true),
       orderBy("nombre"),
-      limit(limitNumber)
+      limit(limitNumber),
     );
 
     // Filtro para excluir productos sin stock
@@ -432,7 +473,7 @@ export async function getProductFirestore(
 
       // Obtener el conteo total de documentos sin limit ni startAfter
       const totalDocsInQuery = await getCountFromServer(
-        query(collectionRef, ...totalQuery)
+        query(collectionRef, ...totalQuery),
       );
       totalDocs = totalDocsInQuery.data().count;
     }
@@ -464,7 +505,7 @@ export async function getProductItemsFirestore(
   subcategory,
   limitNumber,
   startAfterDoc = null,
-  includeProductsWithoutStock
+  includeProductsWithoutStock,
 ) {
   // console.log("startAfterDoc", startAfterDoc);
   try {
@@ -478,7 +519,7 @@ export async function getProductItemsFirestore(
       where("subcategoria", "==", subcategory),
       where("stockTotal", allVisible, 0),
       orderBy("nombre"),
-      limit(limitNumber)
+      limit(limitNumber),
     );
 
     // Filtro para excluir productos sin stock
@@ -504,7 +545,7 @@ export async function getProductItemsFirestore(
 
       // Obtener el conteo total de documentos sin limit ni startAfter
       const totalDocsInQuery = await getCountFromServer(
-        query(collectionRef, ...totalQuery)
+        query(collectionRef, ...totalQuery),
       );
       totalDocs = totalDocsInQuery.data().count;
     }
@@ -554,7 +595,7 @@ export async function getProductByID(category, subcategory, idDocument) {
   try {
     if (!category || !subcategory || !idDocument) {
       throw new Error(
-        "Todos los argumentos (categoría, subcategoría, idDocumento) son requeridos"
+        "Todos los argumentos (categoría, subcategoría, idDocumento) son requeridos",
       );
     }
 
@@ -563,7 +604,7 @@ export async function getProductByID(category, subcategory, idDocument) {
       "productos",
       category,
       subcategory,
-      idDocument
+      idDocument,
     );
     const docSnap = await getDoc(docRef);
 
@@ -585,12 +626,12 @@ export async function updateProductByID(
   category,
   subcategory,
   idDocument,
-  newData
+  newData,
 ) {
   try {
     if (!category || !subcategory || !idDocument || !newData) {
       throw new Error(
-        "Todos los argumentos (categoría, subcategoría, idDocumento, newData) son requeridos"
+        "Todos los argumentos (categoría, subcategoría, idDocumento, newData) son requeridos",
       );
     }
 
@@ -599,7 +640,7 @@ export async function updateProductByID(
       "productos",
       category,
       subcategory,
-      idDocument
+      idDocument,
     );
     const docItemsRef = doc(firestoreDB, "items", idDocument);
 
@@ -690,7 +731,7 @@ export async function changePassword(userId, currentPassword, newPassword) {
       // Comparar la contraseña proporcionada con la almacenada (hasheada)
       const isMatch = await bcrypt.compare(
         currentPassword,
-        storedHashedPassword
+        storedHashedPassword,
       );
       if (!isMatch) {
         throw new Error("La contraseña actual es incorrecta");
@@ -747,12 +788,12 @@ export async function setDocInCollection(nameCollection, nameDoc, dataDoc) {
 export async function createSubcollection(
   categoryID,
   nameSubCat,
-  arrayIndexSubCat
+  arrayIndexSubCat,
 ) {
   try {
     if (!categoryID || !nameSubCat || !arrayIndexSubCat) {
       throw new Error(
-        "Todos los argumentos (categoryID, nameSubCat, arrayIndexSubCat) son requeridos"
+        "Todos los argumentos (categoryID, nameSubCat, arrayIndexSubCat) son requeridos",
       );
     }
 
@@ -761,7 +802,7 @@ export async function createSubcollection(
     await setDoc(
       docCategoryRef,
       { subcategorias: arrayIndexSubCat },
-      { merge: true }
+      { merge: true },
     );
     //agregar un producto base genérico y crear automáticamente la subcategoría
     const docSubCategoryRef = doc(
@@ -769,7 +810,7 @@ export async function createSubcollection(
       "productos",
       categoryID,
       nameSubCat,
-      "docBase"
+      "docBase",
     );
     const document = {
       ...productBase,
@@ -825,7 +866,7 @@ export async function getTipsLandingFirestore() {
       collection(firestoreDB, "tips"),
       where("visible", "==", true),
       orderBy("fecha", "desc"),
-      limit(3)
+      limit(3),
     );
 
     const querySnapshot = await getDocs(q);
@@ -849,7 +890,7 @@ export async function getCategoriesLandingFirestore() {
       collection(firestoreDB, "productos"),
       where("showLanding", "==", true),
       orderBy("__name__", "desc"),
-      limit(3)
+      limit(3),
     );
 
     const querySnapshot = await getDocs(q);
@@ -883,7 +924,6 @@ export async function setProductsCategoryFirestore() {
   }
 }
 
-
 //?ESCRIBIR DATOS EN FIRESTORE
 //Agregar un nuevo CONTACTO/CLIENTE/USUARIO
 export async function addNewContactFirestore(dataObject) {
@@ -903,12 +943,12 @@ export async function addNewContactFirestore(dataObject) {
     // Agrega un nuevo doc a la colección "contactos"
     const docRef = await addDoc(
       collection(firestoreDB, "contactos"),
-      dataObject
+      dataObject,
     );
     //Agregar también la colección de likes inicializada en [], de aquí podremos mostrar los productos que le gustan al usuario
     await setDoc(
       doc(firestoreDB, `contactos/${docRef.id}/LikesProduct/documentoDeLikes`),
-      { likesProductos: [], misLikesCount: 0, likes: [] }
+      { likesProductos: [], misLikesCount: 0, likes: [] },
     );
 
     //Agregar evento de registro en el historial
@@ -917,7 +957,7 @@ export async function addNewContactFirestore(dataObject) {
       `${dataObject.nombreContacto || "Anónimo"} - (${dataObject.email})`,
       "Registro",
       "Se registró en la página",
-      docRef.id
+      docRef.id,
     );
     //Agregar el nuevo email a la lista de emailsPromocionales
     await addEmailPromotional(dataObject.email, dataObject.nombreContacto);
@@ -938,7 +978,7 @@ export async function addNewProductFirestore(
   coleccion,
   categoria = "",
   subCategoria = "",
-  dataObject
+  dataObject,
 ) {
   //dataObject debe como  productBase
 
@@ -966,7 +1006,7 @@ export async function addNewProductFirestore(
 export async function getNodoRealtime(nodo) {
   try {
     const snapShot = await realtimeGet(
-      child(realtimeRef(realtimeDB), `/${nodo}`)
+      child(realtimeRef(realtimeDB), `/${nodo}`),
     );
     if (snapShot.exists()) {
       //console.log(snapShot.val());
@@ -1063,7 +1103,7 @@ export async function getFolderStorage(folder) {
     const folderRef = refStorage(imagesDB, folder);
     const { items } = await listAll(folderRef);
     const downloadUrls = await Promise.all(
-      items.map((item) => getDownloadURL(item))
+      items.map((item) => getDownloadURL(item)),
     );
     return downloadUrls;
   } catch (error) {

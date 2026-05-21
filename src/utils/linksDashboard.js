@@ -11,6 +11,7 @@ import { FaGear } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
 import { PiPassword } from "react-icons/pi";
 import { RxActivityLog } from "react-icons/rx";
+import { IoAnalytics } from "react-icons/io5";
 
 export const links = [
   {
@@ -21,6 +22,16 @@ export const links = [
       title: "Sección Home",
       description:
         "Ten cuidado con las acciones que puedas ejecutar en esta sección.",
+    },
+  },
+  {
+    name: "Analítica",
+    href: "/dashboard/analytics",
+    icon: IoAnalytics,
+    head: {
+      title: "Sección Analítica",
+      description:
+        "Aquí podrás ver las estadísticas de tu página, como visitas, productos más vistos, y otras métricas importantes para tu negocio.",
     },
   },
   {
